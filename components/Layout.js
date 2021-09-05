@@ -1,18 +1,18 @@
 import { Fragment } from 'react'
 import TopNavbar from './TopNavbar'
-import NextHead from 'next/head'
+import Head from 'next/head'
 
-const Layout = ({ children }) => {
+const Layout = ({ children, title, description }) => {
   return (
     <Fragment>
+      <Head>
+        <title>{title || window.location.href}</title>
+        {description && <meta name='description' content={description} />}
+      </Head>
       <TopNavbar />
       {children}
     </Fragment>
   )
 }
-
-const Head = ({ children }) => <NextHead>{children}</NextHead>
-
-Layout.Head = Head
 
 export default Layout

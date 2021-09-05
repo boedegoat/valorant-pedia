@@ -1,9 +1,9 @@
 import Image from 'next/image'
-import Wrapper from './Wrapper'
+import Link from './Link'
 
 const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
   return (
-    <Wrapper.Link href={`/agent/${agentName.toLowerCase().replace(/\//g, '-')}`}>
+    <Link href={`/agent/${agentName.toLowerCase().replace(/\//g, '-')}`}>
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
         <Image
@@ -13,6 +13,7 @@ const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
           className='filter saturate-150'
         />
 
+        {/* agent role icon */}
         <div className='absolute top-0 right-0 bg-white bg-opacity-50 backdrop-blur-sm p-2 flex items-center rounded-[10px]'>
           <Image
             src={roleIcon}
@@ -36,7 +37,7 @@ const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
           </div>
         </div>
       </div>
-    </Wrapper.Link>
+    </Link>
   )
 }
 

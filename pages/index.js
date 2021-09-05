@@ -27,11 +27,7 @@ const Home = ({ agents, roles }) => {
   }, [searchAgent])
 
   return (
-    <Layout>
-      <Layout.Head>
-        <title>Agents</title>
-      </Layout.Head>
-
+    <Layout title='Agents'>
       <header>
         <Wrapper>
           <h1 className='text-2xl font-roboto font-black text-gray-900'>Agents</h1>

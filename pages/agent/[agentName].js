@@ -1,10 +1,13 @@
 import Wrapper from '../../components/Wrapper'
+import Layout from '../../components/Layout'
 
 const Agent = ({ agentName }) => {
   return (
-    <Wrapper>
-      <h1>{agentName}</h1>
-    </Wrapper>
+    <Layout>
+      <Wrapper>
+        <h1>{agentName}</h1>
+      </Wrapper>
+    </Layout>
   )
 }
 
