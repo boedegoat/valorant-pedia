@@ -1,11 +1,12 @@
 import { useState, useEffect, Fragment } from 'react'
-import Head from 'next/head'
 import Wrapper from '../components/Wrapper'
 import SearchBar from '../components/SearchBar'
 import AgentRole from '../components/AgentRole'
 import SelectAgentSection from '../components/SelectAgentSection'
 import useScroll from '../hooks/useScroll'
 import SearchResultsSection from '../components/SearchResultsSection'
+import { getSession } from 'next-auth/client'
+import Layout from '../components/Layout'
 
 const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
@@ -26,10 +27,10 @@ const Home = ({ agents, roles }) => {
   }, [searchAgent])
 
   return (
-    <Fragment>
-      <Head>
+    <Layout>
+      <Layout.Head>
         <title>Agents</title>
-      </Head>
+      </Layout.Head>
 
       <header>
         <Wrapper>
@@ -72,13 +73,24 @@ const Home = ({ agents, roles }) => {
           </Fragment>
         )}
       </main>
-    </Fragment>
+    </Layout>
   )
 }
 
 export default Home
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false,
+      },
+    }
+  }
+
   const fetchAgents = await fetch('https://valorant-api.com/v1/agents')
   const agents = (await fetchAgents.json()).data
     .filter(({ role }) => role)

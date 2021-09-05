@@ -1,13 +1,11 @@
 import '../style.css'
-import TopNavbar from '../components/TopNavbar'
-import { Fragment } from 'react'
+import { Provider } from 'next-auth/client'
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Fragment>
-      <TopNavbar />
+    <Provider session={pageProps.session}>
       <Component {...pageProps} />
-    </Fragment>
+    </Provider>
   )
 }
 

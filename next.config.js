@@ -1,5 +1,9 @@
 module.exports = {
   images: {
-    domains: ['images.unsplash.com', 'media.valorant-api.com'],
+    domains: [
+      'images.unsplash.com',
+      'media.valorant-api.com',
+      'lh3.googleusercontent.com',
+    ],
   },
 }
