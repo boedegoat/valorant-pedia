@@ -1,12 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import Head from 'next/head'
-import { Fragment } from 'react'
 import Wrapper from '../components/Wrapper'
 import SearchBar from '../components/SearchBar'
 import AgentRole from '../components/AgentRole'
 import SelectAgentSection from '../components/SelectAgentSection'
-import SelectAgent from '../components/SelectAgent'
 import useScroll from '../hooks/useScroll'
+import SearchResultsSection from '../components/SearchResultsSection'
 
 const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
@@ -59,30 +58,7 @@ const Home = ({ agents, roles }) => {
       {/* home body */}
       <main className='py-5'>
         {searchAgent ? (
-          <section>
-            {/* search result display */}
-            <Wrapper>
-              <h2 className='font-roboto font-bold text-2xl text-gray-700'>
-                Search Result{' '}
-                <span className='inline-block bg-fuchsia-500 text-white text-base px-2 py-1 rounded-md -translate-y-1 leading-none ml-1 ring ring-fuchsia-200'>
-                  {searchResults.length}
-                </span>
-              </h2>
-            </Wrapper>
-
-            {/* loop search results */}
-            <Wrapper className='py-5 flex space-x-4 overflow-x-auto scrollbar-hide'>
-              {searchResults.map((agent) => (
-                <SelectAgent
-                  key={agent.uuid}
-                  src={agent.bustPortrait}
-                  agentName={agent.displayName}
-                  roleName={agent.role.displayName}
-                  roleIcon={agent.role.displayIcon}
-                />
-              ))}
-            </Wrapper>
-          </section>
+          <SearchResultsSection searchResults={searchResults} />
         ) : (
           <Fragment>
             {/* choose agent role */}
