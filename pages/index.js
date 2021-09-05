@@ -7,17 +7,27 @@ import useScroll from '../hooks/useScroll'
 import SearchResultsSection from '../components/SearchResultsSection'
 import { getSession } from 'next-auth/client'
 import Layout from '../components/Layout'
+import RoleFilterSection from '../components/RoleFilterSection'
 
 const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
   const [searchResults, setSearchResults] = useState([])
+  const [roleFilter, setRoleFilter] = useState('')
   const showSearchBar = useScroll(100)
 
   useEffect(() => {
     searchAgent &&
       setSearchResults(
         agents
-          .filter(({ displayName }) => displayName.toLowerCase().includes(searchAgent))
+          .filter(({ displayName, role }) => {
+            if (roleFilter) {
+              return (
+                displayName.toLowerCase().includes(searchAgent) &&
+                role.displayName === roleFilter
+              )
+            }
+            return displayName.toLowerCase().includes(searchAgent)
+          })
           .sort(({ displayName: name1 }, { displayName: name2 }) => {
             if (name1.toLowerCase().startsWith(searchAgent)) return -1
             if (name2.toLowerCase().startsWith(searchAgent)) return 1
@@ -54,18 +64,24 @@ const Home = ({ agents, roles }) => {
 
       {/* home body */}
       <main className='py-5'>
-        {searchAgent ? (
-          <SearchResultsSection searchResults={searchResults} />
-        ) : (
+        {searchAgent && <SearchResultsSection searchResults={searchResults} />}
+        {!searchAgent && (
           <Fragment>
             {/* choose agent role */}
             <Wrapper className='py-5 flex space-x-4 overflow-x-auto scrollbar-hide'>
               {roles.map((role, index) => (
-                <AgentRole key={index} role={role.name} icon={role.icon} />
+                <AgentRole
+                  key={index}
+                  role={role.name}
+                  icon={role.icon}
+                  roleFilter={roleFilter}
+                  setRoleFilter={setRoleFilter}
+                />
               ))}
             </Wrapper>
 
-            <SelectAgentSection roles={roles} agents={agents} />
+            {roleFilter && <RoleFilterSection roleFilter={roleFilter} agents={agents} />}
+            {!roleFilter && <SelectAgentSection roles={roles} agents={agents} />}
           </Fragment>
         )}
       </main>
