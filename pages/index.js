@@ -8,6 +8,7 @@ import SearchResultsSection from '../components/SearchResultsSection'
 import { getSession } from 'next-auth/client'
 import Layout from '../components/Layout'
 import RoleFilterSection from '../components/RoleFilterSection'
+import { getAgents, getRoles, getSearchResults } from '../lib/agents'
 
 const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
@@ -16,24 +17,8 @@ const Home = ({ agents, roles }) => {
   const showSearchBar = useScroll(100)
 
   useEffect(() => {
-    searchAgent &&
-      setSearchResults(
-        agents
-          .filter(({ displayName, role }) => {
-            if (roleFilter) {
-              return (
-                displayName.toLowerCase().includes(searchAgent) &&
-                role.displayName === roleFilter
-              )
-            }
-            return displayName.toLowerCase().includes(searchAgent)
-          })
-          .sort(({ displayName: name1 }, { displayName: name2 }) => {
-            if (name1.toLowerCase().startsWith(searchAgent)) return -1
-            if (name2.toLowerCase().startsWith(searchAgent)) return 1
-            return 0
-          })
-      )
+    if (!searchAgent) return
+    setSearchResults(getSearchResults({ agents, searchAgent, roleFilter }))
   }, [searchAgent])
 
   return (
@@ -103,42 +88,13 @@ export async function getServerSideProps(context) {
     }
   }
 
-  const fetchAgents = await fetch('https://valorant-api.com/v1/agents')
-  const agents = (await fetchAgents.json()).data
-    .filter(({ role }) => role)
-    .sort(({ displayName: a }, { displayName: b }) => {
-      if (a > b) return 1
-      if (a < b) return -1
-      return 0
-    })
+  const agents = await getAgents()
+  const roles = getRoles(agents)
 
-  function findRole(role) {
-    return agents.find(({ role: agentRole }) => agentRole.displayName === role).role
-  }
-
-  const roles = [
-    {
-      name: 'Duelist',
-      description: findRole('Duelist').description,
-      icon: findRole('Duelist').displayIcon,
-    },
-    {
-      name: 'Controller',
-      description: findRole('Controller').description,
-      icon: findRole('Controller').displayIcon,
-    },
-    {
-      name: 'Sentinel',
-      description: findRole('Sentinel').description,
-      icon: findRole('Sentinel').displayIcon,
-    },
-    {
-      name: 'Initiator',
-      description: findRole('Initiator').description,
-      icon: findRole('Initiator').displayIcon,
-    },
-  ]
   return {
-    props: { agents, roles },
+    props: {
+      agents,
+      roles,
+    },
   }
 }
