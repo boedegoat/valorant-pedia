@@ -1,11 +1,31 @@
+import { useState, useEffect } from 'react'
 import Head from 'next/head'
 import { Fragment } from 'react'
 import Wrapper from '../components/Wrapper'
 import SearchBar from '../components/SearchBar'
 import AgentRole from '../components/AgentRole'
+import SelectAgentSection from '../components/SelectAgentSection'
 import SelectAgent from '../components/SelectAgent'
+import useScroll from '../hooks/useScroll'
 
 const Home = ({ agents, roles }) => {
+  const [searchAgent, setSearchAgent] = useState('')
+  const [searchResults, setSearchResults] = useState([])
+  const showSearchBar = useScroll(100)
+
+  useEffect(() => {
+    searchAgent &&
+      setSearchResults(
+        agents
+          .filter(({ displayName }) => displayName.toLowerCase().includes(searchAgent))
+          .sort(({ displayName: name1 }, { displayName: name2 }) => {
+            if (name1.toLowerCase().startsWith(searchAgent)) return -1
+            if (name2.toLowerCase().startsWith(searchAgent)) return 1
+            return 0
+          })
+      )
+  }, [searchAgent])
+
   return (
     <Fragment>
       <Head>
@@ -13,29 +33,46 @@ const Home = ({ agents, roles }) => {
       </Head>
 
       <header>
-        <Wrapper className='space-y-4'>
+        <Wrapper>
           <h1 className='text-2xl font-roboto font-black text-gray-900'>Agents</h1>
-          <SearchBar placeholder='Search Agent' />
         </Wrapper>
       </header>
 
-      {/* choose agent role */}
-      <Wrapper className='py-5 flex space-x-4 overflow-x-auto scrollbar-hide'>
-        {roles.map((role, index) => (
-          <AgentRole key={index} role={role.name} icon={role.icon} />
-        ))}
+      {/* search bar */}
+      <Wrapper
+        className={`sticky transition-all duration-200 ${
+          showSearchBar ? 'top-2' : '-top-20'
+        } mt-4 z-10`}
+      >
+        <SearchBar
+          placeholder='Search Agent'
+          value={searchAgent}
+          className={`${
+            showSearchBar ? 'bg-opacity-80 shadow-2xl backdrop-blur-sm' : ''
+          }`}
+          onChange={(e) => {
+            setSearchAgent(e.target.value)
+          }}
+        />
       </Wrapper>
 
-      {/* select agent section */}
-      {roles.map(({ name }) => (
-        <section key={name}>
-          <Wrapper>
-            <h2 className='font-roboto font-bold text-2xl text-gray-700'>{name}</h2>
-          </Wrapper>
-          <Wrapper className='py-5 flex space-x-4 overflow-x-auto scrollbar-hide'>
-            {agents
-              .filter(({ role }) => role.displayName === name)
-              .map((agent) => (
+      {/* home body */}
+      <main className='py-5'>
+        {searchAgent ? (
+          <section>
+            {/* search result display */}
+            <Wrapper>
+              <h2 className='font-roboto font-bold text-2xl text-gray-700'>
+                Search Result{' '}
+                <span className='inline-block bg-fuchsia-500 text-white text-base px-2 py-1 rounded-md -translate-y-1 leading-none ml-1 ring ring-fuchsia-200'>
+                  {searchResults.length}
+                </span>
+              </h2>
+            </Wrapper>
+
+            {/* loop search results */}
+            <Wrapper className='py-5 flex space-x-4 overflow-x-auto scrollbar-hide'>
+              {searchResults.map((agent) => (
                 <SelectAgent
                   key={agent.uuid}
                   src={agent.bustPortrait}
@@ -44,9 +81,21 @@ const Home = ({ agents, roles }) => {
                   roleIcon={agent.role.displayIcon}
                 />
               ))}
-          </Wrapper>
-        </section>
-      ))}
+            </Wrapper>
+          </section>
+        ) : (
+          <Fragment>
+            {/* choose agent role */}
+            <Wrapper className='py-5 flex space-x-4 overflow-x-auto scrollbar-hide'>
+              {roles.map((role, index) => (
+                <AgentRole key={index} role={role.name} icon={role.icon} />
+              ))}
+            </Wrapper>
+
+            <SelectAgentSection roles={roles} agents={agents} />
+          </Fragment>
+        )}
+      </main>
     </Fragment>
   )
 }

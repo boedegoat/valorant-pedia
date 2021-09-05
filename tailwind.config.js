@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 module.exports = {
   mode: 'jit',
@@ -9,6 +10,9 @@ module.exports = {
       fontFamily: {
         sans: ["'Mulish', sans-serif", ...defaultTheme.fontFamily.sans],
         roboto: ["'Roboto', sans-serif", ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        fuchsia: colors.fuchsia,
       },
     },
   },

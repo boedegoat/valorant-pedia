@@ -3,7 +3,7 @@ import Wrapper from './Wrapper'
 
 const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
   return (
-    <Wrapper.Link href={`/agent/${agentName}`}>
+    <Wrapper.Link href={`/agent/${agentName.toLowerCase().replace(/\//g, '-')}`}>
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
         <Image
