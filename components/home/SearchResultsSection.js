@@ -1,5 +1,5 @@
 import SelectAgent from './SelectAgent'
-import Wrapper from './Wrapper'
+import Wrapper from '../Wrapper'
 
 const SearchResultsSection = ({ searchResults }) => {
   return (

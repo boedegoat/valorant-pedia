@@ -1,9 +1,16 @@
 import Image from 'next/image'
-import Link from './Link'
+import Link from '../Link'
+import useGlobalContext from '../../hooks/useConsumer'
 
 const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
+  const [{ section }] = useGlobalContext()
+
   return (
-    <Link href={`/agent/${agentName.toLowerCase().replace(/\//g, '-')}`}>
+    <Link
+      href={`/agent/${agentName.toLowerCase().replace(/\//g, '-')}?section=${encodeURI(
+        section
+      )}`}
+    >
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
         <Image

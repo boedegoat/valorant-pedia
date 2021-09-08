@@ -1,49 +1,51 @@
 import Layout from '../../components/Layout'
 import { getAgentsByName } from '../../lib/agents'
-import AgentHeader from '../../components/AgentHeader'
-import { HeartIcon } from '@heroicons/react/outline'
-import Image from 'next/image'
-import Tooltip from '../../components/Tooltip'
+import AgentHeader from '../../components/agent-page/AgentHeader'
+import Wrapper from '../../components/Wrapper'
+import { useRouter } from 'next/router'
+import useGlobalContext from '../../hooks/useConsumer'
+import { useEffect } from 'react'
+import SelectSection from '../../components/agent-page/SelectSection'
 
-const Agent = ({ agent }) => {
-  console.log(agent)
+const Agent = ({ agent, _section }) => {
+  const router = useRouter()
+  const [{ section }, dispatch] = useGlobalContext()
+
+  function updateSection(name) {
+    router.push({
+      pathname: `/agent/${agent.displayName.toLowerCase().replace(/\//g, '-')}`,
+      query: { section: encodeURI(name) },
+    })
+    dispatch({ type: 'UPDATE_SECTION', section: name })
+  }
+
+  useEffect(() => {
+    if (!_section) {
+      updateSection(section)
+    }
+    console.log(agent, _section)
+  }, [])
 
   return (
     <Layout title={`${agent.displayName}'s Homepage`}>
-      <AgentHeader image={agent.bustPortrait}>
-        {/* agent role label */}
-        <div className='bg-black max-w-max px-2 py-1 rounded-md absolute -translate-y-12'>
-          <h3 className='text-white text-xs font-bold'>{agent.role.displayName}</h3>
-        </div>
+      <AgentHeader agent={agent} />
 
-        <div className='space-y-2'>
-          {/* agent name and role icon */}
-          <div className='flex items-center justify-between'>
-            <h1 className='font-roboto font-black text-4xl'>{agent.displayName}</h1>
-            <Image
-              src={agent.role.displayIcon}
-              width={27}
-              height={27}
-              layout='fixed'
-              className='filter invert brightness-50'
-            />
-          </div>
-
-          <p className='text-xs'>{agent.description}</p>
-
-          {/* bottom menu */}
-          <div className='flex justify-end'>
-            {/* add to favorite button */}
-
-            <Tooltip content='favorite this'>
-              <button className='flex items-center space-x-1 text-gray-400'>
-                <HeartIcon className='w-6 h-6' />
-                <span className='text-xs font-medium text-fuchsia-400'>180</span>
-              </button>
-            </Tooltip>
-          </div>
-        </div>
-      </AgentHeader>
+      <section className='mt-5'>
+        <Wrapper className='flex space-x-4 overflow-x-auto scrollbar-hide'>
+          <SelectSection value='lineups' section={_section} updater={updateSection}>
+            Lineups
+          </SelectSection>
+          <SelectSection value='abilities' section={_section} updater={updateSection}>
+            Abilities
+          </SelectSection>
+          <SelectSection value='data' section={_section} updater={updateSection}>
+            Data
+          </SelectSection>
+          <SelectSection value='voice' section={_section} updater={updateSection}>
+            Voice
+          </SelectSection>
+        </Wrapper>
+      </section>
     </Layout>
   )
 }
@@ -53,10 +55,12 @@ export default Agent
 export async function getServerSideProps(context) {
   const agentName = context.params.agentName.replace(/-/g, '/')
   const agent = await getAgentsByName(agentName)
+  const section = context.query.section || null
 
   return {
     props: {
       agent,
+      _section: section,
     },
   }
 }

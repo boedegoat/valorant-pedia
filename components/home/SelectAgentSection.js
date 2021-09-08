@@ -1,4 +1,4 @@
-import Wrapper from './Wrapper'
+import Wrapper from '../Wrapper'
 import SelectAgent from './SelectAgent'
 
 const SelectAgentSection = ({ roles, agents }) => {
