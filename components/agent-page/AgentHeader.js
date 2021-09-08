@@ -9,7 +9,12 @@ const AgentHeader = ({ agent }) => {
       <Wrapper className='relative'>
         {/* agent image */}
         <div className='relative h-[343px]'>
-          <Image src={agent.bustPortrait} layout='fill' objectFit='cover' />
+          <Image
+            src={agent.bustPortrait}
+            layout='fill'
+            objectFit='cover'
+            className='filter saturate-150'
+          />
         </div>
 
         {/* agent name description */}

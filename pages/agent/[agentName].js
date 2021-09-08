@@ -1,29 +1,28 @@
 import Layout from '../../components/Layout'
-import { getAgentsByName } from '../../lib/agents'
+import { getAgents, getAgentsByName } from '../../lib/agents'
 import AgentHeader from '../../components/agent-page/AgentHeader'
 import Wrapper from '../../components/Wrapper'
 import { useRouter } from 'next/router'
+import ChangeTabButton from '../../components/agent-page/ChangeTabButton'
 import useGlobalContext from '../../hooks/useConsumer'
 import { useEffect } from 'react'
-import SelectSection from '../../components/agent-page/SelectSection'
 
-const Agent = ({ agent, _section }) => {
+const Agent = ({ agent }) => {
   const router = useRouter()
-  const [{ section }, dispatch] = useGlobalContext()
+  const [{ tab }, dispatch] = useGlobalContext()
 
-  function updateSection(name) {
+  function updateTab(tabName) {
     router.push({
       pathname: `/agent/${agent.displayName.toLowerCase().replace(/\//g, '-')}`,
-      query: { section: encodeURI(name) },
+      query: { tab: tabName },
     })
-    dispatch({ type: 'UPDATE_SECTION', section: name })
+    dispatch({ type: 'UPDATE_TAB', tab: tabName })
   }
 
   useEffect(() => {
-    if (!_section) {
-      updateSection(section)
+    if (!router.query.tab) {
+      updateTab(tab)
     }
-    console.log(agent, _section)
   }, [])
 
   return (
@@ -32,18 +31,12 @@ const Agent = ({ agent, _section }) => {
 
       <section className='mt-5'>
         <Wrapper className='flex space-x-4 overflow-x-auto scrollbar-hide'>
-          <SelectSection value='lineups' section={_section} updater={updateSection}>
+          <ChangeTabButton value='lineups' onClick={updateTab}>
             Lineups
-          </SelectSection>
-          <SelectSection value='abilities' section={_section} updater={updateSection}>
+          </ChangeTabButton>
+          <ChangeTabButton value='abilities' onClick={updateTab}>
             Abilities
-          </SelectSection>
-          <SelectSection value='data' section={_section} updater={updateSection}>
-            Data
-          </SelectSection>
-          <SelectSection value='voice' section={_section} updater={updateSection}>
-            Voice
-          </SelectSection>
+          </ChangeTabButton>
         </Wrapper>
       </section>
     </Layout>
@@ -52,15 +45,25 @@ const Agent = ({ agent, _section }) => {
 
 export default Agent
 
-export async function getServerSideProps(context) {
-  const agentName = context.params.agentName.replace(/-/g, '/')
-  const agent = await getAgentsByName(agentName)
-  const section = context.query.section || null
+export async function getStaticPaths() {
+  const agents = await getAgents()
+  const paths = agents.map(({ displayName }) => ({
+    params: {
+      agentName: displayName.toLowerCase().replace(/\//g, '-'),
+    },
+  }))
 
   return {
-    props: {
-      agent,
-      _section: section,
-    },
+    paths,
+    fallback: false,
+  }
+}
+
+export async function getStaticProps(context) {
+  const agentName = context.params.agentName.replace(/-/g, '/')
+  const agent = await getAgentsByName(agentName)
+
+  return {
+    props: { agent },
   }
 }

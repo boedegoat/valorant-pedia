@@ -1,13 +1,13 @@
 export const globalState = {
-  section: 'lineups',
+  tab: 'lineups',
 }
 
 export function globalReducer(globalState, action) {
   switch (action.type) {
-    case 'UPDATE_SECTION':
+    case 'UPDATE_TAB':
       return {
         ...globalState,
-        section: action.section,
+        tab: action.tab,
       }
   }
 }

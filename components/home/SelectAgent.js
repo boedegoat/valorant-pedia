@@ -3,14 +3,10 @@ import Link from '../Link'
 import useGlobalContext from '../../hooks/useConsumer'
 
 const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
-  const [{ section }] = useGlobalContext()
+  const [{ tab }] = useGlobalContext()
 
   return (
-    <Link
-      href={`/agent/${agentName.toLowerCase().replace(/\//g, '-')}?section=${encodeURI(
-        section
-      )}`}
-    >
+    <Link href={`/agent/${agentName.toLowerCase().replace(/\//g, '-')}?tab=${tab}`}>
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
         <Image
