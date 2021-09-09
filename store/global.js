@@ -1,5 +1,5 @@
 export const globalState = {
-  tab: 'lineups',
+  tab: '',
 }
 
 export function globalReducer(globalState, action) {

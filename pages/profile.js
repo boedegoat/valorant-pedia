@@ -1,10 +1,8 @@
-import { signOut, useSession } from 'next-auth/client'
+import { getSession, signOut } from 'next-auth/client'
 import Wrapper from '../components/Wrapper'
 import Layout from '../components/Layout'
 
-const Profile = () => {
-  const [session] = useSession()
-
+const Profile = ({ session }) => {
   return (
     <Layout title={`${session?.user.name}'s Profile`}>
       <Wrapper>
@@ -27,3 +25,20 @@ const Profile = () => {
 }
 
 export default Profile
+
+export async function getServerSideProps(context) {
+  const session = await getSession(context)
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: '/signin',
+        permanent: false,
+      },
+    }
+  }
+
+  return {
+    props: { session },
+  }
+}

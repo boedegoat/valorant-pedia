@@ -77,16 +77,16 @@ const Home = ({ agents, roles }) => {
 export default Home
 
 export async function getServerSideProps(context) {
-  const session = await getSession(context)
+  // const session = await getSession(context)
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: '/signin',
-        permanent: false,
-      },
-    }
-  }
+  // if (!session) {
+  //   return {
+  //     redirect: {
+  //       destination: '/signin',
+  //       permanent: false,
+  //     },
+  //   }
+  // }
 
   const agents = await getAgents()
   const roles = getRoles(agents)

@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import Link from '../Link'
-import useGlobalContext from '../../hooks/useConsumer'
+import { agentToURL } from '../../lib/agents'
+
+const defaultTab = 'lineups'
 
 const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
-  const [{ tab }] = useGlobalContext()
-
   return (
-    <Link href={`/agent/${agentName.toLowerCase().replace(/\//g, '-')}?tab=${tab}`}>
+    <Link href={`/${agentToURL(agentName)}/${defaultTab}`} scroll={false}>
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
         <Image

@@ -2,6 +2,7 @@ import Wrapper from '../Wrapper'
 import { HeartIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
 import Tooltip from '../../components/Tooltip'
+import Link from '../Link'
 
 const AgentHeader = ({ agent }) => {
   return (
