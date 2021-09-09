@@ -30,7 +30,7 @@ const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
         {/* bottom part */}
         <div className='absolute bottom-0 w-full h-[75px] bg-gradient-to-b from-transparent to-[rgba(0,0,0,0.4)] px-2 space-y-1'>
           {/* agent role label */}
-          <div className='bg-black bg-opacity-50 backdrop-blur-md max-w-max px-2 py-1 rounded-md'>
+          <div className='bg-black max-w-max px-2 py-1 rounded-md'>
             <h3 className='text-white text-xs font-bold'>{roleName}</h3>
           </div>
 
