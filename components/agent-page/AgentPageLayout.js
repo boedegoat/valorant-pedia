@@ -24,6 +24,7 @@ const AgentPageLayout = ({ children, agent }) => {
           className={`
           ${headerEntry?.isIntersecting ? 'hidden' : 'block'}
           relative w-8 h-8 bg-gray-200 rounded-full overflow-hidden`}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <Image src={agent.displayIconSmall} layout='fill' />
         </button>
