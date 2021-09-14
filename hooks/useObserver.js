@@ -12,6 +12,10 @@ export default function useObserver(refElement, options = {}) {
     }, options)
     observer.observe(refElement.current)
     loading.current = false
+
+    return function cleanup() {
+      observer.disconnect()
+    }
   }, [])
 
   return [entry, loading.current]
