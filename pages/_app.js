@@ -1,14 +1,13 @@
 import '../style.css'
 import { Provider } from 'next-auth/client'
-import GlobalContextProvider from '../ContextProvider'
-import { globalState, globalReducer } from '../store/global'
+import GlobalProvider from '../store/GlobalProvider'
 
 function MyApp({ Component, pageProps }) {
   return (
     <Provider session={pageProps.session}>
-      <GlobalContextProvider initValue={globalState} reducer={globalReducer}>
+      <GlobalProvider>
         <Component {...pageProps} />
-      </GlobalContextProvider>
+      </GlobalProvider>
     </Provider>
   )
 }

@@ -5,7 +5,6 @@ import AgentRole from '../components/AgentRole'
 import SelectAgentSection from '../components/home/SelectAgentSection'
 import useScroll from '../hooks/useScroll'
 import SearchResultsSection from '../components/home/SearchResultsSection'
-import { getSession } from 'next-auth/client'
 import Layout from '../components/Layout'
 import RoleFilterSection from '../components/home/RoleFilterSection'
 import { getAgents, getRoles, getSearchResults } from '../lib/agents'
@@ -76,18 +75,7 @@ const Home = ({ agents, roles }) => {
 
 export default Home
 
-export async function getServerSideProps(context) {
-  // const session = await getSession(context)
-
-  // if (!session) {
-  //   return {
-  //     redirect: {
-  //       destination: '/signin',
-  //       permanent: false,
-  //     },
-  //   }
-  // }
-
+export async function getStaticProps() {
   const agents = await getAgents()
   const roles = getRoles(agents)
 

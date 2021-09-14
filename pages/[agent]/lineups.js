@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import AgentPageLayout from '../../components/agent-page/AgentPageLayout'
 import { getStaticAgentPaths, getStaticAgent } from '../../lib/agents'
 import SearchBar from '../../components/SearchBar'
@@ -8,7 +7,9 @@ const Lineups = ({ agent }) => {
   return (
     <AgentPageLayout agent={agent}>
       <Wrapper>
-        <SearchBar placeholder='search lineups' />
+        <header>
+          <SearchBar placeholder='search lineups' />
+        </header>
         <div className='mt-8 min-h-[500px]'></div>
       </Wrapper>
     </AgentPageLayout>

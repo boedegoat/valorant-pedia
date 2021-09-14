@@ -2,11 +2,10 @@ import Wrapper from '../Wrapper'
 import { HeartIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
 import Tooltip from '../../components/Tooltip'
-import Link from '../Link'
 
-const AgentHeader = ({ agent }) => {
+const AgentHeader = ({ agent, headerRef }) => {
   return (
-    <header>
+    <header ref={headerRef}>
       <Wrapper className='relative'>
         {/* agent image */}
         <div className='relative h-[343px]'>
