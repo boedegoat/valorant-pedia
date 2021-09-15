@@ -1,8 +1,11 @@
 import Image from 'next/image'
 import AgentPageLayout from '../../components/agent-page/AgentPageLayout'
 import { getStaticAgentPaths, getStaticAgent } from '../../lib/agents'
+import useScroll from '../../hooks/useScroll'
 
 const Abilities = ({ agent }) => {
+  const show = useScroll(1)
+
   return <AgentPageLayout agent={agent}></AgentPageLayout>
 }
 

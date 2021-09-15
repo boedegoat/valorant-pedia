@@ -14,7 +14,7 @@ const Lineups = ({ agent }) => {
       <Wrapper>
         <nav
           className={`
-          sticky transition-all duration-200 ${showNav ? 'top-20' : '-top-10'}
+          sticky transition-all duration-200 ${showNav ? 'top-16' : '-top-10'}
           flex justify-between items-center shadow-md rounded-md divide-x-2`}
         >
           <div className='px-2 flex items-center space-x-1'>
