@@ -12,7 +12,7 @@ const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
         <Image src={src} layout='fill' objectFit='cover' />
 
         {/* agent role icon */}
-        <div className='absolute top-1 right-1 bg-fuchsia-500 p-2 flex items-center rounded-[10px]'>
+        <div className='absolute top-1 right-1 bg-gray-500 p-2 flex items-center rounded-[10px]'>
           <Image src={roleIcon} width={15} height={15} layout='fixed' />
         </div>
 
