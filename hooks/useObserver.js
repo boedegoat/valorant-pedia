@@ -1,22 +1,21 @@
-import { useEffect, useState, useRef } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 
-export default function useObserver(refElement, options = {}) {
-  const [entry, setEntry] = useState({})
-  const [loading, setLoading] = useState(true)
+export default function useObserver({ initVisible, ...options }) {
+  const element = useRef()
+  const [visible, setVisible] = useState(initVisible)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((_entry) => {
-        setEntry(_entry)
-        if (loading) setLoading(false)
+      entries.forEach((entry) => {
+        setVisible(entry.isIntersecting)
       })
     }, options)
-    observer.observe(refElement.current)
+    observer.observe(element.current)
 
     return function cleanup() {
       observer.disconnect()
     }
   }, [])
 
-  return [entry, loading]
+  return [element, visible]
 }
