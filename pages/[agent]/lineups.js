@@ -10,11 +10,14 @@ import { useState } from 'react'
 
 const Lineups = ({ agent }) => {
   const [showNavOnScroll, setShowNavOnScroll] = useState(false)
+
   useScroll(
     ({ previousPosition, currentPosition }) => {
       const isShow = previousPosition.y > currentPosition.y && currentPosition.y > 200
+      // re render kalo statenya berubah
       if (isShow !== showNavOnScroll) setShowNavOnScroll(isShow)
     },
+    // biar statenya selalu up to date
     [showNavOnScroll]
   )
 

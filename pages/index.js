@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment, useRef } from 'react'
+import { useState, useEffect, Fragment } from 'react'
 import Wrapper from '../components/Wrapper'
 import SearchBar from '../components/SearchBar'
 import AgentRole from '../components/AgentRole'
@@ -14,11 +14,14 @@ const Home = ({ agents, roles }) => {
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
   const [showSearchBarOnScroll, setShowSearchBarOnScroll] = useState(false)
+
   useScroll(
     ({ previousPosition, currentPosition }) => {
       const isShow = previousPosition.y > currentPosition.y && currentPosition.y > 100
+      // re render kalo statenya berubah
       if (isShow !== showSearchBarOnScroll) setShowSearchBarOnScroll(isShow)
     },
+    // biar statenya selalu up to date
     [showSearchBarOnScroll]
   )
 
