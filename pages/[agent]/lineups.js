@@ -6,20 +6,9 @@ import { SearchIcon, FilterIcon } from '@heroicons/react/outline'
 import { MapIcon } from '@heroicons/react/solid'
 import useScroll from '../../hooks/useScroll'
 import LineupsVideos from '../../components/agent-page/LineupsVideos'
-import { useState } from 'react'
 
 const Lineups = ({ agent }) => {
-  const [showNavOnScroll, setShowNavOnScroll] = useState(false)
-
-  useScroll(
-    ({ previousPosition, currentPosition }) => {
-      const isShow = previousPosition.y > currentPosition.y && currentPosition.y > 200
-      // re render kalo statenya berubah
-      if (isShow !== showNavOnScroll) setShowNavOnScroll(isShow)
-    },
-    // biar statenya selalu up to date
-    [showNavOnScroll]
-  )
+  const showNavOnScroll = useScroll({ direction: 'up', offset: 200 })
 
   return (
     <AgentPageLayout agent={agent}>

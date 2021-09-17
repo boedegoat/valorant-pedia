@@ -13,17 +13,7 @@ const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
-  const [showSearchBarOnScroll, setShowSearchBarOnScroll] = useState(false)
-
-  useScroll(
-    ({ previousPosition, currentPosition }) => {
-      const isShow = previousPosition.y > currentPosition.y && currentPosition.y > 100
-      // re render kalo statenya berubah
-      if (isShow !== showSearchBarOnScroll) setShowSearchBarOnScroll(isShow)
-    },
-    // biar statenya selalu up to date
-    [showSearchBarOnScroll]
-  )
+  const showSearchBarOnScroll = useScroll({ direction: 'up', offset: 100 })
 
   useEffect(() => {
     if (!searchAgent) return
