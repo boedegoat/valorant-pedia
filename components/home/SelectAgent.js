@@ -9,22 +9,11 @@ const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
     <Link href={`/${agentToURL(agentName)}/${defaultTab}`} scroll={false}>
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
-        <Image
-          src={src}
-          layout='fill'
-          objectFit='cover'
-          className='filter saturate-150'
-        />
+        <Image src={src} layout='fill' objectFit='cover' />
 
         {/* agent role icon */}
-        <div className='absolute top-0 right-0 bg-white bg-opacity-50 backdrop-blur-sm p-2 flex items-center rounded-[10px]'>
-          <Image
-            src={roleIcon}
-            width={19}
-            height={19}
-            layout='fixed'
-            className='filter invert brightness-75'
-          />
+        <div className='absolute top-1 right-1 bg-fuchsia-500 p-2 flex items-center rounded-[10px]'>
+          <Image src={roleIcon} width={15} height={15} layout='fixed' />
         </div>
 
         {/* bottom part */}
