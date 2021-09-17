@@ -6,16 +6,26 @@ import { SearchIcon, FilterIcon } from '@heroicons/react/outline'
 import { MapIcon } from '@heroicons/react/solid'
 import useScroll from '../../hooks/useScroll'
 import LineupsVideos from '../../components/agent-page/LineupsVideos'
+import { useState } from 'react'
 
 const Lineups = ({ agent }) => {
-  const showNav = useScroll(200)
+  const [showNavOnScroll, setShowNavOnScroll] = useState(false)
+  useScroll(
+    ({ previousPosition, currentPosition }) => {
+      const isShow = previousPosition.y > currentPosition.y && currentPosition.y > 200
+      if (isShow !== showNavOnScroll) setShowNavOnScroll(isShow)
+    },
+    [showNavOnScroll]
+  )
 
   return (
     <AgentPageLayout agent={agent}>
       <Wrapper>
         <nav
           className={`
-          sticky bg-white transition-all duration-200 ${showNav ? 'top-16' : '-top-10'}
+          sticky bg-white transition-all duration-200 ${
+            showNavOnScroll ? 'top-14' : '-top-10'
+          }
           flex justify-between items-center shadow-md rounded-md divide-x-2`}
         >
           <div className='px-2 flex items-center space-x-1'>
@@ -41,7 +51,7 @@ const Lineups = ({ agent }) => {
             </button>
           </div>
         </nav>
-        <div className='mt-8 grid grid-cols-2 gap-2'>
+        <div className='mt-8 grid grid-cols-2 gap-2 h-[1000px]'>
           <LineupsVideos agentName={agent.displayName} />
         </div>
       </Wrapper>
