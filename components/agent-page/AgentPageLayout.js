@@ -16,7 +16,7 @@ const AgentPageLayout = ({ children, agent }) => {
 
       {/* select tab */}
       <Wrapper
-        className={`mt-2 py-5 h-12 flex items-center space-x-4 overflow-x-auto scrollbar-hide sticky top-0 z-50 bg-white bg-opacity-70 backdrop-blur-sm mb-6
+        className={`mt-2 py-5 h-12 flex items-center space-x-4 overflow-x-auto scrollbar-hide sticky top-0 z-50 bg-white bg-opacity-80 backdrop-blur-sm mb-6
         ${loading || headerEntry?.isIntersecting ? '' : 'shadow-md'}
         `}
       >
