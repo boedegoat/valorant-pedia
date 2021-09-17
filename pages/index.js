@@ -13,7 +13,7 @@ const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
-  const showSearchBar = useScroll(100)
+  // const showSearchBar = useScroll(100)
 
   useEffect(() => {
     if (!searchAgent) return
@@ -29,17 +29,10 @@ const Home = ({ agents, roles }) => {
       </header>
 
       {/* search bar */}
-      <Wrapper
-        className={`sticky transition-all duration-200 ${
-          showSearchBar ? 'top-2' : '-top-20'
-        } mt-4 z-10`}
-      >
+      <Wrapper className={`sticky transition-all duration-200 mt-4 z-10`}>
         <SearchBar
           placeholder='Search Agent'
           value={searchAgent}
-          className={`${
-            showSearchBar ? 'bg-opacity-80 shadow-2xl backdrop-blur-sm' : ''
-          }`}
           onChange={(e) => {
             setSearchAgent(e.target.value)
           }}
