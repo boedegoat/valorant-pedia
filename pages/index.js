@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react'
+import { useState, useEffect, Fragment, useRef } from 'react'
 import Wrapper from '../components/Wrapper'
 import SearchBar from '../components/SearchBar'
 import AgentRole from '../components/AgentRole'
@@ -13,7 +13,14 @@ const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
-  // const showSearchBar = useScroll(100)
+  const [showSearchBarOnScroll, setShowSearchBarOnScroll] = useState(false)
+  useScroll(
+    ({ previousPosition, currentPosition }) => {
+      const isShow = previousPosition.y > currentPosition.y && currentPosition.y > 100
+      if (isShow !== showSearchBarOnScroll) setShowSearchBarOnScroll(isShow)
+    },
+    [showSearchBarOnScroll]
+  )
 
   useEffect(() => {
     if (!searchAgent) return
@@ -29,10 +36,17 @@ const Home = ({ agents, roles }) => {
       </header>
 
       {/* search bar */}
-      <Wrapper className={`sticky transition-all duration-200 mt-4 z-10`}>
+      <Wrapper
+        className={`sticky transition-all duration-200 mt-4 z-10
+      ${showSearchBarOnScroll ? 'top-2' : '-top-20'}
+      `}
+      >
         <SearchBar
           placeholder='Search Agent'
           value={searchAgent}
+          className={
+            showSearchBarOnScroll ? 'bg-opacity-75 shadow-lg backdrop-blur-sm' : ''
+          }
           onChange={(e) => {
             setSearchAgent(e.target.value)
           }}

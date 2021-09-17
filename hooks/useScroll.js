@@ -1,35 +1,25 @@
-import { useState, useEffect } from 'react'
+import { useRef, useLayoutEffect } from 'react'
 
-export default function useScroll(offset) {
-  const [show, setShow] = useState(true)
-  const [scroll, setScroll] = useState({
-    newY: 0,
-    prevY: 0,
-  })
+const isBrowser = typeof window !== `undefined`
 
-  useEffect(() => {
+function getScrollPosition() {
+  if (!isBrowser) return { x: 0, y: 0 }
+  return { x: window.scrollX, y: window.scrollY }
+}
+
+export default function useScroll(effect, deps) {
+  const position = useRef(getScrollPosition())
+
+  useLayoutEffect(() => {
     function handleScroll() {
-      setScroll((prev) => ({
-        newY: window.scrollY,
-        prevY: prev.newY,
-      }))
+      const currentPosition = getScrollPosition()
+      effect({ previousPosition: position.current, currentPosition })
+      position.current = currentPosition
     }
 
-    handleScroll()
     window.addEventListener('scroll', handleScroll)
-    return () => {
+    return function cleanup() {
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
-
-  useEffect(() => {
-    // if user scroll from bottom (scrollY biger) to top (scrollY lower)
-    if (scroll.newY > offset && scroll.prevY > scroll.newY) {
-      setShow(true)
-    } else {
-      setShow(false)
-    }
-  }, [scroll.newY, scroll.prevY])
-
-  return show
+  }, deps)
 }
