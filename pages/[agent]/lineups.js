@@ -15,7 +15,7 @@ const Lineups = ({ agent }) => {
       <Wrapper>
         <nav
           className={`
-          sticky bg-white transition-all duration-200 ${
+          sticky z-10 bg-white transition-all duration-200 ${
             showNavOnScroll ? 'top-14' : '-top-10'
           }
           flex justify-between items-center shadow-md rounded-md divide-x-2`}
@@ -43,7 +43,7 @@ const Lineups = ({ agent }) => {
             </button>
           </div>
         </nav>
-        <div className='mt-8 grid grid-cols-2 gap-2 h-[1000px]'>
+        <div className='mt-8 grid grid-cols-2 gap-4'>
           <LineupsVideos agentName={agent.displayName} />
         </div>
       </Wrapper>

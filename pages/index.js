@@ -37,9 +37,6 @@ const Home = ({ agents, roles }) => {
         <SearchBar
           placeholder='Search Agent'
           value={searchAgent}
-          className={
-            showSearchBarOnScroll ? 'bg-opacity-75 shadow-lg backdrop-blur-sm' : ''
-          }
           onChange={(e) => {
             setSearchAgent(e.target.value)
           }}

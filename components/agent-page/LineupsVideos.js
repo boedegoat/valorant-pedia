@@ -1,7 +1,12 @@
+import { MapIcon } from '@heroicons/react/solid'
 import { useState, useEffect } from 'react'
-import { getLineupsVideos } from '../../lib/agents'
+import { agentToURL, getLineupsVideos } from '../../lib/agents'
+import { capitalize } from '../../lib/utils'
+import { useRouter } from 'next/router'
 
 const LineupsVideos = ({ agentName }) => {
+  const router = useRouter()
+
   const [lineupsVideos, setLineupsVideos] = useState({
     loading: true,
     exist: null,
@@ -17,49 +22,51 @@ const LineupsVideos = ({ agentName }) => {
     })
   }, [])
 
+  console.log(lineupsVideos)
+
+  useEffect(() => {
+    console.log(router.query.watch)
+  }, [router.query.watch])
+
   const { loading, exist, items } = lineupsVideos
 
   if (loading) {
-    return (
-      <>
-        <LoadingComponent />
-        <LoadingComponent />
-        <LoadingComponent />
-        <LoadingComponent />
-        <LoadingComponent />
-        <LoadingComponent />
-      </>
-    )
+    return new Array(8).fill(0).map((_, index) => <LoadingComponent key={index} />)
   }
+  if (!exist) return <NotExistYetComponent />
 
-  if (!exist) {
-    return (
-      <div className='col-span-2 space-y-4 pb-32'>
-        <video
-          src='https://media.giphy.com/media/vXJLWypoYt0wE/giphy.mp4'
-          className='rounded-md shadow-md'
-          autoPlay
-          loop
-        />
-        <h1 className='font-roboto font-bold text-2xl text-gray-900'>
-          Waduh, videonya masih di goreng bro
-        </h1>
-        <p className='text-gray-600 text-lg'>
-          sambil menunggu mending{' '}
-          <a
-            href='https://cdn.kincir.com/2/oJLwUjXw21_TSOXcvcpDmyrxoszGFmP3xTef-4akw-Y/transform/rs:fill:764:400/src/production/2019-08/1daa05998ab997d0a35171829c678b776ed5740d.jpg'
-            target='_blank'
-            className='text-fuchsia-500'
-          >
-            klik ini
-          </a>
+  return items.map((item, index) => (
+    <div
+      role='button'
+      onClick={() =>
+        router.push(
+          {
+            pathname: `/${agentToURL(agentName)}/lineups`,
+            query: { watch: item.name },
+          },
+          undefined,
+          { shallow: true }
+        )
+      }
+      key={index}
+      className='max-h-60 bg-white drop-shadow-md rounded-md'
+    >
+      <div className='p-3'>
+        <p className='text-sm px-1 text-fuchsia-400 font-semibold rounded-md flex items-center max-w-max'>
+          <MapIcon className='w-3 h-3 mr-1 -ml-1' />
+          {capitalize(item.map)}
         </p>
+        <h2 className='font-bold text-xl'>{item.title}</h2>
+        <div className='flex space-x-1 mt-3'>
+          <p className='text-sm px-1 bg-gray-800 text-white font-semibold rounded-md flex items-center'>
+            {capitalize(item.type)}
+          </p>
+          <p className='text-sm px-1 bg-green-400 text-white font-semibold rounded-md flex items-center'>
+            {item.site.toUpperCase()}
+          </p>
+        </div>
       </div>
-    )
-  }
-
-  return items.map((_, index) => (
-    <div key={index} className='h-56 bg-fuchsia-200 rounded-md'></div>
+    </div>
   ))
 }
 
@@ -67,9 +74,9 @@ export default LineupsVideos
 
 const LoadingComponent = () => {
   return (
-    <div className='h-56 bg-gray-300 animate-pulse rounded-md overflow-hidden'>
+    <div className='h-60 bg-gray-300 animate-pulse rounded-md overflow-hidden'>
       {/* image placeholder */}
-      <div className='h-2/3 bg-gray-400 p-2'>
+      <div className='h-2/3 bg-gray-400 bg-opacity-20 p-2'>
         <div className='h-5 bg-gray-200 bg-opacity-20 w-1/2 rounded-md'></div>
       </div>
       {/* body */}
@@ -85,3 +92,27 @@ const LoadingComponent = () => {
     </div>
   )
 }
+
+const NotExistYetComponent = () => (
+  <div className='col-span-2 space-y-4 pb-32'>
+    <video
+      src='https://media.giphy.com/media/vXJLWypoYt0wE/giphy.mp4'
+      className='rounded-md shadow-md'
+      autoPlay
+      loop
+    />
+    <h1 className='font-roboto font-bold text-2xl text-gray-900'>
+      Waduh, videonya masih di goreng bro
+    </h1>
+    <p className='text-gray-600 text-lg'>
+      sambil menunggu mending{' '}
+      <a
+        href='https://cdn.kincir.com/2/oJLwUjXw21_TSOXcvcpDmyrxoszGFmP3xTef-4akw-Y/transform/rs:fill:764:400/src/production/2019-08/1daa05998ab997d0a35171829c678b776ed5740d.jpg'
+        target='_blank'
+        className='text-fuchsia-500'
+      >
+        klik ini
+      </a>
+    </p>
+  </div>
+)
