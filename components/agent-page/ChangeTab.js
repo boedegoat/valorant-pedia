@@ -7,11 +7,13 @@ const ChangeTab = ({ to, agentName }) => {
 
   return (
     <Link
-      href={`/${agentToURL(agentName)}/${to}`}
+      href={`/${agentToURL(agentName)}?tab=${to}`}
+      shallow={true}
+      scroll={false}
       className={`font-roboto font-bold text-xl 
       h-full flex items-center px-1
       ${
-        router.pathname === `/[agent]/${to}`
+        router.query.tab === to
           ? 'text-gray-700 border-b-2 border-fuchsia-400'
           : 'text-gray-300'
       }`}

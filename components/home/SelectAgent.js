@@ -2,11 +2,9 @@ import Image from 'next/image'
 import Link from '../Link'
 import { agentToURL } from '../../lib/agents'
 
-const defaultTab = 'lineups'
-
 const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
   return (
-    <Link href={`/${agentToURL(agentName)}/${defaultTab}`}>
+    <Link href={`/${agentToURL(agentName)}?tab=lineups`}>
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
         <Image src={src} layout='fill' objectFit='cover' />

@@ -37,8 +37,8 @@ const LineupsVideos = ({ agentName }) => {
   return items.map((item, index) => (
     <Link
       href={{
-        pathname: `/${agentToURL(agentName)}/lineups`,
-        query: { watch: item.name },
+        pathname: `/${agentToURL(agentName)}`,
+        query: { tab: 'lineups', watch: item.name },
       }}
       shallow={true}
       scroll={false}
