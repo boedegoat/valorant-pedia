@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { agentToURL, getLineupsVideos } from '../../lib/agents'
 import { capitalize } from '../../lib/utils'
 import { useRouter } from 'next/router'
+import Link from '../Link'
 
 const LineupsVideos = ({ agentName }) => {
   const router = useRouter()
@@ -22,8 +23,6 @@ const LineupsVideos = ({ agentName }) => {
     })
   }, [])
 
-  console.log(lineupsVideos)
-
   useEffect(() => {
     console.log(router.query.watch)
   }, [router.query.watch])
@@ -36,18 +35,13 @@ const LineupsVideos = ({ agentName }) => {
   if (!exist) return <NotExistYetComponent />
 
   return items.map((item, index) => (
-    <div
-      role='button'
-      onClick={() =>
-        router.push(
-          {
-            pathname: `/${agentToURL(agentName)}/lineups`,
-            query: { watch: item.name },
-          },
-          undefined,
-          { shallow: true }
-        )
-      }
+    <Link
+      href={{
+        pathname: `/${agentToURL(agentName)}/lineups`,
+        query: { watch: item.name },
+      }}
+      shallow={true}
+      scroll={false}
       key={index}
       className='max-h-60 bg-white drop-shadow-md rounded-md'
     >
@@ -66,7 +60,7 @@ const LineupsVideos = ({ agentName }) => {
           </p>
         </div>
       </div>
-    </div>
+    </Link>
   ))
 }
 

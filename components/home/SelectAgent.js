@@ -6,7 +6,7 @@ const defaultTab = 'lineups'
 
 const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
   return (
-    <Link href={`/${agentToURL(agentName)}/${defaultTab}`} scroll={false}>
+    <Link href={`/${agentToURL(agentName)}/${defaultTab}`}>
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
         <Image src={src} layout='fill' objectFit='cover' />
