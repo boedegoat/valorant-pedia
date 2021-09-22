@@ -14,7 +14,7 @@ const Lineups = ({ agent }) => {
         className={`
            z-10 bg-white flex justify-between items-center shadow-md rounded-md divide-x-2 ${
              showNavOnScroll
-               ? 'fixed top-12 left-0 w-full rounded-none py-1'
+               ? 'fixed top-12 left-0 w-full rounded-none py-1 px-3'
                : '-top-10 sticky'
            }`}
       >
