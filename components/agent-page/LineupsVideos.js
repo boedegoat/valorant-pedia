@@ -30,7 +30,7 @@ const LineupsVideos = ({ agentName }) => {
   const { loading, exist, items } = lineupsVideos
 
   if (loading) {
-    return new Array(8).fill(0).map((_, index) => <LoadingComponent key={index} />)
+    return new Array(6).fill(0).map((_, index) => <LoadingComponent key={index} />)
   }
   if (!exist) return <NotExistYetComponent />
 
@@ -65,20 +65,12 @@ export default LineupsVideos
 
 const LoadingComponent = () => {
   return (
-    <div className='h-60 bg-gray-300 animate-pulse rounded-md overflow-hidden'>
-      {/* image placeholder */}
-      <div className='h-2/3 bg-gray-400 bg-opacity-20 p-2'>
-        <div className='h-5 bg-gray-200 bg-opacity-20 w-1/2 rounded-md'></div>
-      </div>
-      {/* body */}
-      <div className='p-2 flex flex-col space-y-3'>
-        {/* title placeholder */}
-        <div className='h-8 bg-gray-400 bg-opacity-90 w-3/4 rounded-md'></div>
-        {/* label placeholder */}
-        <div className='flex space-x-2'>
-          <div className='h-2 bg-gray-400 bg-opacity-50 w-1/2 rounded-md'></div>
-          <div className='h-2 bg-gray-400 bg-opacity-25 w-1/4 rounded-md'></div>
-        </div>
+    <div className='bg-gray-300 animate-pulse rounded-md overflow-hidden p-3 space-y-2'>
+      <div className='h-5 bg-gray-400 bg-opacity-50 w-1/4 rounded-md'></div>
+      <div className='h-8 bg-gray-400 bg-opacity-90 w-3/4 rounded-md'></div>
+      <div className='flex space-x-2'>
+        <div className='h-2 bg-gray-400 bg-opacity-50 w-1/4 rounded-md'></div>
+        <div className='h-2 bg-gray-400 bg-opacity-25 w-1/12 rounded-md'></div>
       </div>
     </div>
   )
