@@ -43,23 +43,17 @@ const LineupsVideos = ({ agentName }) => {
       shallow={true}
       scroll={false}
       key={index}
-      className='max-h-60 bg-white drop-shadow-md rounded-md'
+      className='max-h-60 bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3'
     >
-      <div className='p-3'>
-        <p className='text-sm px-1 text-fuchsia-400 font-semibold rounded-md flex items-center max-w-max'>
-          <MapIcon className='w-3 h-3 mr-1 -ml-1' />
-          {capitalize(item.map)}
-        </p>
-        <h2 className='font-bold text-xl'>{item.title}</h2>
-        <div className='flex space-x-1 mt-3'>
-          <p className='text-sm px-1 bg-gray-800 text-white font-semibold rounded-md flex items-center'>
-            {capitalize(item.type)}
-          </p>
-          <p className='text-sm px-1 bg-green-400 text-white font-semibold rounded-md flex items-center'>
-            {item.site.toUpperCase()}
-          </p>
-        </div>
-      </div>
+      <p className='flex items-center text-green-400 text-sm'>
+        <MapIcon className='w-3 h-3 mr-1 -ml-1' />
+        {capitalize(item.map)}
+      </p>
+      <h2 className='font-bold text-xl'>{item.title}</h2>
+      <p className='text-sm text-gray-400 font-semibold rounded-md flex items-center max-w-max'>
+        {capitalize(item.type)}&nbsp;&bull;&nbsp;
+        {item.site.toUpperCase()}
+      </p>
     </Link>
   ))
 }

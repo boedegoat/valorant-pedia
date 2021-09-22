@@ -6,16 +6,17 @@ import useScroll from '../../hooks/useScroll'
 import LineupsVideos from './LineupsVideos'
 
 const Lineups = ({ agent }) => {
-  const showNavOnScroll = useScroll({ direction: 'up', offset: 200 })
+  const showNavOnScroll = useScroll({ direction: 'up', offset: 420 })
 
   return (
     <Wrapper>
       <nav
         className={`
-          sticky z-10 bg-white transition-all duration-200 ${
-            showNavOnScroll ? 'top-14' : '-top-10'
-          }
-          flex justify-between items-center shadow-md rounded-md divide-x-2`}
+           z-10 bg-white flex justify-between items-center shadow-md rounded-md divide-x-2 ${
+             showNavOnScroll
+               ? 'fixed top-12 left-0 w-full rounded-none py-1'
+               : '-top-10 sticky'
+           }`}
       >
         <div className='px-2 flex items-center space-x-1'>
           <p className='text-sm text-gray-400'>No filters applied</p>
@@ -32,15 +33,15 @@ const Lineups = ({ agent }) => {
         </div>
 
         <div className='space-x-1 px-1 flex items-center'>
-          <button className='p-1'>
+          <button className='p-2'>
             <FilterIcon className='w-6 h-6 text-gray-500' />
           </button>
-          <button className='p-1'>
+          <button className='p-2'>
             <SearchIcon className='w-6 h-6 text-gray-500' />
           </button>
         </div>
       </nav>
-      <div className='mt-8 grid grid-cols-2 gap-4'>
+      <div className='mt-8 flex flex-col space-y-4'>
         <LineupsVideos agentName={agent.displayName} />
       </div>
     </Wrapper>
