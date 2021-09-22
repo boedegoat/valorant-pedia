@@ -1,32 +1,9 @@
 import { MapIcon, ExternalLinkIcon } from '@heroicons/react/solid'
-import { useState, useEffect } from 'react'
-import { agentToURL, getLineupsVideos } from '../../lib/agents'
+import { agentToURL } from '../../lib/agents'
 import { capitalize } from '../../lib/utils'
-import { useRouter } from 'next/router'
 import Link from '../Link'
 
-const LineupsVideos = ({ agentName }) => {
-  const router = useRouter()
-
-  const [lineupsVideos, setLineupsVideos] = useState({
-    loading: true,
-    exist: null,
-    items: [],
-  })
-
-  useEffect(async () => {
-    const _lineupsVideos = await getLineupsVideos(agentName)
-    setLineupsVideos({
-      loading: false,
-      exist: Boolean(_lineupsVideos.length),
-      items: _lineupsVideos,
-    })
-  }, [])
-
-  useEffect(() => {
-    if (router.query.watch) alert(router.query.watch)
-  }, [router.query.watch])
-
+const LineupsList = ({ agentName, lineupsVideos }) => {
   const { loading, exist, items } = lineupsVideos
 
   if (loading) {
@@ -61,7 +38,7 @@ const LineupsVideos = ({ agentName }) => {
   ))
 }
 
-export default LineupsVideos
+export default LineupsList
 
 const LoadingComponent = () => {
   return (
