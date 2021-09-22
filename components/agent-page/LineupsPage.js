@@ -56,17 +56,10 @@ const Lineups = ({ agent }) => {
     }
   }, [router.query.watch])
 
-  const showNavOnScroll = useScroll({ direction: 'up', offset: 420 })
-
   return (
     <Wrapper>
       <nav
-        className={`
-           z-10 bg-white flex justify-between items-center shadow-md rounded-md divide-x-2 ${
-             showNavOnScroll
-               ? 'fixed top-12 left-0 w-full rounded-none py-1 px-3'
-               : '-top-10 sticky'
-           }`}
+        className={`bg-white flex justify-between items-center shadow-md rounded-md divide-x-2 `}
       >
         <div className='px-2 flex items-center space-x-1'>
           <p className='text-sm text-gray-400'>No filters applied</p>

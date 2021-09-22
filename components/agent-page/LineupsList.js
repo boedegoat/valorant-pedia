@@ -2,6 +2,7 @@ import { MapIcon, ExternalLinkIcon } from '@heroicons/react/solid'
 import { agentToURL } from '../../lib/agents'
 import { capitalize } from '../../lib/utils'
 import Link from '../Link'
+import Image from 'next/image'
 
 const LineupsList = ({ agentName, lineupsVideos }) => {
   const { loading, exist, items } = lineupsVideos
@@ -54,13 +55,10 @@ const LoadingComponent = () => {
 }
 
 const NotExistYetComponent = () => (
-  <div className='col-span-2 space-y-4 pb-32'>
-    <video
-      src='https://media.giphy.com/media/vXJLWypoYt0wE/giphy.mp4'
-      className='rounded-md shadow-md'
-      autoPlay
-      loop
-    />
+  <div className='space-y-4 pb-32'>
+    <div className='relative h-[19rem]'>
+      <Image src='/video-not-exist.svg' layout='fill' objectFit='cover' />
+    </div>
     <h1 className='font-roboto font-bold text-2xl text-gray-900'>
       Waduh, videonya masih di goreng bro
     </h1>

@@ -9,6 +9,8 @@ const Agent = ({ agent }) => {
 
   const tab = router.query.tab
 
+  console.log('render')
+
   useLayoutEffect(() => {
     if (!router.query.tab)
       router.push(
