@@ -24,7 +24,7 @@ const LineupsVideos = ({ agentName }) => {
   }, [])
 
   useEffect(() => {
-    console.log(router.query.watch)
+    if (router.query.watch) alert(router.query.watch)
   }, [router.query.watch])
 
   const { loading, exist, items } = lineupsVideos

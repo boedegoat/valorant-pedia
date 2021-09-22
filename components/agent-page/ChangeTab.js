@@ -11,11 +11,11 @@ const ChangeTab = ({ to, agentName }) => {
       shallow={true}
       scroll={false}
       className={`font-roboto font-bold text-xl 
-      h-full flex items-center px-1
+      h-full flex items-center px-1 border-b-2
       ${
         router.query.tab === to
-          ? 'text-gray-700 border-b-2 border-fuchsia-400'
-          : 'text-gray-300'
+          ? 'text-gray-700 border-fuchsia-400'
+          : 'text-gray-300 border-transparent'
       }`}
     >
       {to[0].toUpperCase() + to.slice(1).toLowerCase()}

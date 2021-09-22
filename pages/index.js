@@ -30,13 +30,16 @@ const Home = ({ agents, roles }) => {
 
       {/* search bar */}
       <Wrapper
-        className={`sticky transition-all duration-200 mt-4 z-10
-      ${showSearchBarOnScroll ? 'top-2' : '-top-20'}
+        className={`sticky mt-4 z-10
+      ${showSearchBarOnScroll ? 'top-0' : '-top-20'}
       `}
       >
         <SearchBar
           placeholder='Search Agent'
           value={searchAgent}
+          className={
+            showSearchBarOnScroll ? 'fixed top-0 left-0 w-full rounded-none' : ''
+          }
           onChange={(e) => {
             setSearchAgent(e.target.value)
           }}
