@@ -1,4 +1,4 @@
-import { MapIcon } from '@heroicons/react/solid'
+import { MapIcon, ExternalLinkIcon } from '@heroicons/react/solid'
 import { useState, useEffect } from 'react'
 import { agentToURL, getLineupsVideos } from '../../lib/agents'
 import { capitalize } from '../../lib/utils'
@@ -45,12 +45,15 @@ const LineupsVideos = ({ agentName }) => {
       key={index}
       className='max-h-60 bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3'
     >
-      <p className='flex items-center text-green-400 text-sm'>
+      <p className='flex items-center font-semibold text-green-400 text-base'>
         <MapIcon className='w-3 h-3 mr-1 -ml-1' />
         {capitalize(item.map)}
       </p>
-      <h2 className='font-bold text-xl'>{item.title}</h2>
-      <p className='text-sm text-gray-400 font-semibold rounded-md flex items-center max-w-max'>
+      <h2 className='font-bold text-xl flex items-center'>
+        {item.title}
+        <ExternalLinkIcon className='w-5 h-5 ml-2' />
+      </h2>
+      <p className='text-sm text-gray-400 rounded-md flex items-center max-w-max'>
         {capitalize(item.type)}&nbsp;&bull;&nbsp;
         {item.site.toUpperCase()}
       </p>
