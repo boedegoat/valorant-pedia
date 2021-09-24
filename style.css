@@ -3,3 +3,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .page-main-header {
+    @apply text-2xl font-roboto font-black text-gray-900;
+  }
+}

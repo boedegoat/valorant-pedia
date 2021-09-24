@@ -23,7 +23,7 @@ const Home = ({ agents, roles }) => {
     <Layout title='Agents'>
       <header>
         <Wrapper>
-          <h1 className='text-2xl font-roboto font-black text-gray-900'>Agents</h1>
+          <h1 className='page-main-header'>Agents</h1>
         </Wrapper>
       </header>
 
