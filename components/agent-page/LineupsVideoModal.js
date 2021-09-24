@@ -42,7 +42,7 @@ const LineupsVideoModal = ({ lineupsDocs }) => {
         <Dialog.Title as='header'>
           <h2 className='font-bold text-2xl'>{toTitleCase(title)}</h2>
           <p className='text-sm text-gray-400 rounded-md flex items-center max-w-max mt-2'>
-            <span className='flex items-center font-semibold text-green-400 mr-2'>
+            <span className='flex items-center font-semibold bg-green-400 text-white px-1 rounded-md mr-2'>
               <MapIcon className='w-3 h-3 mr-1' />
               {capitalize(map)}
             </span>
