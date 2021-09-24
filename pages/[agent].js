@@ -1,15 +1,13 @@
 import { agentToURL, getAgents, getAgentsByName, parseAgentFromURL } from '../lib/agents'
 import AgentPageLayout from '../components/agent-page/AgentPageLayout'
 import { useRouter } from 'next/router'
-import { useEffect, useLayoutEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import LineupsPage from '../components/agent-page/LineupsPage'
 
 const Agent = ({ agent }) => {
   const router = useRouter()
 
   const tab = router.query.tab
-
-  console.log('render')
 
   useLayoutEffect(() => {
     if (!router.query.tab)

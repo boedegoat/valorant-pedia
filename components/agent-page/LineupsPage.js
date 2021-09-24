@@ -1,60 +1,13 @@
 import Wrapper from '../Wrapper'
 import { SearchIcon, FilterIcon } from '@heroicons/react/outline'
-import useScroll from '../../hooks/useScroll'
 import LineupsList from './LineupsList'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { getLineupsVideos } from '../../lib/agents'
 import LineupsVideoModal from './LineupsVideoModal'
+import { agentToURL } from '../../lib/agents'
+import useCollection from '../../hooks/useCollection'
 
 const Lineups = ({ agent }) => {
-  const [lineupsVideos, setLineupsVideos] = useState({
-    loading: true,
-    exist: null,
-    items: [],
-  })
-  useEffect(async () => {
-    const _lineupsVideos = await getLineupsVideos(agent.displayName)
-    setLineupsVideos({
-      loading: false,
-      exist: Boolean(_lineupsVideos.length),
-      items: _lineupsVideos,
-    })
-
-    return function cleanup() {
-      setLineupsVideos({
-        loading: true,
-        exist: null,
-        items: [],
-      })
-    }
-  }, [])
-
-  const router = useRouter()
-  const [video, setVideo] = useState({
-    show: false,
-    item: {},
-  })
-  useEffect(() => {
-    if (router.query.watch) {
-      setVideo({
-        show: true,
-        item: lineupsVideos.items.find((item) => item.name === router.query.watch),
-      })
-    } else {
-      setVideo({
-        show: false,
-        item: {},
-      })
-    }
-
-    return function cleanup() {
-      setVideo({
-        show: false,
-        item: {},
-      })
-    }
-  }, [router.query.watch])
+  const lineupsCollection = `agents/${agentToURL(agent.displayName)}/lineups`
+  const [lineupsDocs, lineupsLoading] = useCollection(lineupsCollection)
 
   return (
     <Wrapper>
@@ -85,8 +38,12 @@ const Lineups = ({ agent }) => {
         </div>
       </nav>
       <div className='mt-8 flex flex-col space-y-4'>
-        <LineupsList agentName={agent.displayName} lineupsVideos={lineupsVideos} />
-        {video.show && <LineupsVideoModal video={video} />}
+        <LineupsList
+          agentName={agent.displayName}
+          lineupsDocs={lineupsDocs}
+          lineupsLoading={lineupsLoading}
+        />
+        <LineupsVideoModal lineupsDocs={lineupsDocs} />
       </div>
     </Wrapper>
   )

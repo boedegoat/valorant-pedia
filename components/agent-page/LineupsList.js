@@ -1,39 +1,43 @@
 import { MapIcon, ExternalLinkIcon } from '@heroicons/react/solid'
 import { agentToURL } from '../../lib/agents'
-import { capitalize } from '../../lib/utils'
+import { capitalize, toTitleCase } from '../../lib/utils'
 import Link from '../Link'
 import Image from 'next/image'
 
-const LineupsList = ({ agentName, lineupsVideos }) => {
-  const { loading, exist, items } = lineupsVideos
+const LineupsList = ({ agentName, lineupsDocs, lineupsLoading }) => {
+  function isNotExist() {
+    return !lineupsDocs.length && !lineupsLoading
+  }
 
-  if (loading) {
+  if (lineupsLoading) {
     return new Array(6).fill(0).map((_, index) => <LoadingComponent key={index} />)
   }
-  if (!exist) return <NotExistYetComponent />
 
-  return items.map((item, index) => (
+  if (isNotExist()) return <NotExistYetComponent />
+
+  return lineupsDocs.map(({ id, map, site, title, type }) => (
     <Link
       href={{
         pathname: `/${agentToURL(agentName)}`,
-        query: { tab: 'lineups', watch: item.name },
+        query: { tab: 'lineups', watch: id },
       }}
       shallow={true}
       scroll={false}
-      key={index}
-      className='max-h-60 bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3'
+      key={id}
+      className='group relative max-h-60 bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3 pr-10'
     >
-      <p className='flex items-center font-semibold text-green-400 text-base'>
-        <MapIcon className='w-3 h-3 mr-1 -ml-1' />
-        {capitalize(item.map)}
-      </p>
-      <h2 className='font-bold text-xl flex items-center'>
-        {item.title}
-        <ExternalLinkIcon className='w-5 h-5 ml-2' />
-      </h2>
-      <p className='text-sm text-gray-400 rounded-md flex items-center max-w-max'>
-        {capitalize(item.type)}&nbsp;&bull;&nbsp;
-        {item.site.toUpperCase()}
+      <div className='absolute top-4 right-4'>
+        <ExternalLinkIcon className='w-5 h-5 ml-2 transition-colors text-gray-400 group-hover:text-gray-700' />
+      </div>
+
+      <h2 className='font-bold text-xl'>{toTitleCase(title)}</h2>
+      <p className='text-sm text-gray-400 rounded-md flex items-center max-w-max mt-2'>
+        <span className='flex items-center font-semibold text-green-400 mr-2'>
+          <MapIcon className='w-3 h-3 mr-1' />
+          {capitalize(map)}
+        </span>
+        {capitalize(type)}&nbsp;&bull;&nbsp;
+        {site.toUpperCase()}
       </p>
     </Link>
   ))
