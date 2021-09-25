@@ -43,7 +43,7 @@ const Lineups = ({ agent }) => {
           lineupsDocs={lineupsDocs}
           lineupsLoading={lineupsLoading}
         />
-        <LineupsVideoModal lineupsDocs={lineupsDocs} />
+        <LineupsVideoModal agentName={agent.displayName} lineupsDocs={lineupsDocs} />
       </div>
     </Wrapper>
   )

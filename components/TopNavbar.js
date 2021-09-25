@@ -32,7 +32,7 @@ const TopNavbar = ({ back }) => {
                     href='/signin'
                     className='bg-fuchsia-500 px-3 py-1 text-white rounded-md font-bold'
                   >
-                    Signin
+                    Sign In
                   </Link>
                 )}
               </Fragment>

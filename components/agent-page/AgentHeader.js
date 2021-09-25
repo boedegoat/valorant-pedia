@@ -2,8 +2,30 @@ import Wrapper from '../Wrapper'
 import { HeartIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
 import Tooltip from '../../components/Tooltip'
+import { useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
 
 const AgentHeader = ({ agent, headerRef }) => {
+  const [session] = useSession()
+  const router = useRouter()
+
+  function addToFavorite() {
+    if (!session) {
+      const signInConfirmation = confirm(
+        'You need to Sign In first in order to favorite this agent. Would you like to Sign In now ?'
+      )
+      if (signInConfirmation) router.push('/signin')
+      return
+    }
+
+    // TODO :
+    // 1. update agent docs to store favorited user by email, e.g [a@b.com, c@d.com,...]
+    // 2. check if user already favorite, then remove from list
+    // 3. get favorite array length to make realtime favorite count
+    // 4. change alert to custom toast alert
+    alert(`added ${agent.displayName} to your favorite (tapi boong..., belom jadi bro)`)
+  }
+
   return (
     <header ref={headerRef}>
       <Wrapper className='relative'>
@@ -44,7 +66,10 @@ const AgentHeader = ({ agent, headerRef }) => {
                 {/* add to favorite button */}
 
                 <Tooltip content='favorite this'>
-                  <button className='flex items-center space-x-1 text-gray-400'>
+                  <button
+                    className='flex items-center space-x-1 text-gray-400 px-2 py-1'
+                    onClick={addToFavorite}
+                  >
                     <HeartIcon className='w-6 h-6' />
                     <span className='text-xs font-medium text-fuchsia-400'>180</span>
                   </button>
