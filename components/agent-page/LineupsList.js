@@ -4,9 +4,9 @@ import { capitalize, toTitleCase } from '../../lib/utils'
 import Link from '../Link'
 import Image from 'next/image'
 
-const LineupsList = ({ agentName, lineupsDocs, lineupsLoading }) => {
+const LineupsList = ({ agentName, lineups, lineupsLoading }) => {
   function isNotExist() {
-    return !lineupsDocs.length && !lineupsLoading
+    return !lineups.length && !lineupsLoading
   }
 
   if (lineupsLoading) {
@@ -15,7 +15,7 @@ const LineupsList = ({ agentName, lineupsDocs, lineupsLoading }) => {
 
   if (isNotExist()) return <NotExistYetComponent />
 
-  return lineupsDocs.map(({ id, map, site, title, type }) => (
+  return lineups.map(({ id, map, site, title, type }) => (
     <Link
       href={{
         pathname: `/${agentToURL(agentName)}`,

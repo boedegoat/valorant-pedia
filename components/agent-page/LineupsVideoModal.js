@@ -15,7 +15,7 @@ import { db } from '../../lib/firebase'
 import { doc, setDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import useCollection from '../../hooks/useCollection'
 
-const LineupsVideoModal = ({ lineupsDocs, agentName }) => {
+const LineupsVideoModal = ({ lineups, agentName }) => {
   const router = useRouter()
   const [session] = useSession()
   const [video, setVideo] = useState({})
@@ -75,7 +75,7 @@ const LineupsVideoModal = ({ lineupsDocs, agentName }) => {
     if (!router.query.watch) {
       return setVideo({})
     }
-    setVideo(lineupsDocs.find(({ id }) => id === router.query.watch))
+    setVideo(lineups.find(({ id }) => id === router.query.watch))
   }, [router.query.watch])
 
   if (isVideoEmpty()) return null
