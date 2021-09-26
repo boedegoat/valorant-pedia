@@ -3,8 +3,9 @@ import AgentPageLayout from '../components/agent-page/AgentPageLayout'
 import { useRouter } from 'next/router'
 import { useLayoutEffect } from 'react'
 import LineupsPage from '../components/agent-page/LineupsPage'
+import { getMaps } from '../lib/maps'
 
-const Agent = ({ agent }) => {
+const Agent = ({ agent, maps }) => {
   const router = useRouter()
 
   const tab = router.query.tab
@@ -24,7 +25,7 @@ const Agent = ({ agent }) => {
   function renderTabPage() {
     switch (tab) {
       case 'lineups':
-        return <LineupsPage agent={agent} />
+        return <LineupsPage agent={agent} maps={maps} />
     }
   }
 
@@ -50,8 +51,9 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   const agentName = parseAgentFromURL(context.params.agent)
   const agent = await getAgentsByName(agentName)
+  const maps = await getMaps()
 
   return {
-    props: { agent },
+    props: { agent, maps },
   }
 }
