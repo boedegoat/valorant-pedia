@@ -25,6 +25,10 @@ const LineupsFilterModal = ({
     setFilterLineups((currentFilter) => ({ ...currentFilter, [property]: value }))
   }
 
+  function resetFilter() {
+    setFilterLineups({ map: '', type: '', site: '' })
+  }
+
   return (
     <Transition show={show} as={Fragment}>
       <Dialog as='div' onClose={onClose} className='fixed z-50 inset-0 overflow-y-auto'>
@@ -54,12 +58,20 @@ const LineupsFilterModal = ({
               {/* title */}
               <Dialog.Title className='font-bold text-2xl text-gray-900 pt-6 flex items-center justify-between'>
                 Filter
-                <button
-                  onClick={onClose}
-                  className='bg-fuchsia-500 text-white text-base font-semibold rounded-md px-2 py-1'
-                >
-                  Done
-                </button>
+                <div className='space-x-4'>
+                  <button
+                    onClick={resetFilter}
+                    className='bg-gray-400 text-white text-base font-semibold rounded-md px-2 py-1'
+                  >
+                    Reset
+                  </button>
+                  <button
+                    onClick={onClose}
+                    className='bg-fuchsia-500 text-white text-base font-semibold rounded-md px-2 py-1'
+                  >
+                    Done
+                  </button>
+                </div>
               </Dialog.Title>
 
               {/* content */}
