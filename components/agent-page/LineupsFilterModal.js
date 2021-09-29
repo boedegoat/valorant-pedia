@@ -26,7 +26,12 @@ const LineupsFilterModal = ({
   }
 
   function resetFilter() {
-    setFilterLineups({ map: '', type: '', site: '' })
+    setFilterLineups((currentFilter) => ({
+      ...currentFilter,
+      map: '',
+      type: '',
+      site: '',
+    }))
   }
 
   return (

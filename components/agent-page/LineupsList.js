@@ -1,4 +1,4 @@
-import { MapIcon, ExternalLinkIcon } from '@heroicons/react/solid'
+import { MapIcon } from '@heroicons/react/solid'
 import { agentToURL } from '../../lib/agents'
 import { capitalize, toTitleCase } from '../../lib/utils'
 import Link from '../Link'
@@ -26,10 +26,6 @@ const LineupsList = ({ agentName, lineups, lineupsLoading }) => {
       key={id}
       className='group relative max-h-60 bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3 pr-10'
     >
-      <div className='absolute top-4 right-4'>
-        <ExternalLinkIcon className='w-5 h-5 ml-2 transition-colors text-gray-400 group-hover:text-gray-700' />
-      </div>
-
       <h2 className='font-bold text-xl'>{toTitleCase(title)}</h2>
       <p className='text-sm text-gray-400 rounded-md flex items-center max-w-max mt-2'>
         <span className='flex items-center font-semibold bg-green-400 text-white px-1 rounded-md mr-2'>
