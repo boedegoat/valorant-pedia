@@ -9,19 +9,21 @@ import useToggle from '../../hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
 import useFilter from '../../hooks/useFilter'
 import { capitalize } from '../../lib/utils'
+import useObserver from '../../hooks/useObserver'
+import LineupsMoreButton from './LineupsMoreButton'
 
 const Lineups = ({ agent, maps }) => {
   const lineupsCollection = `agents/${agentToURL(agent.displayName)}/lineups`
   const [lineupsDocs, lineupsLoading] = useCollection(lineupsCollection)
   const [showFilterModal, toggleShowFilterModal] = useToggle()
+  const [showMoreButton, toggleShowMoreButton] = useToggle()
+  const [navRef, navVisible] = useObserver({ initVisible: true })
 
   const [lineups, [filterLineups, setFilterLineups]] = useFilter({
     initData: lineupsDocs,
     initFilter: { map: '', type: '', site: '', title: '' },
     onFilter: (currentLineups) => handleFilterLineups(currentLineups, filterLineups),
   })
-
-  console.log(lineups)
 
   function handleFilterLineups(currentLineups, filterLineups) {
     let newLineups = [...currentLineups]
@@ -50,6 +52,7 @@ const Lineups = ({ agent, maps }) => {
   return (
     <Wrapper>
       <nav
+        ref={navRef}
         className={`bg-white justify-between items-center shadow-md rounded-md divide-y`}
       >
         <div className='px-3 flex items-center space-x-2'>
@@ -108,6 +111,14 @@ const Lineups = ({ agent, maps }) => {
         />
         <LineupsVideoModal agentName={agent.displayName} lineups={lineups} />
       </div>
+
+      <LineupsMoreButton
+        showMoreButton={showMoreButton}
+        toggleShowMoreButton={toggleShowMoreButton}
+        toggleShowFilterModal={toggleShowFilterModal}
+        navVisible={navVisible}
+        navRef={navRef}
+      />
     </Wrapper>
   )
 }
