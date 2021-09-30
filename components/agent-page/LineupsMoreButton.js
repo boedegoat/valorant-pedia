@@ -59,7 +59,7 @@ const LineupsMoreButton = ({
           </button>
         </div>
         <div className='flex justify-end items-center space-x-4'>
-          <p className='bg-gray-700 text-gray-200 px-3 py-1 rounded-md'>Filter</p>
+          <p className='bg-gray-700 text-gray-200 px-3 py-1 rounded-md'>Filters</p>
           <button
             onClick={() => {
               toggleShowFilterModal()

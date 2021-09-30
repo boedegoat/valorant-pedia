@@ -7,6 +7,7 @@ import useFilter from '../../hooks/useFilter'
 import { getSearchResults } from '../../lib/maps'
 import { capitalize } from '../../lib/utils'
 import { MapIcon } from '@heroicons/react/solid'
+import LineupsFilterList from './LineupsFilterList'
 
 const LineupsFilterModal = ({
   show,
@@ -44,25 +45,12 @@ const LineupsFilterModal = ({
       <Dialog.Overlay className='fixed inset-0 bg-black bg-opacity-50' />
 
       {/* body */}
-      <div className='absolute w-full left-0 bottom-0 bg-white rounded-t-2xl h-[550px]'>
+      <div className='absolute w-full left-0 bottom-0 bg-white rounded-t-2xl h-[600px]'>
         <Wrapper className='max-h-full flex flex-col space-y-4 divide-y divide-gray-200'>
           {/* title */}
           <Dialog.Title className='font-bold text-2xl text-gray-900 pt-6 flex items-center justify-between'>
-            Filter
-            <div className='space-x-4'>
-              <button
-                onClick={resetFilter}
-                className='bg-gray-400 text-white text-base font-semibold rounded-md px-2 py-1'
-              >
-                Reset
-              </button>
-              <button
-                onClick={onClose}
-                className='bg-fuchsia-500 text-white text-base font-semibold rounded-md px-2 py-1'
-              >
-                Done
-              </button>
-            </div>
+            Filters
+            <LineupsFilterList filterLineups={filterLineups} text='base' />
           </Dialog.Title>
 
           {/* content */}
@@ -70,7 +58,7 @@ const LineupsFilterModal = ({
             {/* filter by type and site */}
             <div>
               <div className='flex items-center justify-between py-4'>
-                <h3 className='font-bold text-lg text-gray-800'>Play as</h3>
+                <h3 className='font-bold text-lg text-gray-800'>Play on</h3>
                 <select
                   className='w-1/2 text-base mr-1 border-gray-300 rounded-md focus:border-fuchsia-500 focus:ring-fuchsia-500'
                   value={filterLineups.type}
@@ -97,15 +85,7 @@ const LineupsFilterModal = ({
             </div>
 
             {/* filter by map */}
-            <div className='space-y-4 pt-4'>
-              <div className='flex justify-between items-center'>
-                <h3 className='font-bold text-lg text-gray-800'>Map</h3>
-                <span className='flex items-center font-semibold bg-green-400 text-white px-1 rounded-md'>
-                  <MapIcon className='w-3 h-3 mr-1' />
-                  {filterLineups.map ? capitalize(filterLineups.map) : 'All Maps'}
-                </span>
-              </div>
-
+            <div className='space-y-4 pt-4 pb-20'>
               <SearchBar
                 placeholder='Search map'
                 value={searchMaps}
@@ -117,7 +97,7 @@ const LineupsFilterModal = ({
                 {maps.length ? (
                   <li
                     className={`rounded-md overflow-hidden border-2 shadow-sm ${
-                      filterLineups.map === '' ? 'border-green-400' : 'border-gray-200'
+                      filterLineups.map === '' ? 'border-fuchsia-400' : 'border-gray-200'
                     }`}
                   >
                     <button
@@ -141,7 +121,7 @@ const LineupsFilterModal = ({
                     className={`rounded-md overflow-hidden border-2 shadow-sm
                         ${
                           filterLineups.map === map.displayName.toLowerCase()
-                            ? 'border-green-400'
+                            ? 'border-fuchsia-400'
                             : 'border-gray-200'
                         }
                         `}
@@ -165,6 +145,22 @@ const LineupsFilterModal = ({
             </div>
           </div>
         </Wrapper>
+        <div className='fixed left-0 bottom-0 bg-white w-full py-2 border-t'>
+          <Wrapper className='flex space-x-2'>
+            <button
+              onClick={resetFilter}
+              className='flex-grow border-2 border-gray-700 text-gray-700 text-base font-semibold rounded-md px-2 py-3'
+            >
+              Reset
+            </button>
+            <button
+              onClick={onClose}
+              className='flex-grow bg-gray-700 text-white text-base font-semibold rounded-md px-2 py-3'
+            >
+              Done
+            </button>
+          </Wrapper>
+        </div>
       </div>
     </Dialog>
   )

@@ -11,6 +11,7 @@ import useFilter from '../../hooks/useFilter'
 import { capitalize } from '../../lib/utils'
 import useObserver from '../../hooks/useObserver'
 import LineupsMoreButton from './LineupsMoreButton'
+import LineupsFilterList from './LineupsFilterList'
 
 const Lineups = ({ agent, maps }) => {
   const lineupsCollection = `agents/${agentToURL(agent.displayName)}/lineups`
@@ -70,37 +71,7 @@ const Lineups = ({ agent, maps }) => {
             <AdjustmentsIcon className='w-6 h-6 rotate-90' />
           </button>
         </div>
-
-        <div className='px-3 py-2 flex items-center space-x-1 text-sm overflow-y-auto'>
-          {Object.entries(filterLineups).every(([filterProperty, filterValue]) => {
-            if (filterProperty === 'title') return true
-            return !filterValue
-          }) && <p className='text-gray-300'>No filters applied</p>}
-          {filterLineups.map && (
-            <span className='flex items-center font-semibold bg-green-400 text-white px-1 rounded-md flex-shrink-0'>
-              <MapIcon className='w-3 h-3 mr-1' />
-              {capitalize(filterLineups.map)}
-            </span>
-          )}
-          {filterLineups.type && (
-            <span className='flex items-center font-semibold bg-gray-600 text-white px-1 rounded-md flex-shrink-0'>
-              {capitalize(filterLineups.type)}
-            </span>
-          )}
-          {filterLineups.site && (
-            <span className='flex items-center font-semibold bg-gray-600 text-white px-1 rounded-md flex-shrink-0'>
-              {capitalize(filterLineups.site)}
-            </span>
-          )}
-        </div>
-
-        <LineupsFilterModal
-          show={showFilterModal}
-          onClose={toggleShowFilterModal}
-          maps={maps}
-          filterLineups={filterLineups}
-          setFilterLineups={setFilterLineups}
-        />
+        <LineupsFilterList filterLineups={filterLineups} />
       </nav>
 
       <div className='mt-8 flex flex-col space-y-4'>
@@ -111,6 +82,14 @@ const Lineups = ({ agent, maps }) => {
         />
         <LineupsVideoModal agentName={agent.displayName} lineups={lineups} />
       </div>
+
+      <LineupsFilterModal
+        show={showFilterModal}
+        onClose={toggleShowFilterModal}
+        maps={maps}
+        filterLineups={filterLineups}
+        setFilterLineups={setFilterLineups}
+      />
 
       <LineupsMoreButton
         showMoreButton={showMoreButton}
