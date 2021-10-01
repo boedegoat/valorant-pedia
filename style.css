@@ -8,4 +8,11 @@
   .page-main-header {
     @apply text-2xl font-roboto font-black text-gray-900;
   }
+
+  .spinner {
+    border: 3px solid #fff;
+    border-top: 3px solid transparent;
+    border-radius: 50%;
+    @apply animate-spin;
+  }
 }

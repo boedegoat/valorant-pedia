@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
 import { agentToURL } from '../../lib/agents'
 import Link from '../Link'
-import { db } from '../../lib/firebase'
+import { db } from '../../lib/firebase-client'
 import { doc, setDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import useCollection from '../../hooks/useCollection'
 

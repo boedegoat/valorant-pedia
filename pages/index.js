@@ -7,11 +7,13 @@ import SearchResultsSection from '../components/home/SearchResultsSection'
 import Layout from '../components/Layout'
 import RoleFilterSection from '../components/home/RoleFilterSection'
 import { getAgents, getRoles, getSearchResults } from '../lib/agents'
+import useUser from '../hooks/useUser'
 
 const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
+  const [user, loading] = useUser()
 
   useEffect(() => {
     if (!searchAgent) return
