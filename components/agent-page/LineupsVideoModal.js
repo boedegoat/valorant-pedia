@@ -8,22 +8,28 @@ import {
 } from '@heroicons/react/solid'
 import { capitalize, toTitleCase } from '../../lib/utils'
 import { useEffect, useState } from 'react'
-import { useSession } from 'next-auth/client'
 import { agentToURL } from '../../lib/agents'
 import Link from '../Link'
 import { db } from '../../lib/firebase-client'
 import { doc, setDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
 import useCollection from '../../hooks/useCollection'
+import useUser from '../../hooks/useUser'
 
 const LineupsVideoModal = ({ lineups, agentName }) => {
   const router = useRouter()
-  const [session] = useSession()
-  const [video, setVideo] = useState({})
+  const [user] = useUser()
+  const [video, setVideo] = useState(null)
   const [isLike, setIsLike] = useState(false)
   const [usersDocs] = useCollection(`users`)
 
   function like() {
-    const docID = session.user.email
+    if (!user) {
+      if (confirm('You need to Sign In first to like this video. Sign In now ?')) {
+        router.push('/signin')
+      }
+      return
+    }
+    const docID = user.email
     setDoc(
       doc(db, 'users', docID),
       {
@@ -49,10 +55,6 @@ const LineupsVideoModal = ({ lineups, agentName }) => {
     setIsLike(_isLike)
   }
 
-  function isVideoEmpty() {
-    return !Object.values(video).length
-  }
-
   function onClose() {
     router.push(`/${agentToURL(agentName)}?tab=lineups`, undefined, {
       shallow: true,
@@ -61,76 +63,63 @@ const LineupsVideoModal = ({ lineups, agentName }) => {
   }
 
   useEffect(() => {
-    if (!session) return
+    if (!user) return
 
     // get match user
-    const matchUser = usersDocs.find((user) => user.email === session.user.email)
+    const matchUser = usersDocs.find(({ email }) => email === user.email)
     if (!matchUser) return
 
     // check if user like this video or not
     handleLike(matchUser)
-  }, [usersDocs, session, video])
+  }, [usersDocs, user, video])
 
   useEffect(() => {
     if (!router.query.watch) {
-      return setVideo({})
+      return setVideo(null)
     }
-    setVideo(lineups.find(({ id }) => id === router.query.watch))
-  }, [router.query.watch])
+    const matchLineups = lineups?.find(({ id }) => id === router.query.watch)
+    setVideo(matchLineups)
+  }, [router.query.watch, lineups])
 
-  if (isVideoEmpty()) return null
-  const { map, site, title, type, url } = video
+  if (!video) return null
+
   return (
     <Dialog
       as='div'
       className='fixed z-50 inset-0'
-      open={!isVideoEmpty()}
+      open={Boolean(video)}
       onClose={onClose}
     >
       <div className='absolute min-h-screen inset-0 p-6 bg-white text-left space-y-6 overflow-y-auto'>
         <Dialog.Title as='header'>
-          <h2 className='font-bold text-2xl'>{toTitleCase(title)}</h2>
+          <h2 className='font-bold text-2xl'>{toTitleCase(video?.title)}</h2>
           <p className='text-sm text-gray-400 rounded-md flex items-center max-w-max mt-2'>
             <span className='flex items-center font-semibold bg-green-400 text-white px-1 rounded-md mr-2'>
               <MapIcon className='w-3 h-3 mr-1' />
-              {capitalize(map)}
+              {capitalize(video?.map)}
             </span>
-            {capitalize(type)}&nbsp;&bull;&nbsp;
-            {site.toUpperCase()}
+            {capitalize(video?.type)}&nbsp;&bull;&nbsp;
+            {video?.site.toUpperCase()}
           </p>
         </Dialog.Title>
 
         {/* video container */}
         <div className='border-b-8 border-fuchsia-400'>
-          <video src={url} autoPlay muted loop controls></video>
+          <video src={video?.url} autoPlay muted loop controls></video>
         </div>
 
         {/* buttons */}
         <div className='space-y-3'>
           <div className='flex space-x-2'>
-            <BottomButton
-              Icon={SaveIcon}
-              ActiveIcon={SaveIconSolid}
-              disabled={!Boolean(session)}
-            />
-            <BottomButton Icon={ShareIcon} disabled={!Boolean(session)} />
+            <BottomButton Icon={SaveIcon} ActiveIcon={SaveIconSolid} />
+            <BottomButton Icon={ShareIcon} />
             <BottomButton
               Icon={HeartIcon}
               ActiveIcon={HeartIconSolid}
-              disabled={!Boolean(session)}
               onClick={like}
               active={isLike}
             />
           </div>
-
-          {!session && (
-            <p className='text-gray-500 text-md'>
-              You need to Sign In first in order to save, share, and like this video.{' '}
-              <Link href='/signin' className='text-fuchsia-500 font-semibold'>
-                Sign In Now
-              </Link>
-            </p>
-          )}
 
           <button
             className='w-full py-2 bg-gray-300 font-semibold rounded-md'

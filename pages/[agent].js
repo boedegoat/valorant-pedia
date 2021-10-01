@@ -10,17 +10,17 @@ const Agent = ({ agent, maps }) => {
 
   const tab = router.query.tab
 
-  useLayoutEffect(() => {
-    if (!router.query.tab)
-      router.push(
-        {
-          pathname: `/${agentToURL(agent.displayName)}`,
-          query: { tab: 'lineups' },
-        },
-        undefined,
-        { shallow: true }
-      )
-  }, [router.query.tab])
+  // useLayoutEffect(() => {
+  //   if (!router.query.tab)
+  //     router.push(
+  //       {
+  //         pathname: `/${agentToURL(agent.displayName)}`,
+  //         query: { tab: 'lineups' },
+  //       },
+  //       undefined,
+  //       { shallow: true }
+  //     )
+  // }, [router.query.tab])
 
   function renderTabPage() {
     switch (tab) {

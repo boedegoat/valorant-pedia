@@ -2,15 +2,15 @@ import Wrapper from '../Wrapper'
 import { HeartIcon } from '@heroicons/react/outline'
 import Image from 'next/image'
 import Tooltip from '../../components/Tooltip'
-import { useSession } from 'next-auth/client'
+import useUser from '../../hooks/useUser'
 import { useRouter } from 'next/router'
 
 const AgentHeader = ({ agent, headerRef }) => {
-  const [session] = useSession()
+  const [user] = useUser()
   const router = useRouter()
 
   function addToFavorite() {
-    if (!session) {
+    if (!user) {
       const signInConfirmation = confirm(
         'You need to Sign In first in order to favorite this agent. Would you like to Sign In now ?'
       )

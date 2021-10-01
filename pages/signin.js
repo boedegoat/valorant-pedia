@@ -18,7 +18,7 @@ const SignIn = () => {
   }
 
   return (
-    <Layout back={() => router.back()}>
+    <Layout back={() => router.back()} title='Sign In'>
       <Wrapper>
         <Image
           src='/sign-in.svg'
