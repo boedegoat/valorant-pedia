@@ -7,7 +7,7 @@ import {
   SaveIcon as SaveIconSolid,
 } from '@heroicons/react/solid'
 import { capitalize, toTitleCase } from '../../lib/utils'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import { agentToURL } from '../../lib/agents'
 import Link from '../Link'
 import { db } from '../../lib/firebase-client'
@@ -70,18 +70,17 @@ const LineupsVideoModal = ({ lineups, agentName }) => {
     if (!matchUser) return
 
     // check if user like this video or not
-    handleLike(matchUser)
+    // handleLike(matchUser)
   }, [usersDocs, user, video])
 
   useEffect(() => {
-    if (!router.query.watch) {
-      return setVideo(null)
-    }
+    if (!router.query.watch) return setVideo(null)
     const matchLineups = lineups?.find(({ id }) => id === router.query.watch)
+    if (!matchLineups) return setVideo(null)
     setVideo(matchLineups)
   }, [router.query.watch, lineups])
 
-  if (!video) return null
+  // if (!video) return null
 
   return (
     <Dialog
@@ -113,12 +112,7 @@ const LineupsVideoModal = ({ lineups, agentName }) => {
           <div className='flex space-x-2'>
             <BottomButton Icon={SaveIcon} ActiveIcon={SaveIconSolid} />
             <BottomButton Icon={ShareIcon} />
-            <BottomButton
-              Icon={HeartIcon}
-              ActiveIcon={HeartIconSolid}
-              onClick={like}
-              active={isLike}
-            />
+            <BottomButton Icon={HeartIcon} ActiveIcon={HeartIconSolid} />
           </div>
 
           <button
