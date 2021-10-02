@@ -56,19 +56,3 @@ export async function getUserByUid(req, res) {
     })
   }
 }
-
-export async function updateUserByUid(req, res) {
-  try {
-    const docRef = doc(db, 'users', req.query.useruid)
-    await setDoc(docRef, req.body, { merge: true })
-    res.status(200).json({
-      status: 200,
-      message: `success update user with uid ${req.query.useruid}`,
-    })
-  } catch (error) {
-    res.status(500).json({
-      status: 500,
-      message: 'error',
-    })
-  }
-}
