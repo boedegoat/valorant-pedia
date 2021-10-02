@@ -9,6 +9,16 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
+  async function storeUserDataToFirestore(userData) {
+    await fetch('/api/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+  }
+
   useEffect(() => {
     const unsub = onIdTokenChanged(auth, async (user) => {
       if (!user) {
@@ -19,15 +29,20 @@ const AuthProvider = ({ children }) => {
         return
       }
 
-      setUser({
+      const userData = {
+        uid: user.uid,
         name: user.displayName,
         email: user.email,
         emailVerified: user.emailVerified,
         image: user.photoURL,
-        uid: user.uid,
-      })
+      }
+
+      setUser(userData)
+      await storeUserDataToFirestore(userData)
+
       // get token from user
       const token = await getIdToken(user)
+
       // store token to cookies
       nookies.set(undefined, 'token', token)
       setLoading(false)
