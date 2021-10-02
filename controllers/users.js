@@ -38,6 +38,7 @@ export async function getUserByUid(req, res) {
         status: 404,
         message: 'not found',
       })
+      return
     }
 
     const user = {
