@@ -1,27 +1,18 @@
 import { useEffect, useState } from 'react'
-import { collection, onSnapshot } from 'firebase/firestore'
 import { db } from '../lib/firebase-client'
 
 export default function useCollection(path) {
-  const [docs, setDocs] = useState({
-    loading: true,
-    items: [],
-  })
+  const [docs, setDocs] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, path), (snapshots) => {
-      const _docs = snapshots.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      setDocs({ loading: false, items: _docs })
+    // setiap ada dokumen yg berubah, jalankan function ini
+    const unsubscribe = db.collection(path).onSnapshot((snapshots) => {
+      setDocs(snapshots.docs.map((doc) => ({ id: doc.id, ...doc.data() })))
+      setLoading(false)
     })
-
-    // cleanup
-    return () => {
-      unsubscribe()
-    }
+    return unsubscribe
   }, [])
 
-  return [docs.items, docs.loading]
+  return [docs, loading]
 }
