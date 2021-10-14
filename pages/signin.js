@@ -1,21 +1,13 @@
 import { useRouter } from 'next/router'
 import Wrapper from '../components/Wrapper'
-import { auth } from '../lib/firebase-client'
-import { signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import Layout from '../components/Layout'
 import Image from 'next/image'
+import { signIn, getProviders } from 'next-auth/client'
 
-const SignIn = () => {
+const SignIn = ({ providers }) => {
   const router = useRouter()
 
-  async function signIn() {
-    try {
-      await signInWithPopup(auth, new GoogleAuthProvider())
-      router.back()
-    } catch (error) {
-      throw error.code
-    }
-  }
+  console.log(providers)
 
   return (
     <Layout back={() => router.back()} title='Sign In'>
@@ -33,12 +25,19 @@ const SignIn = () => {
           <a className='font-semibold text-fuchsia-500'>Learn more</a>
         </p>
         <div className='mt-6'>
-          <button
-            className='text-xl w-full ring-2 ring-black rounded-sm py-2 font-semibold hover:bg-fuchsia-500 hover:text-white'
-            onClick={signIn}
-          >
-            Sign in with Google
-          </button>
+          {Object.values(providers).map((provider) => (
+            <button
+              key={provider.name}
+              className='text-xl w-full ring-2 ring-black rounded-sm py-2 font-semibold hover:bg-fuchsia-500 hover:text-white'
+              onClick={() =>
+                signIn(provider.id, {
+                  callbackUrl: router.back,
+                })
+              }
+            >
+              Sign in with {provider.name}
+            </button>
+          ))}
         </div>
       </Wrapper>
     </Layout>
@@ -46,3 +45,10 @@ const SignIn = () => {
 }
 
 export default SignIn
+
+export async function getServerSideProps(context) {
+  const providers = await getProviders()
+  return {
+    props: { providers },
+  }
+}

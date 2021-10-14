@@ -1,14 +1,11 @@
 import '../style.css'
-import AuthProvider from '../store/AuthProvider'
-import GlobalProvider from '../store/GlobalProvider'
+import { Provider } from 'next-auth/client'
 
 function MyApp({ Component, pageProps }) {
   return (
-    <GlobalProvider>
-      <AuthProvider>
-        <Component {...pageProps} />
-      </AuthProvider>
-    </GlobalProvider>
+    <Provider session={pageProps.session}>
+      <Component {...pageProps} />
+    </Provider>
   )
 }
 

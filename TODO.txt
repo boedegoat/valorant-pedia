@@ -1,0 +1,5 @@
+[x] bikin file nextauthnya
+[x] modify file init firebase
+[x] sambungin ke firebase adapter
+[x] bikin next auth providernya
+[ ] update semua session pake useSession dari next auth

@@ -3,10 +3,10 @@ import Wrapper from '../components/Wrapper'
 import UserAvatar from './UserAvatar'
 import Link from './Link'
 import { Fragment } from 'react'
-import useUser from '../hooks/useUser'
+import { useSession } from 'next-auth/client'
 
 const TopNavbar = ({ back }) => {
-  const [user, loading] = useUser()
+  const [session, loading] = useSession()
 
   const BackComponent = () => {
     switch (typeof back) {
@@ -37,12 +37,11 @@ const TopNavbar = ({ back }) => {
               <div className='w-[30px] h-[30px] rounded-full bg-gray-200 animate-pulse'></div>
             ) : (
               <Fragment>
-                {user && (
+                {session ? (
                   <Link href='/profile'>
-                    <UserAvatar src={user.image} />
+                    <UserAvatar src={session.user.image} />
                   </Link>
-                )}
-                {!user && (
+                ) : (
                   <Link
                     href='/signin'
                     className='bg-fuchsia-500 px-3 py-1 text-white rounded-md font-bold'
