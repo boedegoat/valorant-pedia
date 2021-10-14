@@ -3,5 +3,5 @@
 [x] sambungin ke firebase adapter
 [x] bikin next auth providernya
 [x] update semua session pake useSession dari next auth
-[ ] update `useCollection` hook dengan firebasenya
-[ ] bikin relative import ke ~ (root) folder
+[x] update `useCollection` hook dengan firebasenya
+[ ] bikin `useCollection` hook biar bisa filter

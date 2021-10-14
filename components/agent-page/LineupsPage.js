@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import Wrapper from '../Wrapper'
 import { SearchIcon, AdjustmentsIcon } from '@heroicons/react/outline'
 import LineupsList from './LineupsList'
@@ -14,11 +15,24 @@ import { useAgentPageContext } from './AgentPageLayout'
 
 const Lineups = () => {
   const { agent, maps } = useAgentPageContext()
-  const lineupsCollection = `agents/${agentToURL(agent.displayName)}/lineups`
-  const [lineupsDocs, lineupsLoading] = useCollection(lineupsCollection)
+
   const [showFilterModal, toggleShowFilterModal] = useToggle()
   const [showMoreButton, toggleShowMoreButton] = useToggle()
+
   const [navRef, navVisible] = useObserver({ initVisible: true })
+
+  const [lineupsFilter, setLineupsFilter] = useState({
+    map: '',
+    type: '',
+    site: '',
+    title: {
+      $search: '',
+    },
+  })
+  const lineupsRef = `agents/${agentToURL(agent.displayName)}/lineups`
+  const [lineupsDocs, lineupsLoading] = useCollection(lineupsRef, {
+    filter: lineupsFilter,
+  })
 
   const [lineups, [filterLineups, setFilterLineups]] = useFilter({
     initData: lineupsDocs,
@@ -44,9 +58,11 @@ const Lineups = () => {
   }
 
   function handleSearch(e) {
-    setFilterLineups((currentLineups) => ({
-      ...currentLineups,
-      title: e.target.value,
+    setLineupsFilter((filter) => ({
+      ...filter,
+      title: {
+        $search: e.target.value,
+      },
     }))
   }
 
@@ -61,7 +77,7 @@ const Lineups = () => {
           <input
             className='flex-grow border-0 py-4 bg-transparent focus:outline-none focus:ring-0 placeholder-gray-400 text-lg'
             placeholder='Search lineups'
-            value={filterLineups.title}
+            value={lineupsFilter.title.$search}
             onChange={handleSearch}
           />
           <button
