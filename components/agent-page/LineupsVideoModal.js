@@ -7,53 +7,14 @@ import {
   SaveIcon as SaveIconSolid,
 } from '@heroicons/react/solid'
 import { capitalize, toTitleCase } from '../../lib/utils'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { agentToURL } from '../../lib/agents'
-import Link from '../Link'
-import { db } from '../../lib/firebase-client'
-import { doc, setDoc, arrayUnion, arrayRemove } from 'firebase/firestore'
-import useCollection from '../../hooks/useCollection'
-import useUser from '../../hooks/useUser'
+import { useSession } from 'next-auth/client'
 
 const LineupsVideoModal = ({ lineups, agentName }) => {
   const router = useRouter()
-  const [user] = useUser()
+  const [session] = useSession()
   const [video, setVideo] = useState(null)
-  const [isLike, setIsLike] = useState(false)
-  const [usersDocs] = useCollection(`users`)
-
-  function like() {
-    if (!user) {
-      if (confirm('You need to Sign In first to like this video. Sign In now ?')) {
-        router.push('/signin')
-      }
-      return
-    }
-    const docID = user.email
-    setDoc(
-      doc(db, 'users', docID),
-      {
-        likes: isLike ? arrayRemove(video.id) : arrayUnion(video.id),
-      },
-      { merge: true }
-    )
-
-    // TODO :
-    // 1. change alert to custom toast alert
-    // 2. show like videos before showing all lineups videos (horizontal scroll)
-    // 3. make the like playlist in playlist page
-    if (isLike) {
-      alert('removed this video from your `like` playlist')
-    } else {
-      alert('added this video to your `like` playlist')
-    }
-  }
-
-  function handleLike(user) {
-    if (!user.likes) return
-    const _isLike = user.likes.some((id) => id === video.id)
-    setIsLike(_isLike)
-  }
 
   function onClose() {
     router.push(`/${agentToURL(agentName)}?tab=lineups`, undefined, {
@@ -61,17 +22,6 @@ const LineupsVideoModal = ({ lineups, agentName }) => {
       scroll: false,
     })
   }
-
-  useEffect(() => {
-    if (!user) return
-
-    // get match user
-    const matchUser = usersDocs.find(({ email }) => email === user.email)
-    if (!matchUser) return
-
-    // check if user like this video or not
-    // handleLike(matchUser)
-  }, [usersDocs, user, video])
 
   useEffect(() => {
     if (!router.query.watch) return setVideo(null)

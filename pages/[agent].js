@@ -1,35 +1,21 @@
 import { agentToURL, getAgents, getAgentsByName, parseAgentFromURL } from '../lib/agents'
 import AgentPageLayout from '../components/agent-page/AgentPageLayout'
 import { useRouter } from 'next/router'
-import { useLayoutEffect } from 'react'
 import LineupsPage from '../components/agent-page/LineupsPage'
 import { getMaps } from '../lib/maps'
 
 const Agent = ({ agent, maps }) => {
   const router = useRouter()
-
-  const tab = router.query.tab
-
-  // useLayoutEffect(() => {
-  //   if (!router.query.tab)
-  //     router.push(
-  //       {
-  //         pathname: `/${agentToURL(agent.displayName)}`,
-  //         query: { tab: 'lineups' },
-  //       },
-  //       undefined,
-  //       { shallow: true }
-  //     )
-  // }, [router.query.tab])
-
-  function renderTabPage() {
-    switch (tab) {
-      case 'lineups':
-        return <LineupsPage agent={agent} maps={maps} />
-    }
-  }
-
-  return <AgentPageLayout agent={agent}>{renderTabPage()}</AgentPageLayout>
+  const tabName = router.query.tab
+  // prettier-ignore
+  const tabMap = new Map([
+    ['lineups', <LineupsPage />],
+  ])
+  return (
+    <AgentPageLayout agent={agent} maps={maps}>
+      {tabMap.get(tabName)}
+    </AgentPageLayout>
+  )
 }
 
 export default Agent

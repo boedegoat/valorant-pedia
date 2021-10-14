@@ -4,8 +4,16 @@ import Wrapper from '../Wrapper'
 import ChangeTab from './ChangeTab'
 import Image from 'next/image'
 import useObserver from '../../hooks/useObserver'
+import { useContext, createContext } from 'react'
 
-const AgentPageLayout = ({ children, agent }) => {
+const AgentPageContext = createContext({})
+
+export function useAgentPageContext() {
+  return useContext(AgentPageContext)
+}
+
+const AgentPageLayout = ({ children, ...props }) => {
+  const { agent } = props
   const [headerRef, headerVisible] = useObserver({ initVisible: true })
 
   return (
@@ -39,7 +47,7 @@ const AgentPageLayout = ({ children, agent }) => {
           <ChangeTab agentName={agent.displayName} to='more' />
         </div>
       </Wrapper>
-      {children}
+      <AgentPageContext.Provider value={props}>{children}</AgentPageContext.Provider>
     </Layout>
   )
 }

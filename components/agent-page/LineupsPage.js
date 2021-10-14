@@ -10,8 +10,10 @@ import useFilter from '../../hooks/useFilter'
 import useObserver from '../../hooks/useObserver'
 import LineupsMoreButton from './LineupsMoreButton'
 import LineupsFilterList from './LineupsFilterList'
+import { useAgentPageContext } from './AgentPageLayout'
 
-const Lineups = ({ agent, maps }) => {
+const Lineups = () => {
+  const { agent, maps } = useAgentPageContext()
   const lineupsCollection = `agents/${agentToURL(agent.displayName)}/lineups`
   const [lineupsDocs, lineupsLoading] = useCollection(lineupsCollection)
   const [showFilterModal, toggleShowFilterModal] = useToggle()
