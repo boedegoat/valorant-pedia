@@ -4,4 +4,6 @@
 [x] bikin next auth providernya
 [x] update semua session pake useSession dari next auth
 [x] update `useCollection` hook dengan firebasenya
-[ ] bikin `useCollection` hook biar bisa filter
+[x] bikin `useCollection` hook biar bisa filter
+[x] update filter lineup
+[ ] benerin `useQuery` hook

@@ -1,33 +1,28 @@
 import Image from 'next/image'
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
+import { Dialog } from '@headlessui/react'
 import Wrapper from '../Wrapper'
 import SearchBar from '../SearchBar'
-import useFilter from '../../hooks/useFilter'
-import { getSearchResults } from '../../lib/maps'
-import { capitalize } from '../../lib/utils'
-import { MapIcon } from '@heroicons/react/solid'
 import LineupsFilterList from './LineupsFilterList'
+import useQuery from '../../hooks/useQuery'
 
 const LineupsFilterModal = ({
   show,
   onClose,
   maps: mapsData,
-  filterLineups,
-  setFilterLineups,
+  lineupsFilter,
+  setLineupsFilter,
 }) => {
-  const [maps, [searchMaps, setSearchMaps]] = useFilter({
-    initData: mapsData,
-    initFilter: '',
-    onFilter: (currentMaps) => getSearchResults(currentMaps, searchMaps),
-  })
-
   function updateFilter(property, value) {
-    setFilterLineups((currentFilter) => ({ ...currentFilter, [property]: value }))
+    setLineupsFilter((currentFilter) => ({ ...currentFilter, [property]: value }))
   }
 
+  // prettier-ignore
+  const [maps, {search: [searchMaps, setSearchMaps]}] = useQuery(mapsData, {
+    search: {field: 'displayName'}
+  })
+
   function resetFilter() {
-    setFilterLineups((currentFilter) => ({
+    setLineupsFilter((currentFilter) => ({
       ...currentFilter,
       map: '',
       type: '',
@@ -50,7 +45,7 @@ const LineupsFilterModal = ({
           {/* title */}
           <Dialog.Title className='font-bold text-2xl text-gray-900 pt-6 flex items-center justify-between'>
             Filters
-            <LineupsFilterList filterLineups={filterLineups} text='base' />
+            <LineupsFilterList lineupsFilter={lineupsFilter} text='base' />
           </Dialog.Title>
 
           {/* content */}
@@ -61,7 +56,7 @@ const LineupsFilterModal = ({
                 <h3 className='font-bold text-lg text-gray-800'>Play on</h3>
                 <select
                   className='w-1/2 text-base mr-1 border-gray-300 rounded-md focus:border-fuchsia-500 focus:ring-fuchsia-500'
-                  value={filterLineups.type}
+                  value={lineupsFilter.type}
                   onChange={(e) => updateFilter('type', e.target.value)}
                 >
                   <option value=''>All</option>
@@ -73,7 +68,7 @@ const LineupsFilterModal = ({
                 <h3 className='font-bold text-lg text-gray-800'>Position</h3>
                 <select
                   className='w-1/2 text-base mr-1 border-gray-300 rounded-md focus:border-fuchsia-500 focus:ring-fuchsia-500'
-                  value={filterLineups.site}
+                  value={lineupsFilter.site}
                   onChange={(e) => updateFilter('site', e.target.value)}
                 >
                   <option value=''>All</option>
@@ -97,7 +92,7 @@ const LineupsFilterModal = ({
                 {maps.length ? (
                   <li
                     className={`rounded-md overflow-hidden border-2 shadow-sm ${
-                      filterLineups.map === '' ? 'border-fuchsia-400' : 'border-gray-200'
+                      lineupsFilter.map === '' ? 'border-fuchsia-400' : 'border-gray-200'
                     }`}
                   >
                     <button
@@ -120,7 +115,7 @@ const LineupsFilterModal = ({
                     key={map.uuid}
                     className={`rounded-md overflow-hidden border-2 shadow-sm
                         ${
-                          filterLineups.map === map.displayName.toLowerCase()
+                          lineupsFilter.map === map.displayName.toLowerCase()
                             ? 'border-fuchsia-400'
                             : 'border-gray-200'
                         }

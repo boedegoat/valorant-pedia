@@ -7,7 +7,6 @@ import { agentToURL } from '../../lib/agents'
 import useCollection from '../../hooks/useCollection'
 import useToggle from '../../hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
-import useFilter from '../../hooks/useFilter'
 import useObserver from '../../hooks/useObserver'
 import LineupsMoreButton from './LineupsMoreButton'
 import LineupsFilterList from './LineupsFilterList'
@@ -30,32 +29,9 @@ const Lineups = () => {
     },
   })
   const lineupsRef = `agents/${agentToURL(agent.displayName)}/lineups`
-  const [lineupsDocs, lineupsLoading] = useCollection(lineupsRef, {
+  const [lineups, lineupsLoading] = useCollection(lineupsRef, {
     filter: lineupsFilter,
   })
-
-  const [lineups, [filterLineups, setFilterLineups]] = useFilter({
-    initData: lineupsDocs,
-    initFilter: { map: '', type: '', site: '', title: '' },
-    onFilter: (currentLineups) => handleFilterLineups(currentLineups, filterLineups),
-  })
-
-  function handleFilterLineups(currentLineups, filterLineups) {
-    let newLineups = [...currentLineups]
-    Object.entries(filterLineups).forEach(([filterProperty, filterValue]) => {
-      if (!filterValue) return
-      if (filterProperty === 'title') {
-        newLineups = newLineups.filter((lineup) =>
-          filterValue
-            .split(' ')
-            .every((search) => lineup.title.includes(search.toLowerCase()))
-        )
-      } else {
-        newLineups = newLineups.filter((lineup) => lineup[filterProperty] === filterValue)
-      }
-    })
-    return newLineups
-  }
 
   function handleSearch(e) {
     setLineupsFilter((filter) => ({
@@ -87,7 +63,7 @@ const Lineups = () => {
             <AdjustmentsIcon className='w-6 h-6 rotate-90' />
           </button>
         </div>
-        <LineupsFilterList filterLineups={filterLineups} />
+        <LineupsFilterList lineupsFilter={lineupsFilter} />
       </nav>
 
       <div className='mt-8 flex flex-col space-y-4'>
@@ -103,8 +79,8 @@ const Lineups = () => {
         show={showFilterModal}
         onClose={toggleShowFilterModal}
         maps={maps}
-        filterLineups={filterLineups}
-        setFilterLineups={setFilterLineups}
+        lineupsFilter={lineupsFilter}
+        setLineupsFilter={setLineupsFilter}
       />
 
       <LineupsMoreButton
