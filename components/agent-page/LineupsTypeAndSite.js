@@ -1,6 +1,10 @@
-const LineupsTypeAndSite = ({ type, site }) => {
+const LineupsTypeAndSite = ({ type, site, black }) => {
   return (
-    <div className='flex items-center space-x-1 bg-black bg-opacity-40 w-max py-1 px-2 rounded-md'>
+    <div
+      className={`flex items-center space-x-1 bg-black ${
+        black ? '' : 'bg-opacity-40'
+      } w-max py-1 px-2 rounded-md`}
+    >
       <LineupTypeIcon type={type} />
       <p className='font-black text-white text-sm'>{site.toUpperCase()}</p>
     </div>

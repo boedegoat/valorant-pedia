@@ -3,7 +3,7 @@ import TopNavbar from './TopNavbar'
 import Head from 'next/head'
 import MainMenu from './MainMenu'
 
-const Layout = ({ children, title, description, back }) => {
+const Layout = ({ children, title, description, back, hideMainMenu }) => {
   return (
     <Fragment>
       <Head>
@@ -12,7 +12,7 @@ const Layout = ({ children, title, description, back }) => {
       </Head>
       <TopNavbar back={back} />
       {children}
-      <MainMenu />
+      {!hideMainMenu && <MainMenu />}
     </Fragment>
   )
 }

@@ -3,8 +3,9 @@ import AgentHeader from './AgentHeader'
 import Wrapper from '../Wrapper'
 import ChangeTab from './ChangeTab'
 import Image from 'next/image'
-import useObserver from '../../hooks/useObserver'
 import { useContext, createContext } from 'react'
+import { useRouter } from 'next/router'
+import { ArrowNarrowLeftIcon } from '@heroicons/react/outline'
 
 const AgentPageContext = createContext({})
 
@@ -13,11 +14,11 @@ export function useAgentPageContext() {
 }
 
 const AgentPageLayout = ({ children, ...props }) => {
-  const { agent } = props
-  const [headerRef, headerVisible] = useObserver({ initVisible: true })
+  const { agent, headerRef, headerVisible } = props
+  const router = useRouter()
 
   return (
-    <Layout title={`${agent.displayName}'s Homepage`} back='/'>
+    <Layout title={`${agent.displayName}'s Homepage`} back='/' hideMainMenu>
       <AgentHeader agent={agent} headerRef={headerRef} />
 
       {/* select tab */}
@@ -26,6 +27,14 @@ const AgentPageLayout = ({ children, ...props }) => {
         ${headerVisible ? '' : 'shadow-md'}
         `}
       >
+        {!headerVisible && (
+          <button
+            onClick={() => router.push('/')}
+            className='flex items-center font-bold'
+          >
+            <ArrowNarrowLeftIcon className='h-5 w-5 text-gray-800' />
+          </button>
+        )}
         <button
           className={`
             ${headerVisible ? 'hidden' : 'block'}
@@ -38,8 +47,8 @@ const AgentPageLayout = ({ children, ...props }) => {
 
         <div
           className={`
-            flex space-x-4 absolute transition-all h-full
-            ${headerVisible ? 'left-4' : 'left-12'}
+            flex space-x-4 absolute h-full
+            ${headerVisible ? 'left-4' : 'left-20'}
           `}
         >
           <ChangeTab agentName={agent.displayName} to='lineups' />
