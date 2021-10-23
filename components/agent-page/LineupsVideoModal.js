@@ -42,19 +42,11 @@ const LineupsVideoModal = ({ lineups, agentName }) => {
       <div className='absolute min-h-screen inset-0 p-6 bg-white text-left space-y-6 overflow-y-auto'>
         <Dialog.Title as='header'>
           <h2 className='font-bold text-2xl'>{toTitleCase(video?.title)}</h2>
-          <p className='text-sm text-gray-400 rounded-md flex items-center max-w-max mt-2'>
-            <span className='flex items-center font-semibold bg-green-400 text-white px-1 rounded-md mr-2'>
-              <MapIcon className='w-3 h-3 mr-1' />
-              {capitalize(video?.map)}
-            </span>
-            {capitalize(video?.type)}&nbsp;&bull;&nbsp;
-            {video?.site.toUpperCase()}
-          </p>
         </Dialog.Title>
 
         {/* video container */}
         <div className='border-b-8 border-fuchsia-400'>
-          <video src={video?.url} autoPlay muted loop controls></video>
+          <video src={video?.videoURL} autoPlay muted loop controls></video>
         </div>
 
         {/* buttons */}

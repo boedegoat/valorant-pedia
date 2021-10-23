@@ -42,7 +42,7 @@ const Lineups = () => {
           lineupsLoading={lineupsLoading}
           maps={maps}
         />
-        {/* <LineupsVideoModal agentName={agent.displayName} lineups={lineups} /> */}
+        <LineupsVideoModal agentName={agent.displayName} lineups={lineups} />
       </div>
       <div className='h-20'></div>
 

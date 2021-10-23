@@ -20,10 +20,7 @@ const LineupsList = ({ agentName, lineups, lineupsLoading, maps }) => {
 
   return lineups.map(({ id, map, site, title, type, thumbnailURL }) => (
     <Link
-      href={{
-        pathname: `/${agentToURL(agentName)}`,
-        query: { tab: 'lineups', watch: id },
-      }}
+      href={`/watch/${id}`}
       shallow={true}
       scroll={false}
       key={id}
