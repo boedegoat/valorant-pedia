@@ -17,6 +17,7 @@
     "nookies": "^2.5.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-firebase-hooks": "^3.0.4",
     "sharp": "^0.29.1",
     "tailwind-scrollbar-hide": "^1.0.3"
   },

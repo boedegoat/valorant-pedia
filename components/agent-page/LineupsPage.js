@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react'
+import { db } from '../../lib/firebase-client'
 import Wrapper from '../Wrapper'
 import { SearchIcon, AdjustmentsIcon } from '@heroicons/react/outline'
 import LineupsList from './LineupsList'
 import LineupsVideoModal from './LineupsVideoModal'
 import { agentToURL } from '../../lib/agents'
-import useCollection from '../../hooks/useCollection'
 import useToggle from '../../hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
 import useObserver from '../../hooks/useObserver'
 import LineupsMoreButton from './LineupsMoreButton'
-import LineupsFilterList from './LineupsFilterList'
 import { useAgentPageContext } from './AgentPageLayout'
+import { useEffect, useState } from 'react'
+import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
 
 const Lineups = () => {
   const { agent, maps } = useAgentPageContext()
@@ -18,33 +18,16 @@ const Lineups = () => {
   const [showFilterModal, toggleShowFilterModal] = useToggle()
   const [showMoreButton, toggleShowMoreButton] = useToggle()
 
-  const [navRef, navVisible] = useObserver({ initVisible: true })
+  // const [navRef, navVisible] = useObserver({ initVisible: true })
 
-  const [lineupsFilter, setLineupsFilter] = useState({
-    map: '',
-    type: '',
-    site: '',
-    title: {
-      $search: '',
-    },
-  })
-  const lineupsRef = `agents/${agentToURL(agent.displayName)}/lineups`
-  const [lineups, lineupsLoading] = useCollection(lineupsRef, {
-    filter: lineupsFilter,
-  })
-
-  function handleSearch(e) {
-    setLineupsFilter((filter) => ({
-      ...filter,
-      title: {
-        $search: e.target.value,
-      },
-    }))
-  }
+  const [lineupsQuery, setLineupsQuery] = useState(
+    db.collection('lineups').where('agent', '==', agentToURL(agent.displayName)).limit(12)
+  )
+  const [lineups, lineupsLoading] = useCollectionDataWithId(lineupsQuery)
 
   return (
     <Wrapper>
-      <nav
+      {/* <nav
         ref={navRef}
         className={`bg-white justify-between items-center shadow-md rounded-md divide-y`}
       >
@@ -64,18 +47,19 @@ const Lineups = () => {
           </button>
         </div>
         <LineupsFilterList lineupsFilter={lineupsFilter} />
-      </nav>
+      </nav> */}
 
-      <div className='mt-8 flex flex-col space-y-4'>
+      <div className='mt-8 grid grid-cols-2 gap-2'>
         <LineupsList
           agentName={agent.displayName}
           lineups={lineups}
           lineupsLoading={lineupsLoading}
+          maps={maps}
         />
-        <LineupsVideoModal agentName={agent.displayName} lineups={lineups} />
+        {/* <LineupsVideoModal agentName={agent.displayName} lineups={lineups} /> */}
       </div>
 
-      <LineupsFilterModal
+      {/* <LineupsFilterModal
         show={showFilterModal}
         onClose={toggleShowFilterModal}
         maps={maps}
@@ -89,7 +73,7 @@ const Lineups = () => {
         toggleShowFilterModal={toggleShowFilterModal}
         navVisible={navVisible}
         navRef={navRef}
-      />
+      /> */}
     </Wrapper>
   )
 }

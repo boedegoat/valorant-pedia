@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { Dialog } from '@headlessui/react'
 import Wrapper from '../Wrapper'
 import SearchBar from '../SearchBar'
-import LineupsFilterList from './LineupsFilterList'
+// import LineupsFilterList from './LineupsFilterList'
 import useQuery from '../../hooks/useQuery'
 
 const LineupsFilterModal = ({

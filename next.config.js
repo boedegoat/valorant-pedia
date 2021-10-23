@@ -4,6 +4,7 @@ module.exports = {
       'images.unsplash.com',
       'media.valorant-api.com',
       'lh3.googleusercontent.com',
+      'firebasestorage.googleapis.com',
     ],
   },
 }

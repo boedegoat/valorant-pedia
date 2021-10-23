@@ -13,6 +13,7 @@ module.exports = {
       },
       colors: {
         fuchsia: colors.fuchsia,
+        heart: '#FF004D',
       },
     },
   },

@@ -1,10 +1,11 @@
-import { MapIcon } from '@heroicons/react/solid'
 import { agentToURL } from '../../lib/agents'
-import { capitalize, toTitleCase } from '../../lib/utils'
+import { toTitleCase } from '../../lib/utils'
 import Link from '../Link'
 import Image from 'next/image'
+import LineupsTypeAndSite from './LineupsTypeAndSite'
+import { HeartIcon } from '@heroicons/react/solid'
 
-const LineupsList = ({ agentName, lineups, lineupsLoading }) => {
+const LineupsList = ({ agentName, lineups, lineupsLoading, maps }) => {
   function isNotExist() {
     return !lineups.length && !lineupsLoading
   }
@@ -15,7 +16,9 @@ const LineupsList = ({ agentName, lineups, lineupsLoading }) => {
 
   if (isNotExist()) return <NotExistYetComponent />
 
-  return lineups.map(({ id, map, site, title, type }) => (
+  console.log(lineups)
+
+  return lineups.map(({ id, map, site, title, type, thumbnailURL }) => (
     <Link
       href={{
         pathname: `/${agentToURL(agentName)}`,
@@ -24,17 +27,42 @@ const LineupsList = ({ agentName, lineups, lineupsLoading }) => {
       shallow={true}
       scroll={false}
       key={id}
-      className='group relative max-h-60 bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3 pr-10'
+      className={`group relative bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3 pr-10 overflow-hidden border-2`}
+      style={{
+        // make 9/16 aspect ratio
+        paddingBottom: 'calc((16/9) * 100%)',
+      }}
     >
-      <h2 className='font-bold text-xl'>{toTitleCase(title)}</h2>
-      <p className='text-sm text-gray-400 rounded-md flex items-center max-w-max mt-2'>
-        <span className='flex items-center font-semibold bg-green-400 text-white px-1 rounded-md mr-2'>
-          <MapIcon className='w-3 h-3 mr-1' />
-          {capitalize(map)}
-        </span>
-        {capitalize(type)}&nbsp;&bull;&nbsp;
-        {site.toUpperCase()}
-      </p>
+      {/* bg */}
+      <Image src={thumbnailURL} layout='fill' />
+
+      {/* top */}
+      <div className='absolute left-0 right-0 top-0 bg-white p-2 flex border-b-2'>
+        {/* map */}
+        <div className='flex items-center space-x-2 '>
+          <Image
+            src={maps.find((m) => m.displayName.toLowerCase() === map).splash}
+            width={19}
+            height={19}
+            layout='fixed'
+            className='rounded-full'
+          />
+          <h2 className='font-black text-base uppercase'>{map}</h2>
+        </div>
+        {/* favorite count */}
+        <div className='ml-auto flex items-center space-x-1'>
+          <HeartIcon className='w-3 h-3 text-heart' />
+          <p className='text-[10px]'>{Math.floor(Math.random() * 101)}</p>
+        </div>
+      </div>
+
+      {/* bottom */}
+      <div className='absolute left-0 right-0 bottom-0 top-1/2 bg-gradient-to-t from-black to-transparent p-3 flex flex-col'>
+        <div className='mt-auto'>
+          <LineupsTypeAndSite type={type} site={site} />
+          <h1 className='text-white font-bold text-lg'>{toTitleCase(title)}</h1>
+        </div>
+      </div>
     </Link>
   ))
 }
