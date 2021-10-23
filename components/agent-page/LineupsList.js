@@ -57,7 +57,7 @@ const LineupsList = ({ agentName, lineups, lineupsLoading, maps }) => {
       <div className='absolute left-0 right-0 bottom-0 top-1/2 bg-gradient-to-t from-black to-transparent p-3 flex flex-col'>
         <div className='mt-auto'>
           <LineupsTypeAndSite type={type} site={site} />
-          <h1 className='text-white font-bold text-lg'>{toTitleCase(title)}</h1>
+          <h1 className='text-white font-bold text-base'>{toTitleCase(title)}</h1>
         </div>
       </div>
     </Link>
