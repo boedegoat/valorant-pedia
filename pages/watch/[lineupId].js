@@ -1,5 +1,5 @@
 import { ArrowNarrowLeftIcon } from '@heroicons/react/outline'
-import { HeartIcon, ShareIcon, ViewGridIcon } from '@heroicons/react/outline'
+import { HeartIcon, ShareIcon, ViewGridAddIcon } from '@heroicons/react/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { useRouter } from 'next/router'
 import LineupsTypeAndSite from '../../components/agent-page/LineupsTypeAndSite'
@@ -11,16 +11,19 @@ import useDocumentDataWithId from '../../hooks/useDocumentDataWithId'
 const WatchLineup = ({ lineup: lineupServer, user }) => {
   const router = useRouter()
 
+  // prettier-ignore
   const [lineupClient, loading] = useDocumentDataWithId(
-    db.collection('lineups').doc(router.query.lineupId)
+    db
+      .collection('lineups')
+      .doc(router.query.lineupId)
   )
 
   const lineup = lineupClient || lineupServer
-  console.log(lineup, user)
 
   if (!lineup && !loading) return <div>404 not found</div>
 
   const isUserFavorite = lineup.favorites.includes(user?.email)
+  console.log(lineup, user)
 
   async function addToFavorites() {
     if (!user) return alert('you are not logged in yet')
@@ -39,34 +42,45 @@ const WatchLineup = ({ lineup: lineupServer, user }) => {
       .set({ favorites: appendArray(user.email) }, { merge: true })
   }
 
+  function copyURLToClipboard() {
+    navigator.clipboard.writeText(`https://valpedia.vercel.app${router.asPath}`)
+    alert('link coppied to your clipboard')
+  }
+
   return (
-    <div className=''>
+    <>
       {/* top */}
-      <div className='fixed z-10 top-0 left-0 w-full h-20 bg-gradient-to-b from-gray-900 to-transparent  p-2'>
+      <div className='fixed z-10 top-0 h-14 left-0 w-full flex items-center bg-black bg-opacity-90 p-2'>
         <button onClick={router.back} className='flex items-center font-bold text-white'>
           <ArrowNarrowLeftIcon className='watchLineup-icon mr-1' /> Back
         </button>
       </div>
 
       <video src={lineup.videoURL} controls autoPlay loop className='w-full max-w-sm' />
-      <div className='p-4 space-y-2 flex flex-col'>
+
+      <div className='p-4 flex flex-col'>
         <LineupsTypeAndSite type={lineup.type} site={lineup.site} black />
-        <h1 className='font-bold text-2xl'>{toTitleCase(lineup.title)}</h1>
-        <hr />
-        <div className='flex space-x-2'>
+        <h1 className='font-bold text-2xl mt-2'>{toTitleCase(lineup.title)}</h1>
+
+        {/* bottom menus */}
+        <div className='flex space-x-4 mt-5'>
           <button className='flex items-center text-heart' onClick={addToFavorites}>
             {isUserFavorite ? (
               <HeartIconSolid className='watchLineup-icon' />
             ) : (
               <HeartIcon className='watchLineup-icon' />
             )}
-            <span className='text-current font-medium ml-1'>
-              {lineup.favorites.length}
-            </span>
+            <span className='font-bold ml-1'>{lineup.favorites.length}</span>
+          </button>
+          <button className='text-gray-500' onClick={copyURLToClipboard}>
+            <ShareIcon className='watchLineup-icon' />
+          </button>
+          <button className='text-gray-500'>
+            <ViewGridAddIcon className='watchLineup-icon' />
           </button>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
