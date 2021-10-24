@@ -2,7 +2,6 @@ import { db } from '../../lib/firebase-client'
 import Wrapper from '../Wrapper'
 import { ChevronRightIcon, SearchIcon } from '@heroicons/react/outline'
 import LineupsList from './LineupsList'
-import LineupsVideoModal from './LineupsVideoModal'
 import { agentToURL } from '../../lib/agents'
 import useToggle from '../../hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
@@ -59,7 +58,6 @@ const LineupsPage = () => {
           lineupsLoading={lineupsLoading}
           resetLineupsQuery={resetLineupsQuery}
         />
-        <LineupsVideoModal agentName={agent.displayName} lineups={lineups} />
       </div>
       <div className='h-20'></div>
 
