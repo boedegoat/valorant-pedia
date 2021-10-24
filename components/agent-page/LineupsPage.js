@@ -44,6 +44,12 @@ const LineupsPage = () => {
   }
   useEffect(handleLineupsQuery, [lineupsType, lineupsSite, lineupsMap])
 
+  function resetLineupsQuery() {
+    setLineupsType('')
+    setLineupsSite('')
+    setLineupsMap('')
+  }
+
   return (
     <Wrapper>
       <div className='mt-8 grid grid-cols-2 gap-2'>
@@ -51,6 +57,7 @@ const LineupsPage = () => {
           agentName={agent.displayName}
           lineups={lineups}
           lineupsLoading={lineupsLoading}
+          resetLineupsQuery={resetLineupsQuery}
         />
         <LineupsVideoModal agentName={agent.displayName} lineups={lineups} />
       </div>

@@ -5,18 +5,17 @@ import LineupsTypeAndSite from './LineupsTypeAndSite'
 import { HeartIcon } from '@heroicons/react/solid'
 import { useAgentPageContext } from './AgentPageLayout'
 
-const LineupsList = ({ lineups, lineupsLoading }) => {
+const LineupsList = ({ lineups, lineupsLoading, resetLineupsQuery }) => {
   const { maps } = useAgentPageContext()
-
-  function isNotExist() {
-    return !lineups.length && !lineupsLoading
-  }
 
   if (lineupsLoading) {
     return new Array(6).fill(0).map((_, index) => <LoadingComponent key={index} />)
   }
 
-  if (isNotExist()) return <NotExistYetComponent />
+  // if lineups not available
+  if (!lineups.length && !lineupsLoading) {
+    return <NotAvailableComponent resetLineupsQuery={resetLineupsQuery} />
+  }
 
   console.log(lineups)
 
@@ -81,23 +80,19 @@ const LoadingComponent = () => {
   )
 }
 
-const NotExistYetComponent = () => (
-  <div className='space-y-4 pb-32'>
+const NotAvailableComponent = ({ resetLineupsQuery }) => (
+  <div className='space-y-4 pb-10 col-span-2'>
     <div className='relative h-[19rem]'>
-      <Image src='/video-not-exist.svg' layout='fill' objectFit='cover' />
+      <Image src='/video-not-exist.svg' layout='fill' objectFit='contain' />
     </div>
-    <h1 className='font-roboto font-bold text-2xl text-gray-900'>
-      Waduh, videonya masih di goreng bro
+    <h1 className='font-bold text-2xl text-gray-900'>
+      Seems like there are no lineups with this filter
     </h1>
-    <p className='text-gray-600 text-lg'>
-      sambil menunggu mending{' '}
-      <a
-        href='https://cdn.kincir.com/2/oJLwUjXw21_TSOXcvcpDmyrxoszGFmP3xTef-4akw-Y/transform/rs:fill:764:400/src/production/2019-08/1daa05998ab997d0a35171829c678b776ed5740d.jpg'
-        target='_blank'
-        className='text-fuchsia-500'
-      >
-        klik ini
-      </a>
-    </p>
+    <button
+      className='bg-fuchsia-500 text-white font-semibold px-3 py-2 rounded-md'
+      onClick={resetLineupsQuery}
+    >
+      Reset Filter
+    </button>
   </div>
 )
