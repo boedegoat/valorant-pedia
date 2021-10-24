@@ -12,17 +12,12 @@ const LineupsFilterModal = ({
   maps: mapsData,
   filters: { lineupsType, lineupsSite, lineupsMap },
   setFilters: { setLineupsType, setLineupsSite, setLineupsMap },
+  resetLineupsQuery,
 }) => {
   // prettier-ignore
   const [maps, {search: [searchMaps, setSearchMaps]}] = useQuery(mapsData, {
     search: {field: 'displayName'}
   })
-
-  function resetFilter() {
-    setLineupsType('')
-    setLineupsSite('')
-    setLineupsMap('')
-  }
 
   return (
     <Dialog
@@ -118,7 +113,7 @@ const LineupsFilterModal = ({
         <div className='fixed left-0 bottom-0 bg-white w-full py-2 border-t'>
           <Wrapper className='flex space-x-2'>
             <button
-              onClick={resetFilter}
+              onClick={resetLineupsQuery}
               className='bottom-filter-btn border border-gray-400 text-gray-500'
             >
               Reset

@@ -72,7 +72,9 @@ const LineupsPage = () => {
           >
             <div className='flex space-x-2 items-center'>
               {!lineupsType && !lineupsSite && !lineupsMap && (
-                <h1 className='text-lg font-black uppercase'>No filter applied</h1>
+                <h1 className='text-lg font-black uppercase text-gray-800'>
+                  No filter applied
+                </h1>
               )}
               {lineupsMap && (
                 <>
@@ -113,6 +115,7 @@ const LineupsPage = () => {
           setLineupsSite,
           setLineupsMap,
         }}
+        resetLineupsQuery={resetLineupsQuery}
       />
     </Wrapper>
   )
