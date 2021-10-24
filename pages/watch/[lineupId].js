@@ -50,9 +50,12 @@ const WatchLineup = ({ lineup: lineupServer, user }) => {
   return (
     <>
       {/* top */}
-      <div className='fixed z-10 top-0 h-14 left-0 w-full flex items-center bg-black bg-opacity-90 p-2'>
-        <button onClick={router.back} className='flex items-center font-bold text-white'>
-          <ArrowNarrowLeftIcon className='watchLineup-icon mr-1' /> Back
+      <div className='fixed z-10 top-2 left-2 w-max flex items-center bg-black bg-opacity-70 backdrop-blur-sm rounded-md'>
+        <button
+          onClick={router.back}
+          className='flex items-center font-bold text-white px-3 py-2'
+        >
+          <ArrowNarrowLeftIcon className='watchLineup-icon mr-1 -ml-1' /> Back
         </button>
       </div>
 
