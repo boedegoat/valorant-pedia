@@ -2,32 +2,26 @@ import Image from 'next/image'
 import { Dialog } from '@headlessui/react'
 import Wrapper from '../Wrapper'
 import SearchBar from '../SearchBar'
-// import LineupsFilterList from './LineupsFilterList'
 import useQuery from '../../hooks/useQuery'
+import SwordIcon from '../icon/SwordIcon'
+import ShieldIcon from '../icon/ShieldIcon'
 
 const LineupsFilterModal = ({
   show,
   onClose,
   maps: mapsData,
-  lineupsFilter,
-  setLineupsFilter,
+  filters: { lineupsType, lineupsSite, lineupsMap },
+  setFilters: { setLineupsType, setLineupsSite, setLineupsMap },
 }) => {
-  function updateFilter(property, value) {
-    setLineupsFilter((currentFilter) => ({ ...currentFilter, [property]: value }))
-  }
-
   // prettier-ignore
   const [maps, {search: [searchMaps, setSearchMaps]}] = useQuery(mapsData, {
     search: {field: 'displayName'}
   })
 
   function resetFilter() {
-    setLineupsFilter((currentFilter) => ({
-      ...currentFilter,
-      map: '',
-      type: '',
-      site: '',
-    }))
+    setLineupsType('')
+    setLineupsSite('')
+    setLineupsMap('')
   }
 
   return (
@@ -45,41 +39,53 @@ const LineupsFilterModal = ({
           {/* title */}
           <Dialog.Title className='font-bold text-2xl text-gray-900 pt-6 flex items-center justify-between'>
             Filters
-            <LineupsFilterList lineupsFilter={lineupsFilter} text='base' />
           </Dialog.Title>
 
           {/* content */}
           <div className='overflow-y-auto space-y-4 divide-y divide-gray-200 scrollbar-hide pb-6 py-4'>
-            {/* filter by type and site */}
             <div>
-              <div className='flex items-center justify-between py-4'>
-                <h3 className='font-bold text-lg text-gray-800'>Play on</h3>
-                <select
-                  className='w-1/2 text-base mr-1 border-gray-300 rounded-md focus:border-fuchsia-500 focus:ring-fuchsia-500'
-                  value={lineupsFilter.type}
-                  onChange={(e) => updateFilter('type', e.target.value)}
-                >
-                  <option value=''>All</option>
-                  <option value='attacking'>Attacking</option>
-                  <option value='defending'>Defending</option>
-                </select>
+              {/* filter type */}
+              <div className='flex space-x-2'>
+                <FilterTypeButton
+                  lineupsType={lineupsType}
+                  setLineupsType={setLineupsType}
+                  value='attacking'
+                  Icon={SwordIcon}
+                />
+                <FilterTypeButton
+                  lineupsType={lineupsType}
+                  setLineupsType={setLineupsType}
+                  value='defending'
+                  Icon={ShieldIcon}
+                />
               </div>
-              <div className='flex items-center justify-between py-4'>
-                <h3 className='font-bold text-lg text-gray-800'>Position</h3>
-                <select
-                  className='w-1/2 text-base mr-1 border-gray-300 rounded-md focus:border-fuchsia-500 focus:ring-fuchsia-500'
-                  value={lineupsFilter.site}
-                  onChange={(e) => updateFilter('site', e.target.value)}
-                >
-                  <option value=''>All</option>
-                  <option value='a'>A</option>
-                  <option value='b'>B</option>
-                  <option value='mid'>Mid</option>
-                </select>
+
+              {/* filter site */}
+              <div className='flex space-x-2 mt-4'>
+                <FilterSiteButton
+                  lineupsSite={lineupsSite}
+                  setLineupsSite={setLineupsSite}
+                  value='a'
+                />
+                <FilterSiteButton
+                  lineupsSite={lineupsSite}
+                  setLineupsSite={setLineupsSite}
+                  value='b'
+                />
+                <FilterSiteButton
+                  lineupsSite={lineupsSite}
+                  setLineupsSite={setLineupsSite}
+                  value='c'
+                />
+                <FilterSiteButton
+                  lineupsSite={lineupsSite}
+                  setLineupsSite={setLineupsSite}
+                  value='mid'
+                />
               </div>
             </div>
 
-            {/* filter by map */}
+            {/* filter map */}
             <div className='space-y-4 pt-4 pb-20'>
               <SearchBar
                 placeholder='Search map'
@@ -88,69 +94,38 @@ const LineupsFilterModal = ({
               />
 
               {/* map list */}
-              <ul className='grid grid-cols-2 gap-4'>
-                {maps.length ? (
-                  <li
-                    className={`rounded-md overflow-hidden border-2 shadow-sm ${
-                      lineupsFilter.map === '' ? 'border-fuchsia-400' : 'border-gray-200'
-                    }`}
-                  >
-                    <button
-                      className='w-full h-full font-semibold'
-                      onClick={() => updateFilter('map', '')}
-                    >
-                      All Maps
-                    </button>
-                  </li>
-                ) : (
-                  <li className='col-span-2'>
-                    <h3 className='text-xl text-center mt-4'>
-                      Map '<strong>{searchMaps}</strong>' Not Found
-                    </h3>
-                  </li>
-                )}
-
+              <div className='grid grid-cols-2 gap-4'>
                 {maps.map((map) => (
-                  <li
+                  <FilterMapButton
                     key={map.uuid}
-                    className={`rounded-md overflow-hidden border-2 shadow-sm
-                        ${
-                          lineupsFilter.map === map.displayName.toLowerCase()
-                            ? 'border-fuchsia-400'
-                            : 'border-gray-200'
-                        }
-                        `}
-                  >
-                    <button
-                      className='w-full'
-                      onClick={() => updateFilter('map', map.displayName.toLowerCase())}
-                    >
-                      <Image
-                        src={map.splash}
-                        width={30}
-                        height={35}
-                        layout='responsive'
-                        objectFit='cover'
-                      />
-                      <p className='py-2 font-semibold'>{map.displayName}</p>
-                    </button>
-                  </li>
+                    lineupsMap={lineupsMap}
+                    setLineupsMap={setLineupsMap}
+                    mapImage={map.splash}
+                    mapName={map.displayName.toLowerCase()}
+                  />
                 ))}
-              </ul>
+                {!maps.length && (
+                  <h2 className='col-span-2 text-center text-lg'>
+                    🙈 map <strong>{searchMaps}</strong> not found
+                  </h2>
+                )}
+              </div>
             </div>
           </div>
         </Wrapper>
+
+        {/* bottom menu */}
         <div className='fixed left-0 bottom-0 bg-white w-full py-2 border-t'>
           <Wrapper className='flex space-x-2'>
             <button
               onClick={resetFilter}
-              className='flex-grow border-2 border-gray-700 text-gray-700 text-base font-semibold rounded-md px-2 py-3'
+              className='bottom-filter-btn border border-gray-400 text-gray-500'
             >
               Reset
             </button>
             <button
               onClick={onClose}
-              className='flex-grow bg-gray-700 text-white text-base font-semibold rounded-md px-2 py-3'
+              className='bottom-filter-btn bg-fuchsia-500 text-white'
             >
               Done
             </button>
@@ -162,3 +137,36 @@ const LineupsFilterModal = ({
 }
 
 export default LineupsFilterModal
+
+const FilterTypeButton = ({ lineupsType, setLineupsType, value, Icon }) => (
+  <button
+    className={`filter-btn ${lineupsType === value ? 'bg-fuchsia-500' : ''}`}
+    onClick={() => setLineupsType(lineupsType !== value ? value : '')}
+  >
+    <Icon className='filter-icon' />
+    <p className='filter-label'>{value}</p>
+  </button>
+)
+
+const FilterSiteButton = ({ lineupsSite, setLineupsSite, value }) => (
+  <button
+    className={`filter-btn uppercase font-bold ${
+      lineupsSite === value ? 'bg-fuchsia-500' : ''
+    }`}
+    onClick={() => setLineupsSite(lineupsSite !== value ? value : '')}
+  >
+    {value}
+  </button>
+)
+
+const FilterMapButton = ({ lineupsMap, setLineupsMap, mapName, mapImage }) => (
+  <button
+    className={`rounded-md overflow-hidden border-2 shadow-sm
+                ${lineupsMap === mapName ? 'border-fuchsia-400' : 'border-gray-200'}
+    `}
+    onClick={() => setLineupsMap(lineupsMap !== mapName ? mapName : '')}
+  >
+    <Image src={mapImage} width={30} height={35} layout='responsive' objectFit='cover' />
+    <p className='py-2 font-black uppercase'>{mapName}</p>
+  </button>
+)

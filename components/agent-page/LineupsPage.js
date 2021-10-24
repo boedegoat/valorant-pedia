@@ -6,12 +6,9 @@ import LineupsVideoModal from './LineupsVideoModal'
 import { agentToURL } from '../../lib/agents'
 import useToggle from '../../hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
-import useObserver from '../../hooks/useObserver'
-import LineupsMoreButton from './LineupsMoreButton'
 import { useAgentPageContext } from './AgentPageLayout'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
-import { useCollection } from 'react-firebase-hooks/firestore'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
 
@@ -19,9 +16,6 @@ const Lineups = () => {
   const { agent, maps } = useAgentPageContext()
 
   const [showFilterModal, toggleShowFilterModal] = useToggle()
-  const [showMoreButton, toggleShowMoreButton] = useToggle()
-
-  // const [navRef, navVisible] = useObserver({ initVisible: true })
 
   // TODO : Make infinite scroll (limit = 8)
   const [lineupsQuery, setLineupsQuery] = useState(
@@ -29,9 +23,9 @@ const Lineups = () => {
   )
   const [lineups, lineupsLoading] = useCollectionDataWithId(lineupsQuery)
 
-  const [lineupsMap, setLineupsMap] = useState('bind')
-  const [lineupsType, setLineupsType] = useState('attacking')
-  const [lineupsSite, setLineupsSite] = useState('a')
+  const [lineupsType, setLineupsType] = useState('')
+  const [lineupsSite, setLineupsSite] = useState('')
+  const [lineupsMap, setLineupsMap] = useState('')
 
   return (
     <Wrapper>
@@ -48,41 +42,55 @@ const Lineups = () => {
 
       <nav className='fixed bottom-0 left-0 right-0 bg-white px-2 pb-2'>
         <div className='bg-white shadow-xl border rounded-lg p-1 flex'>
-          <button className='py-2 bg-[#EDEDED] rounded-sm flex-grow px-2 flex items-center'>
+          {/* open filter button */}
+          <button
+            className='py-2 bg-[#EDEDED] rounded-sm flex-grow px-2 flex items-center'
+            onClick={toggleShowFilterModal}
+          >
             <div className='flex space-x-2 items-center'>
-              <Image
-                src={maps.find((m) => m.displayName.toLowerCase() === lineupsMap).splash}
-                width={26}
-                height={26}
-                layout='fixed'
-                className='rounded-full'
-              />
-              <h1 className='text-lg font-black uppercase'>{lineupsMap}</h1>
+              {!lineupsType && !lineupsSite && !lineupsMap && (
+                <h1 className='text-lg font-black uppercase'>No filter applied</h1>
+              )}
+              {lineupsMap && (
+                <>
+                  <Image
+                    src={
+                      maps.find((m) => m.displayName.toLowerCase() === lineupsMap).splash
+                    }
+                    width={26}
+                    height={26}
+                    layout='fixed'
+                    className='rounded-full'
+                  />
+                  <h1 className='text-lg font-black uppercase'>{lineupsMap}</h1>
+                </>
+              )}
               <LineupsTypeAndSite type={lineupsType} site={lineupsSite} black />
             </div>
             <ChevronRightIcon className='w-[32px] h-[32px] text-gray-800 ml-auto' />
           </button>
+          {/* search button */}
           <button className='px-5'>
             <SearchIcon className='w-[32px] h-[32px] text-gray-800' />
           </button>
         </div>
       </nav>
 
-      {/* <LineupsFilterModal
+      <LineupsFilterModal
         show={showFilterModal}
         onClose={toggleShowFilterModal}
         maps={maps}
-        lineupsFilter={lineupsFilter}
-        setLineupsFilter={setLineupsFilter}
+        filters={{
+          lineupsType,
+          lineupsSite,
+          lineupsMap,
+        }}
+        setFilters={{
+          setLineupsType,
+          setLineupsSite,
+          setLineupsMap,
+        }}
       />
-
-      <LineupsMoreButton
-        showMoreButton={showMoreButton}
-        toggleShowMoreButton={toggleShowMoreButton}
-        toggleShowFilterModal={toggleShowFilterModal}
-        navVisible={navVisible}
-        navRef={navRef}
-      /> */}
     </Wrapper>
   )
 }

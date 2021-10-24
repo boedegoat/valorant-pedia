@@ -58,12 +58,7 @@ export async function getAgentByName(req, res) {
           id: lineupDoc.id,
           ...lineupDoc.data(),
         }
-
-        res.status(200).json({
-          status: 200,
-          message: `success get agent lineup with name ${agentname} and id ${lineups}`,
           lineup,
-        })
       }
       return
     }

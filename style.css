@@ -19,4 +19,20 @@
   .watchLineup-icon {
     @apply w-8 h-8 text-current;
   }
+
+  .bottom-filter-btn {
+    @apply flex-grow text-lg font-semibold rounded-md px-2 py-3;
+  }
+
+  .filter-btn {
+    @apply flex-grow bg-gray-700 text-white flex flex-col items-center py-5 space-y-2 rounded-md;
+  }
+
+  .filter-icon {
+    @apply w-8 h-8;
+  }
+
+  .filter-label {
+    @apply uppercase font-semibold text-sm;
+  }
 }
