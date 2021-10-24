@@ -4,8 +4,9 @@ import { useRouter } from 'next/router'
 import LineupsPage from '../components/agent-page/LineupsPage'
 import { getMaps } from '../lib/maps'
 import useObserver from '../hooks/useObserver'
+import { db } from '../lib/firebase-client'
 
-const Agent = ({ agent, maps }) => {
+const Agent = ({ agent, maps, agentDoc }) => {
   const router = useRouter()
   const tabName = router.query.tab
   const [headerRef, headerVisible] = useObserver({ initVisible: true })
@@ -18,6 +19,7 @@ const Agent = ({ agent, maps }) => {
     <AgentPageLayout
       agent={agent}
       maps={maps}
+      agentDoc={agentDoc}
       headerRef={headerRef}
       headerVisible={headerVisible}
     >
@@ -28,26 +30,38 @@ const Agent = ({ agent, maps }) => {
 
 export default Agent
 
-export async function getStaticPaths() {
-  const agents = await getAgents()
-  const paths = agents.map(({ displayName }) => ({
-    params: {
-      agent: agentToURL(displayName),
-    },
-  }))
-
-  return {
-    paths,
-    fallback: false,
-  }
-}
-
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const agentName = parseAgentFromURL(context.params.agent)
   const agent = await getAgentsByName(agentName)
   const maps = await getMaps()
 
-  return {
-    props: { agent, maps },
+  const agentSnapshot = await db
+    .collection('agents')
+    .doc(agentToURL(agent.displayName))
+    .get()
+  const agentDoc = agentSnapshot.data()
+
+  const props = { agent, maps, agentDoc }
+
+  // if tab already exist, dont redirect
+  if (context.query.tab) return { props }
+
+  // if tab not exist, redirect
+  if (agentDoc.hasLineups) {
+    return {
+      props,
+      redirect: {
+        permanent: false,
+        destination: `/${agentToURL(agent.displayName)}?tab=lineups`,
+      },
+    }
+  } else {
+    return {
+      props,
+      redirect: {
+        permanent: false,
+        destination: `/${agentToURL(agent.displayName)}?tab=abilities`,
+      },
+    }
   }
 }

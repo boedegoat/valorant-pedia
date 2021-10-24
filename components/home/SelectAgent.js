@@ -4,7 +4,7 @@ import { agentToURL } from '../../lib/agents'
 
 const SelectAgent = ({ src, agentName, roleName, roleIcon }) => {
   return (
-    <Link href={`/${agentToURL(agentName)}?tab=lineups`}>
+    <Link href={`/${agentToURL(agentName)}`}>
       <div className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'>
         {/* agent image */}
         <Image src={src} layout='fill' objectFit='cover' />

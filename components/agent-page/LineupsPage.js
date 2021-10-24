@@ -51,7 +51,6 @@ const LineupsPage = () => {
           agentName={agent.displayName}
           lineups={lineups}
           lineupsLoading={lineupsLoading}
-          maps={maps}
         />
         <LineupsVideoModal agentName={agent.displayName} lineups={lineups} />
       </div>

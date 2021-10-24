@@ -1,11 +1,13 @@
-import { agentToURL } from '../../lib/agents'
 import { toTitleCase } from '../../lib/utils'
 import Link from '../Link'
 import Image from 'next/image'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import { HeartIcon } from '@heroicons/react/solid'
+import { useAgentPageContext } from './AgentPageLayout'
 
-const LineupsList = ({ agentName, lineups, lineupsLoading, maps }) => {
+const LineupsList = ({ lineups, lineupsLoading }) => {
+  const { maps } = useAgentPageContext()
+
   function isNotExist() {
     return !lineups.length && !lineupsLoading
   }

@@ -5,7 +5,7 @@ import Tooltip from '../../components/Tooltip'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/client'
 
-const AgentHeader = ({ agent, headerRef }) => {
+const AgentHeader = ({ agent, headerRef, agentDoc }) => {
   const [session] = useSession()
   const router = useRouter()
 
@@ -71,7 +71,9 @@ const AgentHeader = ({ agent, headerRef }) => {
                     onClick={addToFavorite}
                   >
                     <HeartIcon className='w-6 h-6' />
-                    <span className='text-xs font-medium text-fuchsia-400'>180</span>
+                    <span className='text-xs font-medium text-fuchsia-400'>
+                      {agentDoc.favorites.length}
+                    </span>
                   </button>
                 </Tooltip>
               </div>

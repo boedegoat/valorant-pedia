@@ -14,12 +14,12 @@ export function useAgentPageContext() {
 }
 
 const AgentPageLayout = ({ children, ...props }) => {
-  const { agent, headerRef, headerVisible } = props
+  const { agent, agentDoc, headerRef, headerVisible } = props
   const router = useRouter()
 
   return (
     <Layout title={`${agent.displayName}'s Homepage`} back='/' hideMainMenu>
-      <AgentHeader agent={agent} headerRef={headerRef} />
+      <AgentHeader agent={agent} headerRef={headerRef} agentDoc={agentDoc} />
 
       {/* select tab */}
       <Wrapper
@@ -51,7 +51,9 @@ const AgentPageLayout = ({ children, ...props }) => {
             ${headerVisible ? 'left-4' : 'left-20'}
           `}
         >
-          <ChangeTab agentName={agent.displayName} to='lineups' />
+          {agentDoc.hasLineups && (
+            <ChangeTab agentName={agent.displayName} to='lineups' />
+          )}
           <ChangeTab agentName={agent.displayName} to='abilities' />
           <ChangeTab agentName={agent.displayName} to='more' />
         </div>
