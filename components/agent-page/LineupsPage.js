@@ -7,25 +7,42 @@ import { agentToURL } from '../../lib/agents'
 import useToggle from '../../hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
 import { useAgentPageContext } from './AgentPageLayout'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
 
-const Lineups = () => {
+const LineupsPage = () => {
   const { agent, maps } = useAgentPageContext()
-
   const [showFilterModal, toggleShowFilterModal] = useToggle()
 
+  const AgentLineups = db
+    .collection('lineups')
+    .where('agent', '==', agentToURL(agent.displayName))
+
+  const [lineupsQuery, setLineupsQuery] = useState(AgentLineups)
+
   // TODO : Make infinite scroll (limit = 8)
-  const [lineupsQuery, setLineupsQuery] = useState(
-    db.collection('lineups').where('agent', '==', agentToURL(agent.displayName))
-  )
   const [lineups, lineupsLoading] = useCollectionDataWithId(lineupsQuery)
 
   const [lineupsType, setLineupsType] = useState('')
   const [lineupsSite, setLineupsSite] = useState('')
   const [lineupsMap, setLineupsMap] = useState('')
+
+  function handleLineupsQuery() {
+    let newQuery = AgentLineups
+    if (lineupsType) {
+      newQuery = newQuery.where('type', '==', lineupsType)
+    }
+    if (lineupsSite) {
+      newQuery = newQuery.where('site', '==', lineupsSite)
+    }
+    if (lineupsMap) {
+      newQuery = newQuery.where('map', '==', lineupsMap)
+    }
+    setLineupsQuery(newQuery)
+  }
+  useEffect(handleLineupsQuery, [lineupsType, lineupsSite, lineupsMap])
 
   return (
     <Wrapper>
@@ -95,4 +112,4 @@ const Lineups = () => {
   )
 }
 
-export default Lineups
+export default LineupsPage
