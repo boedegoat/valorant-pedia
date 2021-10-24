@@ -7,11 +7,15 @@ import SearchResultsSection from '../components/home/SearchResultsSection'
 import Layout from '../components/Layout'
 import RoleFilterSection from '../components/home/RoleFilterSection'
 import { getAgents, getRoles, getSearchResults } from '../lib/agents'
+import { useCollectionData } from 'react-firebase-hooks/firestore'
+import { db } from '../lib/firebase-client'
 
 const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
+
+  const [agentsDoc] = useCollectionData(db.collection('agents'))
 
   useEffect(() => {
     if (!searchAgent) return
@@ -56,7 +60,9 @@ const Home = ({ agents, roles }) => {
             </Wrapper>
 
             {roleFilter && <RoleFilterSection roleFilter={roleFilter} agents={agents} />}
-            {!roleFilter && <SelectAgentSection roles={roles} agents={agents} />}
+            {!roleFilter && (
+              <SelectAgentSection roles={roles} agents={agents} agentsDoc={agentsDoc} />
+            )}
           </Fragment>
         )}
       </main>

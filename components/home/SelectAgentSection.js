@@ -1,7 +1,8 @@
+import { agentToURL } from '../../lib/agents'
 import Wrapper from '../Wrapper'
 import SelectAgent from './SelectAgent'
 
-const SelectAgentSection = ({ roles, agents }) => {
+const SelectAgentSection = ({ roles, agents, agentsDoc }) => {
   return roles.map(({ name }) => (
     <section key={name}>
       <Wrapper>
@@ -17,6 +18,7 @@ const SelectAgentSection = ({ roles, agents }) => {
               agentName={agent.displayName}
               roleName={agent.role.displayName}
               roleIcon={agent.role.displayIcon}
+              agentDoc={agentsDoc?.find((d) => d.name === agentToURL(agent.displayName))}
             />
           ))}
       </Wrapper>
