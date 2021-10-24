@@ -1,4 +1,4 @@
-import { agentToURL, getAgents, getAgentsByName, parseAgentFromURL } from '../lib/agents'
+import { agentToURL, getAgentsByName, parseAgentFromURL } from '../lib/agents'
 import AgentPageLayout from '../components/agent-page/AgentPageLayout'
 import { useRouter } from 'next/router'
 import LineupsPage from '../components/agent-page/LineupsPage'
@@ -8,6 +8,7 @@ import { db } from '../lib/firebase-client'
 
 const Agent = ({ agent, maps, agentDoc }) => {
   const router = useRouter()
+
   const tabName = router.query.tab
   const [headerRef, headerVisible] = useObserver({ initVisible: true })
 

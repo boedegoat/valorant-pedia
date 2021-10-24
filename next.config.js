@@ -7,4 +7,7 @@ module.exports = {
       'firebasestorage.googleapis.com',
     ],
   },
+  experimental: {
+    scrollRestoration: true,
+  },
 }

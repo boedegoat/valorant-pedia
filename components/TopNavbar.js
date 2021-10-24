@@ -12,7 +12,7 @@ const TopNavbar = ({ back }) => {
     switch (typeof back) {
       case 'string':
         return (
-          <Link href={back} className='flex items-center font-bold'>
+          <Link href={back} scroll={false} className='flex items-center font-bold'>
             <ArrowNarrowLeftIcon className='h-5 w-5 text-gray-800 mr-1' /> Back
           </Link>
         )
