@@ -1,15 +1,30 @@
 import Wrapper from '../Wrapper'
 import { HeartIcon } from '@heroicons/react/outline'
+import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import Image from 'next/image'
 import Tooltip from '../../components/Tooltip'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/client'
+import { agentToURL } from '../../lib/agents'
+import { appendArray, db, popArray } from '../../lib/firebase-client'
+import { useDocumentData } from 'react-firebase-hooks/firestore'
 
-const AgentHeader = ({ agent, headerRef, agentDoc }) => {
+const AgentHeader = ({ agent, headerRef, agentDoc: agentDocServer }) => {
   const [session] = useSession()
   const router = useRouter()
 
-  function addToFavorite() {
+  // prettier-ignore
+  const [agentDocClient] = useDocumentData(
+    db
+      .collection('agents')
+      .doc(agentToURL(agent.displayName))
+  )
+
+  const agentDoc = agentDocClient || agentDocServer
+
+  const isUserFavorite = agentDoc.favorites.includes(session?.user.email)
+
+  async function addToFavorite() {
     if (!session) {
       const signInConfirmation = confirm(
         'You need to Sign In first in order to favorite this agent. Would you like to Sign In now ?'
@@ -18,12 +33,17 @@ const AgentHeader = ({ agent, headerRef, agentDoc }) => {
       return
     }
 
-    // TODO :
-    // 1. update agent docs to store favorited user by email, e.g [a@b.com, c@d.com,...]
-    // 2. check if user already favorite, then remove from list
-    // 3. get favorite array length to make realtime favorite count
-    // 4. change alert to custom toast alert
-    alert(`added ${agent.displayName} to your favorite (tapi boong..., belom jadi bro)`)
+    const agentDocRef = db.collection('agents').doc(agentToURL(agent.displayName))
+
+    if (isUserFavorite) {
+      await agentDocRef.set({ favorites: popArray(session?.user.email) }, { merge: true })
+      return
+    }
+
+    await agentDocRef.set(
+      { favorites: appendArray(session?.user.email) },
+      { merge: true }
+    )
   }
 
   return (
@@ -62,16 +82,20 @@ const AgentHeader = ({ agent, headerRef, agentDoc }) => {
               <p className='text-xs'>{agent.description}</p>
 
               {/* bottom menu */}
-              <div className='flex justify-end'>
+              <div className='flex'>
                 {/* add to favorite button */}
 
                 <Tooltip content='favorite this'>
                   <button
-                    className='flex items-center space-x-1 text-gray-400 px-2 py-1'
+                    className='flex items-center space-x-1 text-heart py-1'
                     onClick={addToFavorite}
                   >
-                    <HeartIcon className='w-6 h-6' />
-                    <span className='text-xs font-medium text-fuchsia-400'>
+                    {isUserFavorite ? (
+                      <HeartIconSolid className='w-6 h-6' />
+                    ) : (
+                      <HeartIcon className='w-6 h-6' />
+                    )}
+                    <span className='text-xs font-medium text-gray-500'>
                       {agentDoc.favorites.length}
                     </span>
                   </button>

@@ -28,18 +28,14 @@ const WatchLineup = ({ lineup: lineupServer, user }) => {
   async function addToFavorites() {
     if (!user) return alert('you are not logged in yet')
 
+    const lineupDocRef = db.collection('lineups').doc(lineup.id)
+
     if (isUserFavorite) {
-      await db
-        .collection('lineups')
-        .doc(lineup.id)
-        .set({ favorites: popArray(user.email) }, { merge: true })
+      await lineupDocRef.set({ favorites: popArray(user.email) }, { merge: true })
       return
     }
 
-    await db
-      .collection('lineups')
-      .doc(lineup.id)
-      .set({ favorites: appendArray(user.email) }, { merge: true })
+    await lineupDocRef.set({ favorites: appendArray(user.email) }, { merge: true })
   }
 
   function copyURLToClipboard() {

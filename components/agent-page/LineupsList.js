@@ -19,7 +19,7 @@ const LineupsList = ({ lineups, lineupsLoading, resetLineupsQuery }) => {
 
   console.log(lineups)
 
-  return lineups.map(({ id, map, site, title, type, thumbnailURL }) => (
+  return lineups.map(({ id, map, site, title, type, thumbnailURL, favorites }) => (
     <Link
       href={`/watch/${id}`}
       shallow={true}
@@ -50,7 +50,7 @@ const LineupsList = ({ lineups, lineupsLoading, resetLineupsQuery }) => {
         {/* favorite count */}
         <div className='ml-auto flex items-center space-x-1'>
           <HeartIcon className='w-3 h-3 text-heart' />
-          <p className='text-[10px]'>{Math.floor(Math.random() * 101)}</p>
+          <p className='text-[10px]'>{favorites.length}</p>
         </div>
       </div>
 
