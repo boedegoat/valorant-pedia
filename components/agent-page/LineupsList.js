@@ -6,6 +6,7 @@ import { HeartIcon } from '@heroicons/react/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { useAgentPageContext } from './AgentPageLayout'
 import { useSession } from 'next-auth/client'
+import SelectLineup from './SelectLineup'
 
 const LineupsList = ({ lineups, lineupsLoading, resetLineupsQuery }) => {
   const { maps } = useAgentPageContext()
