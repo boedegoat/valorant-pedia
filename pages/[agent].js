@@ -56,26 +56,4 @@ export async function getStaticProps(context) {
 
   const props = { agent, maps }
   return { props }
-
-  // // if tab already exist, dont redirect
-  // if (context.query.tab) return { props }
-
-  // // if tab not exist, redirect
-  // if (agentDoc.hasLineups) {
-  //   return {
-  //     props,
-  //     redirect: {
-  //       permanent: false,
-  //       destination: `/${agentToURL(agent.displayName)}?tab=lineups`,
-  //     },
-  //   }
-  // } else {
-  //   return {
-  //     props,
-  //     redirect: {
-  //       permanent: false,
-  //       destination: `/${agentToURL(agent.displayName)}?tab=abilities`,
-  //     },
-  //   }
-  // }
 }

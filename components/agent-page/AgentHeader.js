@@ -3,26 +3,20 @@ import { HeartIcon } from '@heroicons/react/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import Image from 'next/image'
 import Tooltip from '../../components/Tooltip'
-import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/client'
 import { agentToURL } from '../../lib/agents'
 import { appendArray, db, popArray } from '../../lib/firebase-client'
-import { useDocumentData } from 'react-firebase-hooks/firestore'
+import SignInAlert from '../SignInAlert'
+import useToggle from '../../hooks/useToggle'
 
 const AgentHeader = ({ agent, headerRef, agentDoc }) => {
   const [session] = useSession()
-  const router = useRouter()
+  const [signInAlert, toggleSignInAlert] = useToggle(false)
 
   const isUserFavorite = agentDoc?.favorites.includes(session?.user.email)
 
   async function addToFavorite() {
-    if (!session) {
-      const signInConfirmation = confirm(
-        'You need to Sign In first in order to favorite this agent. Would you like to Sign In now ?'
-      )
-      if (signInConfirmation) router.push('/signin')
-      return
-    }
+    if (!session) return toggleSignInAlert(true)
 
     const agentDocRef = db.collection('agents').doc(agentToURL(agent.displayName))
 
@@ -91,6 +85,12 @@ const AgentHeader = ({ agent, headerRef, agentDoc }) => {
                     </span>
                   </button>
                 </Tooltip>
+
+                <SignInAlert
+                  open={signInAlert}
+                  onClose={toggleSignInAlert}
+                  description={`Get your account now to favorite ${agent.displayName}`}
+                />
               </div>
             </div>
           </div>

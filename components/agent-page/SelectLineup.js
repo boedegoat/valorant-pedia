@@ -5,12 +5,12 @@ import { toTitleCase } from '../../lib/utils'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
 
-const SelectLineup = ({ lineup, maps, user }) => {
+const SelectLineup = ({ lineup, maps, user, back }) => {
   const { id, map, site, title, type, thumbnailURL, favorites } = lineup
 
   return (
     <Link
-      href={`/watch/${id}`}
+      href={`/watch/${id}?back=${back}`}
       shallow={true}
       scroll={false}
       key={id}
@@ -38,7 +38,7 @@ const SelectLineup = ({ lineup, maps, user }) => {
         </div>
         {/* favorite count */}
         <div className='ml-auto flex items-center space-x-1'>
-          {favorites.includes(user.email) ? (
+          {favorites.includes(user?.email) ? (
             <HeartIconSolid className='w-3 h-3 text-heart' />
           ) : (
             <HeartIcon className='w-3 h-3 text-heart' />

@@ -4,11 +4,11 @@ import PlaylistLink from '../../components/playlist-page/PlaylistLink'
 import Wrapper from '../../components/Wrapper'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../../lib/firebase-client'
-import { signIn, useSession } from 'next-auth/client'
+import { useSession } from 'next-auth/client'
 import PlaylistLoading from '../../components/playlist-page/PlaylistLoading'
 import useToggle from '../../hooks/useToggle'
-import Alert from '../../components/Alert'
 import { useEffect } from 'react'
+import SignInAlert from '../../components/SignInAlert'
 
 const Playlist = () => {
   const [lineups, lineupsLoading] = useCollectionData(db.collection('lineups'))
@@ -50,24 +50,12 @@ const Playlist = () => {
         </Wrapper>
       </main>
 
-      <Alert open={signInAlert} onClose={() => {}}>
-        <Alert.Title as='h3' className='text-xl font-bold leading-6 text-gray-900'>
-          Sign In
-        </Alert.Title>
-        <Alert.Description className='mt-2 text-sm'>
-          Get your account now to access the playlist page
-        </Alert.Description>
-
-        <div className='mt-4'>
-          <button
-            type='button'
-            className='inline-flex justify-center px-4 py-2 text-sm font-medium text-fuchsia-900 bg-fuchsia-100 border border-transparent rounded-md hover:bg-fuchsia-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-fuchsia-500'
-            onClick={() => signIn('google', { callbackUrl: '/playlist' })}
-          >
-            Sign In with Google
-          </button>
-        </div>
-      </Alert>
+      <SignInAlert
+        description='Get your account now to access the playlist page'
+        callbackUrl='/playlist'
+        open={signInAlert}
+        onClose={() => {}}
+      />
     </Layout>
   )
 }

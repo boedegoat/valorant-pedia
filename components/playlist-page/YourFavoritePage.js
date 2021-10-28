@@ -18,7 +18,13 @@ const YourFavoritePage = () => {
     >
       <div className='mt-8 grid grid-cols-2 gap-2'>
         {lineups?.map((lineup) => (
-          <SelectLineup lineup={lineup} maps={maps} user={user} key={lineup.id} />
+          <SelectLineup
+            lineup={lineup}
+            maps={maps}
+            user={user}
+            key={lineup.id}
+            back='playlist/your-favorites'
+          />
         ))}
       </div>
     </PlaylistWrapper>
