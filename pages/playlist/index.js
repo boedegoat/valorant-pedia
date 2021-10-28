@@ -23,6 +23,10 @@ const Playlist = () => {
       <main className='mt-4'>
         <Wrapper className='space-y-4'>
           {lineupsLoading || sessionLoading ? (
+            // TODO
+            // setTimeout misal 1 detik
+            // kalo 1 detik masih loading, baru munculin skeleton loadingnya
+            // biar user yg internetnya kenceng gk ngeliat skeleton loading yg tiba2 nongol dan menghilang
             <PlaylistLoading count={5} />
           ) : (
             <PlaylistLink
