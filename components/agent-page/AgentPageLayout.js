@@ -51,7 +51,7 @@ const AgentPageLayout = ({ children, ...props }) => {
             ${headerVisible ? 'left-4' : 'left-20'}
           `}
         >
-          {agentDoc.hasLineups && (
+          {agentDoc?.hasLineups && (
             <ChangeTab agentName={agent.displayName} to='lineups' />
           )}
           <ChangeTab agentName={agent.displayName} to='abilities' />

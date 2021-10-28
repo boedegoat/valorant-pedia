@@ -4,9 +4,11 @@ import UserAvatar from './UserAvatar'
 import Link from './Link'
 import { Fragment } from 'react'
 import { useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
 
 const TopNavbar = ({ back }) => {
   const [session, loading] = useSession()
+  const router = useRouter()
 
   const BackComponent = () => {
     switch (typeof back) {

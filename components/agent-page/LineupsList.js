@@ -2,11 +2,14 @@ import { toTitleCase } from '../../lib/utils'
 import Link from '../Link'
 import Image from 'next/image'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
-import { HeartIcon } from '@heroicons/react/solid'
+import { HeartIcon } from '@heroicons/react/outline'
+import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { useAgentPageContext } from './AgentPageLayout'
+import { useSession } from 'next-auth/client'
 
 const LineupsList = ({ lineups, lineupsLoading, resetLineupsQuery }) => {
   const { maps } = useAgentPageContext()
+  const [session] = useSession()
 
   if (lineupsLoading) {
     return new Array(6).fill(0).map((_, index) => <LoadingComponent key={index} />)
@@ -49,7 +52,11 @@ const LineupsList = ({ lineups, lineupsLoading, resetLineupsQuery }) => {
         </div>
         {/* favorite count */}
         <div className='ml-auto flex items-center space-x-1'>
-          <HeartIcon className='w-3 h-3 text-heart' />
+          {favorites.includes(session?.user.email) ? (
+            <HeartIconSolid className='w-3 h-3 text-heart' />
+          ) : (
+            <HeartIcon className='w-3 h-3 text-heart' />
+          )}
           <p className='text-[10px]'>{favorites.length}</p>
         </div>
       </div>

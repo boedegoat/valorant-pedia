@@ -9,20 +9,11 @@ import { agentToURL } from '../../lib/agents'
 import { appendArray, db, popArray } from '../../lib/firebase-client'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 
-const AgentHeader = ({ agent, headerRef, agentDoc: agentDocServer }) => {
+const AgentHeader = ({ agent, headerRef, agentDoc }) => {
   const [session] = useSession()
   const router = useRouter()
 
-  // prettier-ignore
-  const [agentDocClient] = useDocumentData(
-    db
-      .collection('agents')
-      .doc(agentToURL(agent.displayName))
-  )
-
-  const agentDoc = agentDocClient || agentDocServer
-
-  const isUserFavorite = agentDoc.favorites.includes(session?.user.email)
+  const isUserFavorite = agentDoc?.favorites.includes(session?.user.email)
 
   async function addToFavorite() {
     if (!session) {
@@ -96,7 +87,7 @@ const AgentHeader = ({ agent, headerRef, agentDoc: agentDocServer }) => {
                       <HeartIcon className='w-6 h-6' />
                     )}
                     <span className='text-xs font-medium text-gray-500'>
-                      {agentDoc.favorites.length}
+                      {agentDoc?.favorites.length}
                     </span>
                   </button>
                 </Tooltip>
