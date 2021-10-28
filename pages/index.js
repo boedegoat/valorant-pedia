@@ -43,7 +43,9 @@ const Home = ({ agents, roles }) => {
 
       {/* home body */}
       <main className='py-5'>
-        {searchAgent && <SearchResultsSection searchResults={searchResults} />}
+        {searchAgent && (
+          <SearchResultsSection searchResults={searchResults} agentsDoc={agentsDoc} />
+        )}
         {!searchAgent && (
           <Fragment>
             {/* choose agent role */}
@@ -59,7 +61,13 @@ const Home = ({ agents, roles }) => {
               ))}
             </Wrapper>
 
-            {roleFilter && <RoleFilterSection roleFilter={roleFilter} agents={agents} />}
+            {roleFilter && (
+              <RoleFilterSection
+                roleFilter={roleFilter}
+                agents={agents}
+                agentsDoc={agentsDoc}
+              />
+            )}
             {!roleFilter && (
               <SelectAgentSection roles={roles} agents={agents} agentsDoc={agentsDoc} />
             )}
