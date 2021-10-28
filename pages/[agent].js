@@ -1,4 +1,4 @@
-import { agentToURL, getAgentsByName, parseAgentFromURL } from '../lib/agents'
+import { agentToURL, getAgents, getAgentsByName, parseAgentFromURL } from '../lib/agents'
 import AgentPageLayout from '../components/agent-page/AgentPageLayout'
 import { useRouter } from 'next/router'
 import LineupsPage from '../components/agent-page/LineupsPage'
@@ -34,6 +34,20 @@ const Agent = ({ agent, maps }) => {
 }
 
 export default Agent
+
+export async function getStaticPaths() {
+  const agents = await getAgents()
+  const paths = agents.map(({ displayName }) => ({
+    params: {
+      agent: agentToURL(displayName),
+    },
+  }))
+
+  return {
+    paths,
+    fallback: false,
+  }
+}
 
 export async function getStaticProps(context) {
   const agentName = parseAgentFromURL(context.params.agent)
