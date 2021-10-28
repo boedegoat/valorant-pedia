@@ -16,5 +16,11 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  // to make callbackURL work
+  callbacks: {
+    redirect: async (url, baseUrl) => {
+      return Promise.resolve(url)
+    },
+  },
   adapter: FirebaseAdapter(firestore),
 })

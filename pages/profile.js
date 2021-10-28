@@ -23,7 +23,7 @@ const Profile = ({ session }) => {
           }`}
           onClick={() => {
             setIsSigningOut(true)
-            signOut({ callbackUrl: router.back })
+            signOut({ callbackUrl: '/' })
           }}
           disabled={isSigningOut}
         >
