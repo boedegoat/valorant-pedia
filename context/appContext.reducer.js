@@ -63,11 +63,11 @@ export default function reducer(state, action) {
         lineupsState: {
           ...state.lineupsState,
           filter: {
-            ...state.lineupsState.filter,
             type: '',
             site: '',
             map: '',
             search: '',
+            query: null,
           },
         },
       }

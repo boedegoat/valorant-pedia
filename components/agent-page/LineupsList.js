@@ -35,12 +35,20 @@ export default LineupsList
 
 const LoadingComponent = () => {
   return (
-    <div className='bg-gray-300 animate-pulse rounded-md overflow-hidden p-3 space-y-2'>
-      <div className='h-5 bg-gray-400 bg-opacity-50 w-1/4 rounded-md'></div>
-      <div className='h-8 bg-gray-400 bg-opacity-90 w-3/4 rounded-md'></div>
-      <div className='flex space-x-2'>
-        <div className='h-2 bg-gray-400 bg-opacity-50 w-1/4 rounded-md'></div>
-        <div className='h-2 bg-gray-400 bg-opacity-25 w-1/12 rounded-md'></div>
+    <div
+      className='relative bg-gray-300 animate-pulse rounded-md overflow-hidden '
+      style={{
+        // make 9/16 aspect ratio
+        paddingBottom: 'calc((16/9) * 100%)',
+      }}
+    >
+      <div className='absolute p-3 space-y-2 inset-0'>
+        <div className='h-5 bg-gray-400 bg-opacity-50 w-1/4 rounded-md'></div>
+        <div className='h-8 bg-gray-400 bg-opacity-90 w-3/4 rounded-md'></div>
+        <div className='flex space-x-2'>
+          <div className='h-2 bg-gray-400 bg-opacity-50 w-1/4 rounded-md'></div>
+          <div className='h-2 bg-gray-400 bg-opacity-25 w-1/12 rounded-md'></div>
+        </div>
       </div>
     </div>
   )
