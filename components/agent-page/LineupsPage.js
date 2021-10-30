@@ -6,12 +6,18 @@ import { agentToURL } from '../../lib/agents'
 import useToggle from '../../hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
 import { useAgentPageContext } from './AgentPageLayout'
-import { useEffect, useState } from 'react'
 import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
+import { useAppContext } from '../../context/appContext'
+import { useEffect } from 'react'
 
 const LineupsPage = () => {
+  const [
+    {
+      lineupsState: { filter },
+    },
+  ] = useAppContext()
   const { agent, maps } = useAgentPageContext()
   const [showFilterModal, toggleShowFilterModal] = useToggle()
 
@@ -19,35 +25,10 @@ const LineupsPage = () => {
     .collection('lineups')
     .where('agent', '==', agentToURL(agent.displayName))
 
-  const [lineupsQuery, setLineupsQuery] = useState(AgentLineups)
+  console.log(filter)
 
   // TODO : Make infinite scroll (limit = 8)
-  const [lineups, lineupsLoading] = useCollectionDataWithId(lineupsQuery)
-
-  const [lineupsType, setLineupsType] = useState('')
-  const [lineupsSite, setLineupsSite] = useState('')
-  const [lineupsMap, setLineupsMap] = useState('')
-
-  function handleLineupsQuery() {
-    let newQuery = AgentLineups
-    if (lineupsType) {
-      newQuery = newQuery.where('type', '==', lineupsType)
-    }
-    if (lineupsSite) {
-      newQuery = newQuery.where('site', '==', lineupsSite)
-    }
-    if (lineupsMap) {
-      newQuery = newQuery.where('map', '==', lineupsMap)
-    }
-    setLineupsQuery(newQuery)
-  }
-  useEffect(handleLineupsQuery, [lineupsType, lineupsSite, lineupsMap])
-
-  function resetLineupsQuery() {
-    setLineupsType('')
-    setLineupsSite('')
-    setLineupsMap('')
-  }
+  const [lineups, lineupsLoading] = useCollectionDataWithId(filter.query ?? AgentLineups)
 
   return (
     <Wrapper>
@@ -56,7 +37,6 @@ const LineupsPage = () => {
           agentName={agent.displayName}
           lineups={lineups}
           lineupsLoading={lineupsLoading}
-          resetLineupsQuery={resetLineupsQuery}
         />
       </div>
       <div className='h-20'></div>
@@ -69,26 +49,26 @@ const LineupsPage = () => {
             onClick={toggleShowFilterModal}
           >
             <div className='flex space-x-2 items-center'>
-              {!lineupsType && !lineupsSite && !lineupsMap && (
+              {!filter.type && !filter.site && !filter.map && (
                 <h1 className='text-lg font-black uppercase text-gray-800'>
                   No filter applied
                 </h1>
               )}
-              {lineupsMap && (
+              {filter.map && (
                 <>
                   <Image
                     src={
-                      maps.find((m) => m.displayName.toLowerCase() === lineupsMap).splash
+                      maps.find((m) => m.displayName.toLowerCase() === filter.map).splash
                     }
                     width={26}
                     height={26}
                     layout='fixed'
                     className='rounded-full'
                   />
-                  <h1 className='text-lg font-black uppercase'>{lineupsMap}</h1>
+                  <h1 className='text-lg font-black uppercase'>{filter.map}</h1>
                 </>
               )}
-              <LineupsTypeAndSite type={lineupsType} site={lineupsSite} black />
+              <LineupsTypeAndSite type={filter.type} site={filter.site} black />
             </div>
             <ChevronRightIcon className='w-[32px] h-[32px] text-gray-800 ml-auto' />
           </button>
@@ -103,17 +83,7 @@ const LineupsPage = () => {
         show={showFilterModal}
         onClose={toggleShowFilterModal}
         maps={maps}
-        filters={{
-          lineupsType,
-          lineupsSite,
-          lineupsMap,
-        }}
-        setFilters={{
-          setLineupsType,
-          setLineupsSite,
-          setLineupsMap,
-        }}
-        resetLineupsQuery={resetLineupsQuery}
+        AgentLineups={AgentLineups}
       />
     </Wrapper>
   )

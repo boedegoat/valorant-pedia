@@ -1,9 +1,10 @@
 import '../style.css'
-import { Provider } from 'next-auth/client'
+import { Provider as NextAuthProvider } from 'next-auth/client'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import AppProvider from '../context/appContext'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
@@ -31,9 +32,11 @@ function MyApp({ Component, pageProps }) {
   }, [router])
 
   return (
-    <Provider session={pageProps.session}>
-      <Component {...pageProps} />
-    </Provider>
+    <NextAuthProvider session={pageProps.session}>
+      <AppProvider>
+        <Component {...pageProps} />
+      </AppProvider>
+    </NextAuthProvider>
   )
 }
 
