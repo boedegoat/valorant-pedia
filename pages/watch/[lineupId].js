@@ -101,6 +101,12 @@ export async function getServerSideProps(context) {
   const lineupSnapshot = await db.collection('lineups').doc(lineupId).get()
   const lineup = lineupSnapshot.data()
 
+  if (!lineup) {
+    return {
+      notFound: true,
+    }
+  }
+
   const session = await getSession(context)
 
   return {
