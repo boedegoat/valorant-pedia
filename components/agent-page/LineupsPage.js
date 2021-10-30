@@ -25,8 +25,6 @@ const LineupsPage = () => {
     .collection('lineups')
     .where('agent', '==', agentToURL(agent.displayName))
 
-  console.log(filter)
-
   // TODO : Make infinite scroll (limit = 8)
   const [lineups, lineupsLoading] = useCollectionDataWithId(filter.query ?? AgentLineups)
 
