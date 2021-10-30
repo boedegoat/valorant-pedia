@@ -21,18 +21,15 @@ const SelectLineup = ({ lineup, maps, user, back }) => {
       }}
     >
       {/* bg */}
-      <Image src={thumbnailURL} layout='fill' />
+      <img src={thumbnailURL} className='absolute inset-0' />
 
       {/* top */}
       <div className='absolute left-0 right-0 top-0 bg-white p-2 flex border-b-2'>
         {/* map */}
         <div className='flex items-center space-x-2 '>
-          <Image
+          <img
             src={maps.find((m) => m.displayName.toLowerCase() === map).splash}
-            width={19}
-            height={19}
-            layout='fixed'
-            className='rounded-full'
+            className='rounded-full w-5 h-5'
           />
           <h2 className='font-black text-base uppercase'>{map}</h2>
         </div>

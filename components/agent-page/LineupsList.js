@@ -16,15 +16,18 @@ const LineupsList = ({ lineups, lineupsLoading, resetLineupsQuery }) => {
     return <NotAvailableComponent resetLineupsQuery={resetLineupsQuery} />
   }
 
-  return lineups.map((lineup) => (
-    <SelectLineup
-      lineup={lineup}
-      maps={maps}
-      user={session?.user}
-      key={lineup.id}
-      back={`${lineup.agent}?tab=lineups`}
-    />
-  ))
+  return (
+    !lineupsLoading &&
+    lineups.map((lineup) => (
+      <SelectLineup
+        lineup={lineup}
+        maps={maps}
+        user={session?.user}
+        key={lineup.id}
+        back={`${lineup.agent}?tab=lineups`}
+      />
+    ))
+  )
 }
 
 export default LineupsList
