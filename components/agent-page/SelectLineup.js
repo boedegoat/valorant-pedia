@@ -3,7 +3,6 @@ import { HeartIcon } from '@heroicons/react/outline'
 import Link from '../Link'
 import { toTitleCase } from '../../lib/utils'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
-import Image from 'next/image'
 
 const SelectLineup = ({ lineup, maps, user, back }) => {
   const { id, map, site, title, type, thumbnailURL, favorites } = lineup
@@ -21,7 +20,7 @@ const SelectLineup = ({ lineup, maps, user, back }) => {
       }}
     >
       {/* bg */}
-      <img src={thumbnailURL} className='absolute inset-0' />
+      <img src={thumbnailURL} className='absolute inset-0 h-full' />
 
       {/* top */}
       <div className='absolute left-0 right-0 top-0 bg-white p-2 flex border-b-2'>
