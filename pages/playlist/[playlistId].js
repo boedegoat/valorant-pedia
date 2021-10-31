@@ -56,6 +56,7 @@ export async function getStaticProps(context) {
   if (playlistId === 'your-favorites') {
     return {
       props: { yourFavorites: true, maps },
+      revalidate: 60,
     }
   }
 
@@ -75,5 +76,6 @@ export async function getStaticProps(context) {
 
   return {
     props: { yourFavorites: false, playlist, maps },
+    revalidate: 60,
   }
 }

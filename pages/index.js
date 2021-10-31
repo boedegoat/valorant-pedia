@@ -6,7 +6,7 @@ import SelectAgentSection from '../components/home/SelectAgentSection'
 import SearchResultsSection from '../components/home/SearchResultsSection'
 import Layout from '../components/Layout'
 import RoleFilterSection from '../components/home/RoleFilterSection'
-import { getAgents, getRoles, getSearchResults } from '../lib/agents'
+import { agentToURL, getAgents, getRoles, getSearchResults } from '../lib/agents'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../lib/firebase-client'
 
@@ -84,10 +84,25 @@ export async function getStaticProps() {
   const agents = await getAgents()
   const roles = getRoles(agents)
 
+  const agentsRef = db.collection('agents')
+  await Promise.all(
+    agents.map(async (agent) => {
+      const agentName = agentToURL(agent.displayName)
+      const agentSnapshot = await agentsRef.doc(agentName).get()
+      if (!agentSnapshot.exists) {
+        console.log(`creating firestore doc for agents/${agentName}`)
+        await agentsRef
+          .doc(agentName)
+          .set({ name: agentName, favorites: [] }, { merge: true })
+      }
+    })
+  )
+
   return {
     props: {
       agents,
       roles,
     },
+    revalidate: 60,
   }
 }

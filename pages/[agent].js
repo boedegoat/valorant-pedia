@@ -45,15 +45,20 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false,
+    fallback: 'blocking',
   }
 }
 
 export async function getStaticProps(context) {
   const agentName = parseAgentFromURL(context.params.agent)
   const agent = await getAgentsByName(agentName)
+
+  if (!agent) {
+    return { notFound: true }
+  }
+
   const maps = await getMaps()
 
   const props = { agent, maps }
-  return { props }
+  return { props, revalidate: 60 }
 }

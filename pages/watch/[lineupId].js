@@ -11,7 +11,7 @@ import SignInAlert from '../../components/SignInAlert'
 import useToggle from '../../hooks/useToggle'
 import Link from '../../components/Link'
 
-const WatchLineup = ({ lineup: lineupServer, user }) => {
+const WatchLineup = ({ lineup: lineupServer }) => {
   const router = useRouter()
   const [signInAlert, toggleSignInAlert] = useToggle(false)
   const [session] = useSession()
@@ -155,5 +155,6 @@ export async function getStaticProps(context) {
 
   return {
     props: { lineup },
+    revalidate: 60,
   }
 }

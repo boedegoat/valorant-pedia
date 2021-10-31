@@ -32,21 +32,17 @@ const Playlist = () => {
       </header>
       <main className='mt-4'>
         <Wrapper className='space-y-4'>
-          {lineupsLoading || sessionLoading ? (
-            // TODO
+          {/* // TODO
             // setTimeout misal 1 detik
             // kalo 1 detik masih loading, baru munculin skeleton loadingnya
-            // biar user yg internetnya kenceng gk ngeliat skeleton loading yg tiba2 nongol dan menghilang
-            <PlaylistLoading count={5} />
-          ) : (
-            <PlaylistLink
-              title='Your Favorites'
-              length={userFavorites?.length}
-              href='/playlist/your-favorites'
-              thumbnailClassName='bg-gradient-to-br from-heart to-fuchsia-500'
-              thumbnailChildren={<HeartIcon className='w-6 h-6 text-white' />}
-            />
-          )}
+            // biar user yg internetnya kenceng gk ngeliat skeleton loading yg tiba2 nongol dan menghilang */}
+          <PlaylistLink
+            title='Your Favorites'
+            length={userFavorites?.length}
+            href='/playlist/your-favorites'
+            thumbnailClassName='bg-gradient-to-br from-heart to-fuchsia-500'
+            thumbnailChildren={<HeartIcon className='w-6 h-6 text-white' />}
+          />
         </Wrapper>
       </main>
 
