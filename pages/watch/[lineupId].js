@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import LineupsTypeAndSite from '../../components/agent-page/LineupsTypeAndSite'
 import { appendArray, db, popArray } from '../../lib/firebase-client'
 import { toTitleCase } from '../../lib/utils'
-import { getSession } from 'next-auth/client'
+import { useSession } from 'next-auth/client'
 import useDocumentDataWithId from '../../hooks/useDocumentDataWithId'
 import SignInAlert from '../../components/SignInAlert'
 import useToggle from '../../hooks/useToggle'
@@ -14,6 +14,7 @@ import Link from '../../components/Link'
 const WatchLineup = ({ lineup: lineupServer, user }) => {
   const router = useRouter()
   const [signInAlert, toggleSignInAlert] = useToggle(false)
+  const [session] = useSession()
 
   // prettier-ignore
   const [lineupClient, loading] = useDocumentDataWithId(
@@ -24,21 +25,20 @@ const WatchLineup = ({ lineup: lineupServer, user }) => {
 
   const lineup = lineupClient || lineupServer
 
-  if (!lineup && !loading) return <div>404 not found</div>
-
-  const isUserFavorite = lineup.favorites.includes(user?.email)
+  const isUserFavorite = lineup.favorites.includes(session?.user.email)
 
   async function addToFavorites() {
-    if (!user) return toggleSignInAlert(true)
+    if (!session) return toggleSignInAlert(true)
 
     const lineupDocRef = db.collection('lineups').doc(lineup.id)
+    const userEmail = session.user.email
 
     if (isUserFavorite) {
-      await lineupDocRef.set({ favorites: popArray(user.email) }, { merge: true })
+      await lineupDocRef.set({ favorites: popArray(userEmail) }, { merge: true })
       return
     }
 
-    await lineupDocRef.set({ favorites: appendArray(user.email) }, { merge: true })
+    await lineupDocRef.set({ favorites: appendArray(userEmail) }, { merge: true })
   }
 
   function copyURLToClipboard() {
@@ -96,23 +96,64 @@ const WatchLineup = ({ lineup: lineupServer, user }) => {
 
 export default WatchLineup
 
-export async function getServerSideProps(context) {
-  const lineupId = context.query.lineupId
-  const lineupSnapshot = await db.collection('lineups').doc(lineupId).get()
-  const lineup = lineupSnapshot.data()
-
-  if (!lineup) {
-    return {
-      notFound: true,
-    }
-  }
-
-  const session = await getSession(context)
+export async function getStaticPaths() {
+  const lineupsSnapshot = await db.collection('lineups').get()
+  const paths = lineupsSnapshot.docs.map((lineup) => ({
+    params: { lineupId: lineup.id },
+  }))
 
   return {
-    props: {
-      lineup,
-      user: session?.user || null,
-    },
+    paths,
+    // getStaticPaths() dan property fallback: true or 'blocking'
+    // dipake buat ngasih tau next js paths apa aja yang ada di page ini
+
+    // Kenapa kita harus ngasih tau dulu ?
+
+    // karena disini kita mau bikin Static Page, simplenya page yg html nya
+    // akan digenerate duluan pada saat build time
+    // yg kemudian html-html tersebut akan disimpen di server buat dipake ulang di productionnya
+    // jadi di productionnya, user yg mengunjungi Static Page akan pindah halaman dengan instan
+    // tanpa harus loading terlebih dahulu karena html nya udah dibikin duluan
+
+    // Kalo begitu, fallback: true or 'blocking' buat apa ?
+
+    // berbeda dengan fallback: false, dimana path baru akan mendarat di 404 page
+    // jika kita pake fallback: true or 'blocking'
+    // kedepannya, kalo ada path baru yg next js belom tau
+    // next js gak langsung ngoper user ke 404 page
+    // instead, dibelakang layar, next js bakal ngerun getStaticProps lagi
+    // pada saat itulah, user yg mengunjungi path terbaru harus menunggu dulu
+    // sampai getStaticPropsnya selesai dirun, sehingga page ini akan bersifat seperti SSR
+
+    // nah setelah getStaticPropsnya udh selesai dirun,
+    // JIKA SUKSES : page ini akan balik lagi ke Static Page, karena next js sudah generate html buat path terbaru ke dalam folder staticnya
+    // JIKA GAGAL (path baru tidak ada dalam data, dll...) : anda bisa redirect user ke 404 page dengan cara `return { notFound: true }`
+
+    // lalu apa bedanya fallback true dan 'blocking' ?
+
+    // 'blocking' => user yg mengunjungi path baru belom bisa langsung pindah ke page barunya sampai getStaticPropsnya selesai dirun. Ini sangat mirip dengan SSR
+
+    //  true => user yg mengunjungi path baru bisa langsung pindah ke page barunya tanpa harus menunggu getStaticProps selesai dirun, TETAPI page baru itu belom ada propsnya (karena getStaticPropsnya masih dirun), baru deh kalo udah selesai dirun pagenya akan diisi dengan propsnya.
+
+    // nah, page yg belom ada propsnya itu sedang ada dalam mode 'fallback page'.Anda bisa akses property dari router.isFallback pake `useRouter()` hook buat ngecek apakah page anda sedang dalam mode 'fallback page'...
+
+    fallback: 'blocking',
+  }
+}
+
+export async function getStaticProps(context) {
+  const { lineupId } = context.params
+  const lineupSnapshot = await db.collection('lineups').doc(lineupId).get()
+
+  if (!lineupSnapshot.exists) {
+    return { notFound: true }
+  }
+
+  console.log(`generating page /watch/${lineupId}`)
+
+  const lineup = { id: lineupSnapshot.id, ...lineupSnapshot.data() }
+
+  return {
+    props: { lineup },
   }
 }
