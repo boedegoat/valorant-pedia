@@ -15,7 +15,7 @@ const Home = ({ agents, roles }) => {
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
 
-  const [agentsDoc] = useCollectionData(db.collection('agents'))
+  const [agentsDoc, agentsDocLoading] = useCollectionData(db.collection('agents'))
 
   useEffect(() => {
     if (!searchAgent) return
@@ -68,7 +68,7 @@ const Home = ({ agents, roles }) => {
                 agentsDoc={agentsDoc}
               />
             )}
-            {!roleFilter && (
+            {!roleFilter && !agentsDocLoading && (
               <SelectAgentSection roles={roles} agents={agents} agentsDoc={agentsDoc} />
             )}
           </Fragment>
