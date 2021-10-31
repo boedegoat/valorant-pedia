@@ -10,6 +10,7 @@ import useDocumentDataWithId from '../../hooks/useDocumentDataWithId'
 import SignInAlert from '../../components/SignInAlert'
 import useToggle from '../../hooks/useToggle'
 import Link from '../../components/Link'
+import Head from 'next/head'
 
 const WatchLineup = ({ lineup: lineupServer }) => {
   const router = useRouter()
@@ -48,6 +49,9 @@ const WatchLineup = ({ lineup: lineupServer }) => {
 
   return (
     <>
+      <Head>
+        <title>{lineup.title} - Valpedia</title>
+      </Head>
       {/* top */}
       <div className='fixed z-10 top-2 left-2 w-max flex items-center bg-black bg-opacity-70 backdrop-blur-sm rounded-md'>
         <Link

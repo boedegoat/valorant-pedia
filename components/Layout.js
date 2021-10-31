@@ -7,7 +7,7 @@ const Layout = ({ children, title, description, back, hideMainMenu }) => {
   return (
     <Fragment>
       <Head>
-        {title && <title>{title}</title>}
+        {title && <title>{title} - Valpedia</title>}
         {description && <meta name='description' content={description} />}
       </Head>
       <TopNavbar back={back} />

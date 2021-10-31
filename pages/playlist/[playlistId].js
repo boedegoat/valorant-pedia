@@ -1,12 +1,9 @@
 import { useSession } from 'next-auth/client'
 import { createContext, useContext } from 'react'
-import Layout from '../../components/Layout'
 import UserPlaylistPage from '../../components/playlist-page/UserPlaylistPage'
 import YourFavoritePage from '../../components/playlist-page/YourFavoritePage'
-import Wrapper from '../../components/Wrapper'
 import { db } from '../../lib/firebase-client'
 import { getMaps } from '../../lib/maps'
-import Link from '../../components/Link'
 import Unauthorize from '../../components/Unauthorize'
 
 const PlaylistContext = createContext({})
