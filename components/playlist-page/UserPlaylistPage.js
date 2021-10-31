@@ -1,7 +1,15 @@
+import { usePlaylistContext } from '../../pages/playlist/[playlistId]'
 import PlaylistWrapper from './PlaylistWrapper'
 
 const UserPlaylistPage = () => {
-  return <PlaylistWrapper title='A Playlist'>user playlist page</PlaylistWrapper>
+  const { playlist } = usePlaylistContext()
+  console.log(playlist)
+  return (
+    <PlaylistWrapper
+      title={playlist.title}
+      description={playlist.description}
+    ></PlaylistWrapper>
+  )
 }
 
 export default UserPlaylistPage
