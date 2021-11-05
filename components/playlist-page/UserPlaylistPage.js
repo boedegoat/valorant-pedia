@@ -7,8 +7,6 @@ import SelectLineup from '../agent-page/SelectLineup'
 const UserPlaylistPage = () => {
   const { playlist, playlistLoading, maps, user } = usePlaylistContext()
 
-  console.log(playlist)
-
   const [lineups, lineupsLoading] = useCollectionDataWithId(
     db.collection('lineups').where('playlists', 'array-contains', playlist?.id ?? null)
   )

@@ -26,8 +26,6 @@ const Playlist = () => {
 
   const dbLoading = userFavoriteLineupLoading || userCustomPlaylistLoading
 
-  console.log(userCustomPlaylist)
-
   return (
     <Layout title='Playlist'>
       <header>

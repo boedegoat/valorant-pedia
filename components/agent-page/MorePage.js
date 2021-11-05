@@ -5,7 +5,6 @@ import { useAgentPageContext } from './AgentPageLayout'
 
 export default function MorePage() {
   const { agent } = useAgentPageContext()
-  console.log(agent)
   return (
     <Wrapper className='space-y-6'>
       <div className='p-4 rounded-md shadow-md'>
