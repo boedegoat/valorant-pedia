@@ -7,6 +7,7 @@ import useObserver from '../hooks/useObserver'
 import { db } from '../lib/firebase-client'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import AbilitiesPage from '../components/agent-page/AbilitiesPage'
+import MorePage from '../components/agent-page/MorePage'
 
 const Agent = ({ agent, maps }) => {
   const router = useRouter()
@@ -20,6 +21,7 @@ const Agent = ({ agent, maps }) => {
   const tabMap = new Map([
     ['lineups', <LineupsPage />],
     ['abilities', <AbilitiesPage />],
+    ['more', <MorePage />],
   ])
 
   return (
