@@ -6,6 +6,7 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../../lib/firebase-client'
 import { useSession } from 'next-auth/client'
 import Unauthorize from '../../components/Unauthorize'
+import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
 
 const Playlist = () => {
   const [session, sessionLoading] = useSession()
@@ -19,6 +20,13 @@ const Playlist = () => {
   const [userFavoriteLineup, userFavoriteLineupLoading] = useCollectionData(
     db.collection('lineups').where('favorites', 'array-contains', session.user.email)
   )
+  const [userCustomPlaylist, userCustomPlaylistLoading] = useCollectionDataWithId(
+    db.collection('playlists').where('createdBy', '==', session.user.email)
+  )
+
+  const dbLoading = userFavoriteLineupLoading || userCustomPlaylistLoading
+
+  console.log(userCustomPlaylist)
 
   return (
     <Layout title='Playlist'>
@@ -32,7 +40,7 @@ const Playlist = () => {
           // kalo 1 detik masih loading, baru munculin skeleton loadingnya
           // biar user yg internetnya kenceng gk ngeliat skeleton loading yg tiba2 nongol dan menghilang 
       */}
-      {userFavoriteLineupLoading ? (
+      {dbLoading ? (
         ''
       ) : (
         <main className='mt-4'>
@@ -44,6 +52,14 @@ const Playlist = () => {
               thumbnailClassName='bg-gradient-to-br from-heart to-fuchsia-500'
               thumbnailChildren={<HeartIcon className='w-6 h-6 text-white' />}
             />
+            {userCustomPlaylist.map((playlist) => (
+              <PlaylistLink
+                key={playlist.id}
+                title={playlist.title}
+                length={playlist.length}
+                href={`/playlist/${playlist.id}`}
+              />
+            ))}
           </Wrapper>
         </main>
       )}

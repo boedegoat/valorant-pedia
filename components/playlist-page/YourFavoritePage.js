@@ -7,8 +7,8 @@ import PlaylistWrapper from './PlaylistWrapper'
 const YourFavoritePage = () => {
   const { user, maps } = usePlaylistContext()
 
-  const [lineups, lineupsLoading] = useCollectionDataWithId(
-    db.collection('lineups').where('favorites', 'array-contains', user?.email)
+  const [lineups] = useCollectionDataWithId(
+    db.collection('lineups').where('favorites', 'array-contains', user?.email ?? null)
   )
 
   return (

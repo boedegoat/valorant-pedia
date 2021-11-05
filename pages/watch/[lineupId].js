@@ -1,27 +1,47 @@
-import { ArrowNarrowLeftIcon } from '@heroicons/react/outline'
-import { HeartIcon, ShareIcon, ViewGridAddIcon } from '@heroicons/react/outline'
+import {
+  ArrowNarrowLeftIcon,
+  PlusSmIcon,
+  HeartIcon,
+  ShareIcon,
+  ViewGridAddIcon,
+} from '@heroicons/react/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { useRouter } from 'next/router'
 import LineupsTypeAndSite from '../../components/agent-page/LineupsTypeAndSite'
-import { appendArray, db, popArray } from '../../lib/firebase-client'
-import { toTitleCase } from '../../lib/utils'
+import {
+  appendArray,
+  createTimestamp,
+  db,
+  increment,
+  popArray,
+} from '../../lib/firebase-client'
+import { delay, toTitleCase } from '../../lib/utils'
 import { useSession } from 'next-auth/client'
-import useDocumentDataWithId from '../../hooks/useDocumentDataWithId'
 import SignInAlert from '../../components/SignInAlert'
 import useToggle from '../../hooks/useToggle'
 import Link from '../../components/Link'
 import Head from 'next/head'
+import Alert from '../../components/Alert'
+import useDocumentDataWithId from '../../hooks/useDocumentDataWithId'
+import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
+import { useState } from 'react'
 
 const WatchLineup = ({ lineup: lineupServer }) => {
   const router = useRouter()
   const [signInAlert, toggleSignInAlert] = useToggle(false)
-  const [session] = useSession()
+  const [signInAlertDescription, setSignInAlertDescription] = useState('')
+  const [showPlaylist, toggleShowPlaylist] = useToggle(false)
+  const [showCreatePlaylist, toggleShowCreatePlaylist] = useToggle(false)
+  const [playlistName, setPlaylistName] = useState('')
+  const [session, sessionLoading] = useSession()
 
-  // prettier-ignore
-  const [lineupClient, loading] = useDocumentDataWithId(
-    db
-      .collection('lineups')
-      .doc(router.query.lineupId)
+  const [lineupClient] = useDocumentDataWithId(
+    db.collection('lineups').doc(router.query.lineupId)
+  )
+  const [playlists] = useCollectionDataWithId(
+    sessionLoading || !session
+      ? null
+      : db.collection('playlists').where('createdBy', '==', session?.user.email)
   )
 
   const lineup = lineupClient || lineupServer
@@ -29,7 +49,12 @@ const WatchLineup = ({ lineup: lineupServer }) => {
   const isUserFavorite = lineup.favorites.includes(session?.user.email)
 
   async function addToFavorites() {
-    if (!session) return toggleSignInAlert(true)
+    if (!session) {
+      setSignInAlertDescription(
+        `Get your free account now to favorite ${toTitleCase(lineup.title)} lineup`
+      )
+      return toggleSignInAlert(true)
+    }
 
     const lineupDocRef = db.collection('lineups').doc(lineup.id)
     const userEmail = session.user.email
@@ -47,6 +72,50 @@ const WatchLineup = ({ lineup: lineupServer }) => {
     alert('link coppied to your clipboard')
   }
 
+  async function createPlaylist() {
+    if (!playlistName) {
+      return alert('playlist name can not be empty')
+    }
+    const playlistRef = db.collection('playlists')
+    const lineupDocRef = db.collection('lineups').doc(lineup.id)
+
+    // add new doc to playlists collection
+    const playlistDoc = await playlistRef.add({
+      createdAt: createTimestamp(),
+      createdBy: session.user.email,
+      title: playlistName,
+      description: '',
+      length: 1,
+    })
+
+    // add playlist id to lineup doc
+    await lineupDocRef.set(
+      {
+        playlists: appendArray(playlistDoc.id),
+      },
+      { merge: true }
+    )
+
+    toggleShowCreatePlaylist(false)
+    await delay(250)
+    setPlaylistName('')
+  }
+
+  async function handleAddRemovePlaylist(e, playlistId) {
+    const playlistDocRef = db.collection('playlists').doc(playlistId)
+    const lineupDocRef = db.collection('lineups').doc(lineup.id)
+    const lineupInPlaylist = (await lineupDocRef.get())
+      .data()
+      .playlists.includes(playlistId)
+    if (lineupInPlaylist) {
+      await lineupDocRef.set({ playlists: popArray(playlistId) }, { merge: true })
+      await playlistDocRef.set({ length: increment(-1) }, { merge: true })
+    } else {
+      await lineupDocRef.set({ playlists: appendArray(playlistId) }, { merge: true })
+      await playlistDocRef.set({ length: increment(1) }, { merge: true })
+    }
+  }
+
   return (
     <>
       <Head>
@@ -62,7 +131,14 @@ const WatchLineup = ({ lineup: lineupServer }) => {
         </Link>
       </div>
 
-      <video src={lineup.videoURL} controls autoPlay loop className='w-full max-w-sm' />
+      <video
+        src={lineup.videoURL}
+        muted
+        controls
+        autoPlay
+        loop
+        className='w-full max-w-sm'
+      />
 
       <div className='p-4 flex flex-col'>
         <LineupsTypeAndSite type={lineup.type} site={lineup.site} black />
@@ -81,17 +157,93 @@ const WatchLineup = ({ lineup: lineupServer }) => {
           <button className='text-gray-500' onClick={copyURLToClipboard}>
             <ShareIcon className='watchLineup-icon' />
           </button>
-          <button className='text-gray-500'>
+          <button
+            className='text-gray-500'
+            onClick={() => {
+              if (session) {
+                return toggleShowPlaylist(true)
+              }
+              setSignInAlertDescription(
+                `Get your free account to save ${toTitleCase(
+                  lineup.title
+                )} to your playlist`
+              )
+              toggleSignInAlert(true)
+            }}
+          >
             <ViewGridAddIcon className='watchLineup-icon' />
           </button>
         </div>
 
+        {/* choose playlists */}
+        <Alert
+          open={showPlaylist}
+          onClose={toggleShowPlaylist}
+          className='space-y-2 divide-y'
+        >
+          <Alert.Title as='h3' className='text-xl font-bold leading-6 text-gray-900'>
+            Save to...
+          </Alert.Title>
+
+          {/* playlists list */}
+          <ul className='pt-2 space-y-1'>
+            {playlists?.length ? (
+              playlists?.map((playlist) => (
+                <li
+                  key={playlist.id}
+                  className='flex items-center space-x-3 py-2 text-lg'
+                >
+                  <input
+                    type='checkbox'
+                    className='rounded-md text-fuchsia-500 focus:ring-2 focus:ring-fuchsia-300 border-gray-300'
+                    checked={lineup.playlists.includes(playlist.id)}
+                    onChange={(e) => handleAddRemovePlaylist(e, playlist.id)}
+                  />
+                  <p>{playlist.title}</p>
+                </li>
+              ))
+            ) : (
+              <li className='py-2'>
+                <p>😢 You don't have any playlist yet</p>
+              </li>
+            )}
+          </ul>
+
+          <button
+            type='button'
+            className='alert-main-button'
+            onClick={async () => {
+              toggleShowPlaylist(false)
+              await delay(250)
+              toggleShowCreatePlaylist(true)
+            }}
+          >
+            <PlusSmIcon className='w-5 h-5 mr-2' /> Create New Playlist
+          </button>
+        </Alert>
+
+        {/* create new playlist */}
+        <Alert
+          open={showCreatePlaylist}
+          onClose={toggleShowCreatePlaylist}
+          className='space-y-4'
+        >
+          <input
+            type='text'
+            value={playlistName}
+            onChange={(e) => setPlaylistName(e.target.value)}
+            className='w-full rounded-md border-gray-300 focus:border-fuchsia-400 focus:ring-fuchsia-400'
+            placeholder='playlist name'
+          />
+          <button type='button' className='alert-main-button' onClick={createPlaylist}>
+            Create
+          </button>
+        </Alert>
+
         <SignInAlert
           open={signInAlert}
           onClose={toggleSignInAlert}
-          description={`Get your account now to favorite ${toTitleCase(
-            lineup.title
-          )} lineup`}
+          description={signInAlertDescription}
         />
       </div>
     </>

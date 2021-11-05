@@ -5,26 +5,28 @@ import YourFavoritePage from '../../components/playlist-page/YourFavoritePage'
 import { db } from '../../lib/firebase-client'
 import { getMaps } from '../../lib/maps'
 import Unauthorize from '../../components/Unauthorize'
+import useDocumentDataWithId from '../../hooks/useDocumentDataWithId'
 
 const PlaylistContext = createContext({})
 export function usePlaylistContext() {
   return useContext(PlaylistContext)
 }
 
-const PlaylistId = ({ yourFavorites, playlist, maps }) => {
-  const [session, loading] = useSession()
+const PlaylistId = ({ yourFavorites, maps, playlistId }) => {
+  const [session, sessionLoading] = useSession()
   const user = session?.user
+  const [playlist, playlistLoading] = useDocumentDataWithId(
+    !yourFavorites ? db.collection('playlists').doc(playlistId) : null
+  )
 
-  if (loading) {
-    return null
-  }
-
-  if (!loading && !user) {
+  if (!sessionLoading && !user) {
     return <Unauthorize pageName='your-favorites' />
   }
 
   return (
-    <PlaylistContext.Provider value={{ user, maps, playlist }}>
+    <PlaylistContext.Provider
+      value={{ user, sessionLoading, maps, playlist, playlistLoading }}
+    >
       {yourFavorites ? <YourFavoritePage /> : <UserPlaylistPage />}
     </PlaylistContext.Provider>
   )
@@ -52,7 +54,7 @@ export async function getStaticProps(context) {
 
   if (playlistId === 'your-favorites') {
     return {
-      props: { yourFavorites: true, maps },
+      props: { yourFavorites: true, maps, playlistId },
       revalidate: 60,
     }
   }
@@ -65,14 +67,8 @@ export async function getStaticProps(context) {
 
   console.log(`generating page /playlist/${playlistId}`)
 
-  const playlist = {
-    id: playlistSnapshot.id,
-    ...playlistSnapshot.data(),
-    createdAt: playlistSnapshot.data().createdAt?.toDate().toString(),
-  }
-
   return {
-    props: { yourFavorites: false, playlist, maps },
+    props: { yourFavorites: false, maps, playlistId },
     revalidate: 60,
   }
 }

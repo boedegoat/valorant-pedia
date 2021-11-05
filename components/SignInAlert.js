@@ -16,7 +16,7 @@ const SignInAlert = ({ description, callbackUrl, open, onClose }) => {
       <div className='mt-4'>
         <button
           type='button'
-          className='inline-flex justify-center px-4 py-2 text-sm font-medium text-fuchsia-900 bg-fuchsia-100 border border-transparent rounded-md hover:bg-fuchsia-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-fuchsia-500'
+          className='alert-main-button'
           onClick={() => signIn('google', options)}
         >
           Sign In with Google
