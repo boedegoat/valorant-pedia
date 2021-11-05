@@ -59,6 +59,7 @@ const AgentPageLayout = ({ children, ...props }) => {
         </div>
       </Wrapper>
       <AgentPageContext.Provider value={props}>{children}</AgentPageContext.Provider>
+      <div className='h-20' />
     </Layout>
   )
 }

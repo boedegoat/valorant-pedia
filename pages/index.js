@@ -9,6 +9,7 @@ import RoleFilterSection from '../components/home/RoleFilterSection'
 import { agentToURL, getAgents, getRoles, getSearchResults } from '../lib/agents'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../lib/firebase-client'
+import Footer from '../components/Footer'
 
 const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')
@@ -74,6 +75,7 @@ const Home = ({ agents, roles }) => {
           </Fragment>
         )}
       </main>
+      <Footer />
     </Layout>
   )
 }

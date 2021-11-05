@@ -6,6 +6,7 @@ import { getMaps } from '../lib/maps'
 import useObserver from '../hooks/useObserver'
 import { db } from '../lib/firebase-client'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
+import AbilitiesPage from '../components/agent-page/AbilitiesPage'
 
 const Agent = ({ agent, maps }) => {
   const router = useRouter()
@@ -16,10 +17,11 @@ const Agent = ({ agent, maps }) => {
     db.collection('agents').doc(agentToURL(agent.displayName))
   )
 
-  // prettier-ignore
   const tabMap = new Map([
     ['lineups', <LineupsPage />],
+    ['abilities', <AbilitiesPage />],
   ])
+
   return (
     <AgentPageLayout
       agent={agent}

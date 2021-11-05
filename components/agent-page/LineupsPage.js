@@ -10,7 +10,6 @@ import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
 import { useAppContext } from '../../context/appContext'
-import { useEffect } from 'react'
 
 const LineupsPage = () => {
   const [
@@ -37,7 +36,6 @@ const LineupsPage = () => {
           lineupsLoading={lineupsLoading}
         />
       </div>
-      <div className='h-20'></div>
 
       <nav className='fixed bottom-0 left-0 right-0 bg-white px-2 pb-2'>
         <div className='bg-white shadow-xl border rounded-lg p-1 flex'>
