@@ -1,5 +1,5 @@
 import { agentToURL } from '../../lib/agents'
-import Wrapper from '../Wrapper'
+import Wrapper from '../global/Wrapper'
 import SelectAgent from './SelectAgent'
 
 const RoleFilterSection = ({ roleFilter, agents, agentsDoc }) => {

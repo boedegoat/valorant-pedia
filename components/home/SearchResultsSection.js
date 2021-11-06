@@ -1,5 +1,5 @@
 import SelectAgent from './SelectAgent'
-import Wrapper from '../Wrapper'
+import Wrapper from '../global/Wrapper'
 import { agentToURL } from '../../lib/agents'
 
 const SearchResultsSection = ({ searchResults, agentsDoc }) => {

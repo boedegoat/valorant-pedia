@@ -1,4 +1,4 @@
-import Link from '../Link'
+import Link from '../global/Link'
 import { agentToURL } from '../../lib/agents'
 import { useRouter } from 'next/router'
 

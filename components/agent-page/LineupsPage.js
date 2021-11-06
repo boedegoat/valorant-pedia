@@ -1,5 +1,5 @@
 import { db } from '../../lib/firebase-client'
-import Wrapper from '../Wrapper'
+import Wrapper from '../global/Wrapper'
 import { ChevronRightIcon, SearchIcon } from '@heroicons/react/outline'
 import LineupsList from './LineupsList'
 import { agentToURL } from '../../lib/agents'

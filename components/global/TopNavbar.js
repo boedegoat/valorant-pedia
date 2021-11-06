@@ -1,5 +1,5 @@
 import { ArrowNarrowLeftIcon, MoonIcon } from '@heroicons/react/outline'
-import Wrapper from '../components/Wrapper'
+import Wrapper from './Wrapper'
 import UserAvatar from './UserAvatar'
 import Link from './Link'
 import { Fragment } from 'react'

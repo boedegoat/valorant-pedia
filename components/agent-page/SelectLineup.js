@@ -1,6 +1,6 @@
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { HeartIcon } from '@heroicons/react/outline'
-import Link from '../Link'
+import Link from '../global/Link'
 import { toTitleCase } from '../../lib/utils'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 

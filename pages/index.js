@@ -1,15 +1,15 @@
 import { useState, useEffect, Fragment } from 'react'
-import Wrapper from '../components/Wrapper'
-import SearchBar from '../components/SearchBar'
-import AgentRole from '../components/AgentRole'
+import Wrapper from '../components/global/Wrapper'
+import SearchBar from '../components/global/SearchBar'
+import AgentRole from '../components/global/AgentRole'
 import SelectAgentSection from '../components/home/SelectAgentSection'
 import SearchResultsSection from '../components/home/SearchResultsSection'
-import Layout from '../components/Layout'
+import Layout from '../components/global/Layout'
 import RoleFilterSection from '../components/home/RoleFilterSection'
 import { agentToURL, getAgents, getRoles, getSearchResults } from '../lib/agents'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../lib/firebase-client'
-import Footer from '../components/Footer'
+import Footer from '../components/global/Footer'
 
 const Home = ({ agents, roles }) => {
   const [searchAgent, setSearchAgent] = useState('')

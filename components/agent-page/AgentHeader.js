@@ -1,12 +1,12 @@
-import Wrapper from '../Wrapper'
+import Wrapper from '../global/Wrapper'
 import { HeartIcon } from '@heroicons/react/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import Image from 'next/image'
-import Tooltip from '../../components/Tooltip'
+import Tooltip from '../global/Tooltip'
 import { useSession } from 'next-auth/client'
 import { agentToURL } from '../../lib/agents'
 import { appendArray, db, popArray } from '../../lib/firebase-client'
-import SignInAlert from '../SignInAlert'
+import SignInAlert from '../global/SignInAlert'
 import useToggle from '../../hooks/useToggle'
 
 const AgentHeader = ({ agent, headerRef, agentDoc }) => {

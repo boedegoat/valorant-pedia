@@ -1,6 +1,6 @@
-import Layout from '../Layout'
+import Layout from '../global/Layout'
 import AgentHeader from './AgentHeader'
-import Wrapper from '../Wrapper'
+import Wrapper from '../global/Wrapper'
 import ChangeTab from './ChangeTab'
 import Image from 'next/image'
 import { useContext, createContext } from 'react'

@@ -5,10 +5,10 @@ import {
   SparklesIcon as SparklesIconSolid,
 } from '@heroicons/react/solid'
 import { Fragment, useEffect, useState } from 'react'
-import Link from '../components/Link'
+import Link from './Link'
 import Wrapper from './Wrapper'
 import { useRouter } from 'next/router'
-import useToggle from '../hooks/useToggle'
+import useToggle from '../../hooks/useToggle'
 import { useSession } from 'next-auth/client'
 import SignInAlert from './SignInAlert'
 
@@ -23,8 +23,8 @@ const MainMenu = () => {
           <MenuLink Icon={HomeIcon} ActiveIcon={HomeIconSolid} href='/'>
             Agents
           </MenuLink>
-          <MenuLink Icon={SparklesIcon} ActiveIcon={SparklesIconSolid} href='/skins'>
-            Skins
+          <MenuLink Icon={SparklesIcon} ActiveIcon={SparklesIconSolid} href='/weapons'>
+            Weapons
           </MenuLink>
           <MenuLink
             Icon={ViewGridIcon}
