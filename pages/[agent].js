@@ -19,9 +19,9 @@ const Agent = ({ agent, maps }) => {
   )
 
   const tabMap = new Map([
-    ['lineups', <LineupsPage />],
-    ['abilities', <AbilitiesPage />],
-    ['more', <MorePage />],
+    ['lineups', <LineupsPage key='lineupsPage' />],
+    ['abilities', <AbilitiesPage key='abilitiesPage' />],
+    ['more', <MorePage key='morePage' />],
   ])
 
   return (

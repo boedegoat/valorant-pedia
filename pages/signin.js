@@ -12,6 +12,7 @@ const SignIn = ({ providers }) => {
       <Wrapper>
         <Image
           src='/sign-in.svg'
+          alt='sign in illustration'
           width={20}
           height={20}
           objectFit='contain'

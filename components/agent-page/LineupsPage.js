@@ -56,6 +56,10 @@ const LineupsPage = () => {
                     src={
                       maps.find((m) => m.displayName.toLowerCase() === filter.map).splash
                     }
+                    alt={
+                      maps.find((m) => m.displayName.toLowerCase() === filter.map)
+                        .displayName
+                    }
                     width={26}
                     height={26}
                     layout='fixed'
