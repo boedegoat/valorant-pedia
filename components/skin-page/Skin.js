@@ -1,12 +1,11 @@
-import { useRouter } from 'next/router'
 import Link from '../global/Link'
 import Image from 'next/image'
 
-export default function Skin({ weaponSkin }) {
-  const router = useRouter()
+export default function Skin({ weaponSkin, weaponName }) {
   return (
     <Link
-      href={`${router.asPath}/${weaponSkin.uuid}`}
+      href={`/skins/${weaponName}?uuid=${weaponSkin.uuid}`}
+      shallow={true}
       className='relative rounded-[10px] shadow-lg border overflow-hidden'
       style={{
         // make 9/16 aspect ratio
@@ -19,7 +18,7 @@ export default function Skin({ weaponSkin }) {
           src={weaponSkin.displayIcon}
           layout='fill'
           objectFit='contain'
-          className='rotate-45 scale-110'
+          className='rotate-45'
         />
       )}
 

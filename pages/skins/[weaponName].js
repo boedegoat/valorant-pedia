@@ -17,7 +17,7 @@ export default function WeaponSkins({ weaponSkins: weaponSkinsData, weaponName }
   console.log(weaponSkins)
 
   return (
-    <Layout back={router.back}>
+    <Layout back={`/weapons/${weaponName}`}>
       <header>
         <Wrapper>
           <h1 className='font-extrabold text-3xl'>{toTitleCase(weaponName)} skins</h1>
@@ -34,7 +34,7 @@ export default function WeaponSkins({ weaponSkins: weaponSkinsData, weaponName }
         {searchWeaponSkins && (
           <SearchResultsLabel data={weaponSkins} searchInput={searchWeaponSkins} />
         )}
-        <SkinsList weaponSkins={weaponSkins} />
+        <SkinsList weaponSkins={weaponSkins} weaponName={weaponName} />
       </main>
     </Layout>
   )
