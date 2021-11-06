@@ -4,7 +4,7 @@ import Layout from '../../components/global/Layout'
 import SearchBar from '../../components/global/SearchBar'
 import Wrapper from '../../components/global/Wrapper'
 import FilterCategory from '../../components/weapon-page/FilterCategory'
-import SearchResultsLabel from '../../components/weapon-page/SearchResultsLabel'
+import SearchResultsLabel from '../../components/global/SearchResultsLabel'
 import WeaponsList from '../../components/weapon-page/WeaponsList'
 import WeaponsListByCategory from '../../components/weapon-page/WeaponsListByCategory'
 import useQuery from '../../hooks/useQuery'
@@ -45,7 +45,7 @@ const Weapons = ({ weapons: weaponsData, categories }) => {
           setFilterCategory={setFilterCategory}
         />
         {searchWeapons && (
-          <SearchResultsLabel weapons={weapons} searchWeapons={searchWeapons} />
+          <SearchResultsLabel data={weapons} searchInput={searchWeapons} />
         )}
         {!filterCategory ? (
           <WeaponsList weapons={weapons} />
