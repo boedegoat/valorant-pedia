@@ -1,5 +1,7 @@
 import Layout from '../../../components/global/Layout'
+import Wrapper from '../../../components/global/Wrapper'
 import Header from '../../../components/[weaponName]-page/Header'
+import WeaponStats from '../../../components/[weaponName]-page/WeaponStats'
 import { getWeaponByName, getWeapons } from '../../../lib/weapons'
 
 export default function Weapon({ weapon }) {
@@ -7,10 +9,12 @@ export default function Weapon({ weapon }) {
 
   return (
     <Layout title={weapon.displayName} back='/weapons'>
-      <Header weapon={weapon} />
-      {/* weapon stats */}
-      {/* damage range -> */}
-      {/* skins -> */}
+      <Wrapper className='space-y-5'>
+        <Header weapon={weapon} />
+        <WeaponStats weapon={weapon} />
+        {/* damage range -> */}
+        {/* skins -> */}
+      </Wrapper>
     </Layout>
   )
 }

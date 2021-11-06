@@ -1,4 +1,3 @@
-import Wrapper from '../global/Wrapper'
 import Image from 'next/image'
 
 export default function Header({ weapon }) {
@@ -8,7 +7,7 @@ export default function Header({ weapon }) {
   )
 
   return (
-    <Wrapper>
+    <header>
       <div className='relative h-[200px]'>
         {/* weapon image */}
         <Image src={weapon.displayIcon} layout='fill' objectFit='contain' />
@@ -28,13 +27,13 @@ export default function Header({ weapon }) {
         <h1 className='font-extrabold text-4xl'>{weapon.displayName}</h1>
         {/* magazine size */}
         <span className='border px-2 py-1 font-bold text-gray-600 text-sm rounded-md'>
-          🎯 {weapon.weaponStats?.magazineSize ?? 'N/A'}
+          ⚡ {weapon.weaponStats?.magazineSize ?? 'N/A'}
         </span>
         {/* penetration level */}
         <span className='border px-2 py-1 font-bold text-gray-600 text-sm rounded-md'>
           🔪 {penetrationLv ?? 'N/A'}
         </span>
       </div>
-    </Wrapper>
+    </header>
   )
 }
