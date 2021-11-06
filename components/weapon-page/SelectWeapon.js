@@ -5,7 +5,11 @@ export default function SelectWeapon({ weapon }) {
   return (
     <Link
       href={`/weapons/${weapon.displayName.toLowerCase()}`}
-      className='relative flex-shrink-0 w-[155px] h-[240px] rounded-[10px] shadow-lg border overflow-hidden'
+      className='relative rounded-[10px] shadow-lg border overflow-hidden'
+      style={{
+        // make 9/16 aspect ratio
+        paddingBottom: 'calc((16/9) * 100%)',
+      }}
     >
       <Image
         src={weapon.displayIcon}
