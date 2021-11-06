@@ -17,8 +17,6 @@ const Weapons = ({ weapons: weaponsData, categories }) => {
     search: { field: 'displayName' }
   })
 
-  console.log(weapons, categories)
-
   return (
     <Layout title='Weapons'>
       <header>

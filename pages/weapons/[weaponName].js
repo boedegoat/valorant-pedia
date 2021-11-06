@@ -6,8 +6,6 @@ import { getWeaponByName, getWeapons } from '../../lib/weapons'
 import Link from '../../components/global/Link'
 
 export default function Weapon({ weapon }) {
-  console.log(weapon)
-
   return (
     <Layout title={weapon.displayName} back='/weapons'>
       <Wrapper className='space-y-5'>

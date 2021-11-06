@@ -7,8 +7,6 @@ import { signIn, getProviders } from 'next-auth/client'
 const SignIn = ({ providers }) => {
   const router = useRouter()
 
-  console.log(providers)
-
   return (
     <Layout back={() => router.back()} title='Sign In'>
       <Wrapper>

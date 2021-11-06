@@ -14,7 +14,6 @@ export default function WeaponSkins({ weaponSkins: weaponSkinsData, weaponName }
   const [weaponSkins, { search: [searchWeaponSkins, setSearchWeaponSkins] }] = useQuery(weaponSkinsData, {
     search: { field: 'displayName' }
   })
-  console.log(weaponSkins)
 
   return (
     <Layout back={`/weapons/${weaponName}`}>
