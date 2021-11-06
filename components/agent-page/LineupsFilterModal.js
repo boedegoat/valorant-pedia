@@ -10,8 +10,8 @@ import { useAppContext } from '../../context/appContext'
 const LineupsFilterModal = ({ show, onClose, maps: mapsData, AgentLineups }) => {
   const [_, dispatch] = useAppContext()
   // prettier-ignore
-  const [maps, {search: [searchMaps, setSearchMaps]}] = useQuery(mapsData, {
-    search: {field: 'displayName'}
+  const [maps, { search: [searchMaps, setSearchMaps] }] = useQuery(mapsData, {
+    search: { field: 'displayName' }
   })
 
   return (

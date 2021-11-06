@@ -1,13 +1,23 @@
 import { useState } from 'react'
+import Footer from '../components/global/Footer'
 import Layout from '../components/global/Layout'
 import SearchBar from '../components/global/SearchBar'
 import Wrapper from '../components/global/Wrapper'
-import { getWeapons } from '../lib/weapons'
+import FilterCategory from '../components/weapon-page/FilterCategory'
+import SearchResultsLabel from '../components/weapon-page/SearchResultsLabel'
+import WeaponsList from '../components/weapon-page/WeaponsList'
+import WeaponsListByCategory from '../components/weapon-page/WeaponsListByCategory'
+import useQuery from '../hooks/useQuery'
+import { getCategories, getWeapons } from '../lib/weapons'
 
-const Weapons = ({ weapons }) => {
-  const [searchWeapon, setSearchWeapon] = useState('')
+const Weapons = ({ weapons: weaponsData, categories }) => {
+  const [filterCategory, setFilterCategory] = useState('')
+  // prettier-ignore
+  const [weapons, { search: [searchWeapons, setSearchWeapons] }] = useQuery(weaponsData, {
+    search: { field: 'displayName' }
+  })
 
-  console.log(weapons)
+  console.log(weapons, categories)
 
   return (
     <Layout title='Weapons'>
@@ -21,12 +31,29 @@ const Weapons = ({ weapons }) => {
       <Wrapper className={`mt-4 z-10`}>
         <SearchBar
           placeholder='Search Weapon'
-          value={searchWeapon}
+          value={searchWeapons}
           onChange={(e) => {
-            setSearchWeapon(e.target.value)
+            setSearchWeapons(e.target.value)
           }}
         />
       </Wrapper>
+
+      <main>
+        <FilterCategory
+          categories={categories}
+          filterCategory={filterCategory}
+          setFilterCategory={setFilterCategory}
+        />
+        {searchWeapons && (
+          <SearchResultsLabel weapons={weapons} searchWeapons={searchWeapons} />
+        )}
+        {!filterCategory ? (
+          <WeaponsList weapons={weapons} />
+        ) : (
+          <WeaponsListByCategory weapons={weapons} filterCategory={filterCategory} />
+        )}
+      </main>
+      <Footer />
     </Layout>
   )
 }
@@ -35,6 +62,7 @@ export default Weapons
 
 export async function getStaticProps() {
   const weapons = await getWeapons()
-  const props = { weapons }
+  const categories = getCategories(weapons)
+  const props = { weapons, categories }
   return { props, revalidate: 60 }
 }
