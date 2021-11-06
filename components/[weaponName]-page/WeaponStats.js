@@ -43,11 +43,6 @@ export default function WeaponStats({ weapon }) {
               stat='reload time seconds'
               value={weapon.weaponStats?.reloadTimeSeconds}
             />
-            <Stat
-              stat='shotgun pellet count'
-              value={weapon.weaponStats?.shotgunPelletCount}
-            />
-            <Stat stat='air bursts stats' value={weapon.weaponStats?.airBurstStats} />
             <Stat stat='feature' value={weapon.weaponStats?.feature} />
             <Stat stat='fire mode' value={weapon.weaponStats?.fireMode} />
           </ul>
