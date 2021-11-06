@@ -8,15 +8,18 @@ import { db } from '../lib/firebase-client'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
 import AbilitiesPage from '../components/agent-page/AbilitiesPage'
 import MorePage from '../components/agent-page/MorePage'
+import { getDocumentDataWithId } from '../lib/utils'
 
-const Agent = ({ agent, maps }) => {
+const Agent = ({ agent, maps, agentDoc: agentDocServer }) => {
   const router = useRouter()
 
   const tabName = router.query.tab
   const [headerRef, headerVisible] = useObserver({ initVisible: true })
-  const [agentDoc] = useDocumentData(
+  const [agentDocClient] = useDocumentData(
     db.collection('agents').doc(agentToURL(agent.displayName))
   )
+
+  const agentDoc = agentDocClient || agentDocServer
 
   const tabMap = new Map([
     ['lineups', <LineupsPage key='lineupsPage' />],
@@ -61,8 +64,11 @@ export async function getStaticProps(context) {
     return { notFound: true }
   }
 
+  const agentsRef = db.collection('agents')
+  const agentDoc = await getDocumentDataWithId(agentsRef, agentToURL(agentName))
+
   const maps = await getMaps()
 
-  const props = { agent, maps }
-  return { props, revalidate: 60 }
+  const props = { agent, maps, agentDoc }
+  return { props, revalidate: 1 }
 }

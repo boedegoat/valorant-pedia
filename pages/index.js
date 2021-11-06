@@ -10,6 +10,7 @@ import { agentToURL, getAgents, getRoles, getSearchResults } from '../lib/agents
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../lib/firebase-client'
 import Footer from '../components/global/Footer'
+import { getCollectionDataWithId, getDocument } from '../lib/utils'
 
 const Home = ({ agents, roles, agentsDoc: agentsDocServer }) => {
   const [searchAgent, setSearchAgent] = useState('')
@@ -88,17 +89,13 @@ export async function getStaticProps() {
   const roles = getRoles(agents)
 
   const agentsRef = db.collection('agents')
-  const agentsSnapshot = await agentsRef.get()
-  const agentsDoc = agentsSnapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...doc.data(),
-  }))
+  const agentsDoc = await getCollectionDataWithId(agentsRef)
 
   // make sure agents API match with agents in firestore
   await Promise.all(
     agents.map(async (agent) => {
       const agentName = agentToURL(agent.displayName)
-      const agentSnapshot = await agentsRef.doc(agentName).get()
+      const agentSnapshot = await getDocument(agentsRef, agentName)
       if (!agentSnapshot.exists) {
         console.log(`creating firestore doc for agents/${agentName}`)
         await agentsRef
@@ -114,6 +111,6 @@ export async function getStaticProps() {
       agents,
       roles,
     },
-    revalidate: 60,
+    revalidate: 1,
   }
 }
