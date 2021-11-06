@@ -11,12 +11,14 @@ import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../lib/firebase-client'
 import Footer from '../components/global/Footer'
 
-const Home = ({ agents, roles }) => {
+const Home = ({ agents, roles, agentsDoc: agentsDocServer }) => {
   const [searchAgent, setSearchAgent] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
 
-  const [agentsDoc, agentsDocLoading] = useCollectionData(db.collection('agents'))
+  const [agentsDocClient] = useCollectionData(db.collection('agents'))
+
+  const agentsDoc = agentsDocClient || agentsDocServer
 
   useEffect(() => {
     if (!searchAgent) return
@@ -62,14 +64,13 @@ const Home = ({ agents, roles }) => {
               ))}
             </Wrapper>
 
-            {roleFilter && (
+            {roleFilter ? (
               <RoleFilterSection
                 roleFilter={roleFilter}
                 agents={agents}
                 agentsDoc={agentsDoc}
               />
-            )}
-            {!roleFilter && !agentsDocLoading && (
+            ) : (
               <SelectAgentSection roles={roles} agents={agents} agentsDoc={agentsDoc} />
             )}
           </Fragment>
@@ -87,6 +88,13 @@ export async function getStaticProps() {
   const roles = getRoles(agents)
 
   const agentsRef = db.collection('agents')
+  const agentsSnapshot = await agentsRef.get()
+  const agentsDoc = agentsSnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }))
+
+  // make sure agents API match with agents in firestore
   await Promise.all(
     agents.map(async (agent) => {
       const agentName = agentToURL(agent.displayName)
@@ -102,6 +110,7 @@ export async function getStaticProps() {
 
   return {
     props: {
+      agentsDoc,
       agents,
       roles,
     },

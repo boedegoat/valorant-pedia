@@ -12,7 +12,13 @@ const Profile = ({ session }) => {
   return (
     <Layout back={() => router.back()} title={`${session.user.name}'s Profile`}>
       <Wrapper>
-        <Image src={session.user.image} width={80} height={80} className='rounded-full' />
+        <Image
+          src={session.user.image}
+          alt={`${session.user.name}'s profile picture`}
+          width={80}
+          height={80}
+          className='rounded-full'
+        />
         <h1 className='font-roboto font-bold text-2xl mt-4'>{session.user.name}</h1>
         <p>{session.user.email}</p>
         <button
