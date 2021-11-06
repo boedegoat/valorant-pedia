@@ -1,11 +1,11 @@
 import { HeartIcon } from '@heroicons/react/solid'
-import Layout from '../../components/Layout'
+import Layout from '../../components/global/Layout'
 import PlaylistLink from '../../components/playlist-page/PlaylistLink'
-import Wrapper from '../../components/Wrapper'
+import Wrapper from '../../components/global/Wrapper'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
 import { db } from '../../lib/firebase-client'
 import { useSession } from 'next-auth/client'
-import Unauthorize from '../../components/Unauthorize'
+import Unauthorize from '../../components/global/Unauthorize'
 import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
 
 const Playlist = () => {

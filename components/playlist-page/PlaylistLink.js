@@ -1,4 +1,4 @@
-import Link from '../Link'
+import Link from '../global/Link'
 
 const PlaylistLink = ({ title, href, thumbnailChildren, thumbnailClassName, length }) => {
   return (
