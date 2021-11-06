@@ -8,7 +8,7 @@ import { Fragment, useEffect, useState } from 'react'
 import Link from './Link'
 import Wrapper from './Wrapper'
 import { useRouter } from 'next/router'
-import useToggle from '../../hooks/useToggle'
+import useToggle from '@/hooks/useToggle'
 import { useSession } from 'next-auth/client'
 import SignInAlert from './SignInAlert'
 

@@ -1,4 +1,4 @@
-import Link from '../global/Link'
+import Link from '@/components/global/Link'
 import Image from 'next/image'
 
 export default function SelectWeapon({ weapon }) {

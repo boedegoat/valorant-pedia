@@ -1,5 +1,5 @@
-import ShieldIcon from '../icon/ShieldIcon'
-import SwordIcon from '../icon/SwordIcon'
+import ShieldIcon from '@/components/icon/ShieldIcon'
+import SwordIcon from '@/components/icon/SwordIcon'
 
 const LineupsTypeAndSite = ({ type, site, black }) => {
   if (!type && !site) return null

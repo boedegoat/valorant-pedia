@@ -1,5 +1,5 @@
-import Footer from '../global/Footer'
-import Wrapper from '../global/Wrapper'
+import Footer from '@/components/global/Footer'
+import Wrapper from '@/components/global/Wrapper'
 import { useAgentPageContext } from './AgentPageLayout'
 
 export default function AbilitiesPage() {

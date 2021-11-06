@@ -1,8 +1,8 @@
-import useCollectionDataWithId from '../../hooks/useCollectionDataWithId'
-import { usePlaylistContext } from '../../pages/playlist/[playlistId]'
+import useCollectionDataWithId from '@/hooks/useCollectionDataWithId'
+import { usePlaylistContext } from '@/pages/playlist/[playlistId]'
 import PlaylistWrapper from './PlaylistWrapper'
-import { db } from '../../lib/firebase-client'
-import SelectLineup from '../agent-page/SelectLineup'
+import { db } from '@/lib/firebase-client'
+import SelectLineup from '@/components/agent-page/SelectLineup'
 
 const UserPlaylistPage = () => {
   const { playlist, playlistLoading, maps, user } = usePlaylistContext()

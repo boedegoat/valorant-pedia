@@ -1,10 +1,10 @@
-import '../style.css'
+import 'style.css'
 import { Provider as NextAuthProvider } from 'next-auth/client'
 import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import AppProvider from '../context/appContext'
+import AppProvider from '@/context/appContext'
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()

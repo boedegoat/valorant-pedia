@@ -1,14 +1,14 @@
-import { agentToURL, getAgents, getAgentsByName, parseAgentFromURL } from '../lib/agents'
-import AgentPageLayout from '../components/agent-page/AgentPageLayout'
+import { agentToURL, getAgents, getAgentsByName, parseAgentFromURL } from '@/lib/agents'
+import AgentPageLayout from '@/components/agent-page/AgentPageLayout'
 import { useRouter } from 'next/router'
-import LineupsPage from '../components/agent-page/LineupsPage'
-import { getMaps } from '../lib/maps'
-import useObserver from '../hooks/useObserver'
-import { db } from '../lib/firebase-client'
+import LineupsPage from '@/components/agent-page/LineupsPage'
+import { getMaps } from '@/lib/maps'
+import useObserver from '@/hooks/useObserver'
+import { db } from '@/lib/firebase-client'
 import { useDocumentData } from 'react-firebase-hooks/firestore'
-import AbilitiesPage from '../components/agent-page/AbilitiesPage'
-import MorePage from '../components/agent-page/MorePage'
-import { getDocumentDataWithId } from '../lib/utils'
+import AbilitiesPage from '@/components/agent-page/AbilitiesPage'
+import MorePage from '@/components/agent-page/MorePage'
+import { getDocumentDataWithId } from '@/lib/utils'
 
 const Agent = ({ agent, maps, agentDoc: agentDocServer }) => {
   const router = useRouter()

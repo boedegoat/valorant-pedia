@@ -2,7 +2,7 @@ import Image from 'next/image'
 import { useAgentPageContext } from './AgentPageLayout'
 import { useSession } from 'next-auth/client'
 import SelectLineup from './SelectLineup'
-import { useAppContext } from '../../context/appContext'
+import { useAppContext } from '@/context/appContext'
 
 const LineupsList = ({ lineups, lineupsLoading }) => {
   const { maps } = useAgentPageContext()

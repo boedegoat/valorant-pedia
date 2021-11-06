@@ -1,4 +1,4 @@
-import Wrapper from '../global/Wrapper'
+import Wrapper from '@/components/global/Wrapper'
 import Skin from './Skin'
 
 export default function SkinsList({ weaponSkins, weaponName }) {

@@ -1,9 +1,9 @@
-import Layout from '../../components/global/Layout'
-import Wrapper from '../../components/global/Wrapper'
-import Header from '../../components/weapon-page/Header'
-import WeaponStats from '../../components/weapon-page/WeaponStats'
-import { getWeaponByName, getWeapons } from '../../lib/weapons'
-import Link from '../../components/global/Link'
+import Layout from '@/components/global/Layout'
+import Wrapper from '@/components/global/Wrapper'
+import Header from '@/components/weapon-page/Header'
+import WeaponStats from '@/components/weapon-page/WeaponStats'
+import { getWeaponByName, getWeapons } from '@/lib/weapons'
+import Link from '@/components/global/Link'
 
 export default function Weapon({ weapon }) {
   return (

@@ -1,4 +1,4 @@
-import Wrapper from '../global/Wrapper'
+import Wrapper from '@/components/global/Wrapper'
 
 export default function FilterCategory({
   categories,

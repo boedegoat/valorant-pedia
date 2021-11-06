@@ -1,5 +1,5 @@
-import Layout from '../global/Layout'
-import Wrapper from '../global/Wrapper'
+import Layout from '@/components/global/Layout'
+import Wrapper from '@/components/global/Wrapper'
 
 const PlaylistWrapper = ({ title, children, description, playlistLoading }) => {
   return (
