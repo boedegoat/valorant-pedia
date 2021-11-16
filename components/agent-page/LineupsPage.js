@@ -28,8 +28,6 @@ const LineupsPage = () => {
   const [lineups, lineupsLoading, loadMoreLineupsRef, endLineups] =
     useInfiniteScrollCollection(filter.query ?? AgentLineups)
 
-  console.log(lineups)
-
   return (
     <Wrapper>
       <div className='mt-8 grid grid-cols-2 gap-2'>
