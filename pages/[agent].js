@@ -12,15 +12,12 @@ import { getDocumentDataWithId } from '@/lib/utils'
 
 const Agent = ({ agent, maps, agentDoc: agentDocServer }) => {
   const router = useRouter()
-
   const tabName = router.query.tab
   const [headerRef, headerVisible] = useObserver({ initVisible: true })
   const [agentDocClient] = useDocumentData(
     db.collection('agents').doc(agentToURL(agent.displayName))
   )
-
   const agentDoc = agentDocClient || agentDocServer
-
   const tabMap = new Map([
     ['lineups', <LineupsPage key='lineupsPage' />],
     ['abilities', <AbilitiesPage key='abilitiesPage' />],

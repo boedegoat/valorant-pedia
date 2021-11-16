@@ -16,9 +16,7 @@ const Home = ({ agents, roles, agentsDoc: agentsDocServer }) => {
   const [searchAgent, setSearchAgent] = useState('')
   const [searchResults, setSearchResults] = useState([])
   const [roleFilter, setRoleFilter] = useState('')
-
   const [agentsDocClient] = useCollectionData(db.collection('agents'))
-
   const agentsDoc = agentsDocClient || agentsDocServer
 
   useEffect(() => {
