@@ -6,10 +6,10 @@ import { agentToURL } from 'lib/agents'
 import useToggle from 'hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
 import { useAgentPageContext } from './AgentPageLayout'
-import useInfiniteScrollCollection from 'hooks/useInfiniteScrollCollection'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
 import { useAppContext } from 'context/appContext'
+import useCollectionDataWithId from 'hooks/useCollectionDataWithId'
 
 const LineupsPage = () => {
   const [
@@ -23,19 +23,20 @@ const LineupsPage = () => {
   const AgentLineups = db
     .collection('lineups')
     .where('agent', '==', agentToURL(agent.displayName))
-    .limit(4)
 
-  const [lineups, lineupsLoading, loadMoreLineupsRef, endLineups] =
-    useInfiniteScrollCollection(filter.query ?? AgentLineups)
+  const [lineups, lineupsLoading] = useCollectionDataWithId(filter.query ?? AgentLineups)
 
   return (
     <Wrapper>
       <div className='mt-8 grid grid-cols-2 gap-2'>
-        <LineupsList agentName={agent.displayName} lineups={lineups} />
+        <LineupsList
+          lineups={lineups}
+          lineupsLoading={lineupsLoading}
+        />
       </div>
-      <div className='mt-4 text-center font-bold' ref={loadMoreLineupsRef}>
+      {/* <div className='mt-4 text-center font-bold' ref={loadMoreLineupsRef}>
         {endLineups ? '✨ out of lineups' : 'loading'}
-      </div>
+      </div> */}
 
       <nav className='fixed bottom-0 left-0 right-0 bg-white px-2 pb-2'>
         <div className='bg-white shadow-xl border rounded-lg p-1 flex'>

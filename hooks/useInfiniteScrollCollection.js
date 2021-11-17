@@ -55,6 +55,6 @@ export default function useInfiniteScrollCollection(query) {
 
     if (firstRender.current) firstRender.current = false
     setLoading(false)
-  }, [infiniteScrollElVisible])
+  }, [infiniteScrollElVisible, query])
   return [docs, loading, infiniteScrollEl, end]
 }
