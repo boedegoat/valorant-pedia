@@ -1,5 +1,5 @@
-import { agentToURL } from '@/lib/agents'
-import Wrapper from '@/components/global/Wrapper'
+import { agentToURL } from 'lib/agents'
+import Wrapper from 'components/global/Wrapper'
 import SelectAgent from './SelectAgent'
 
 const SelectAgentSection = ({ roles, agents, agentsDoc }) => {

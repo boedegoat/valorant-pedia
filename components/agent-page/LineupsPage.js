@@ -1,15 +1,15 @@
-import { db } from '@/lib/firebase-client'
-import Wrapper from '@/components/global/Wrapper'
+import { db } from 'lib/firebase-client'
+import Wrapper from 'components/global/Wrapper'
 import { ChevronRightIcon, SearchIcon } from '@heroicons/react/outline'
 import LineupsList from './LineupsList'
-import { agentToURL } from '@/lib/agents'
-import useToggle from '@/hooks/useToggle'
+import { agentToURL } from 'lib/agents'
+import useToggle from 'hooks/useToggle'
 import LineupsFilterModal from './LineupsFilterModal'
 import { useAgentPageContext } from './AgentPageLayout'
-import useInfiniteScrollCollection from '../../hooks/useInfiniteScrollCollection'
+import useInfiniteScrollCollection from 'hooks/useInfiniteScrollCollection'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
-import { useAppContext } from '@/context/appContext'
+import { useAppContext } from 'context/appContext'
 
 const LineupsPage = () => {
   const [

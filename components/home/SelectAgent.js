@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import Link from '@/components/global/Link'
-import { agentToURL } from '@/lib/agents'
+import Link from 'components/global/Link'
+import { agentToURL } from 'lib/agents'
 import { HeartIcon } from '@heroicons/react/solid'
 
 const SelectAgent = ({ src, agentName, roleName, roleIcon, agentDoc }) => {

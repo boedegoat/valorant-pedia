@@ -1,11 +1,11 @@
 import Image from 'next/image'
 import { Dialog } from '@headlessui/react'
-import Wrapper from '@/components/global/Wrapper'
-import SearchBar from '@/components/global/SearchBar'
-import useQuery from '@/hooks/useQuery'
-import SwordIcon from '@/components/icon/SwordIcon'
-import ShieldIcon from '@/components/icon/ShieldIcon'
-import { useAppContext } from '@/context/appContext'
+import Wrapper from 'components/global/Wrapper'
+import SearchBar from 'components/global/SearchBar'
+import useQuery from 'hooks/useQuery'
+import SwordIcon from 'components/icon/SwordIcon'
+import ShieldIcon from 'components/icon/ShieldIcon'
+import { useAppContext } from 'context/appContext'
 
 const LineupsFilterModal = ({ show, onClose, maps: mapsData, AgentLineups }) => {
   const [_, dispatch] = useAppContext()

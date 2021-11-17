@@ -1,6 +1,6 @@
 import { XIcon } from '@heroicons/react/outline'
-import useToggle from '@/hooks/useToggle'
-import Alert from '@/components/global/Alert'
+import useToggle from 'hooks/useToggle'
+import Alert from 'components/global/Alert'
 import Stat from './Stat'
 
 export default function WeaponStats({ weapon }) {

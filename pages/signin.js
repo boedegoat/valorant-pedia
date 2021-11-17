@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
-import Wrapper from '@/components/global/Wrapper'
-import Layout from '@/components/global/Layout'
+import Wrapper from 'components/global/Wrapper'
+import Layout from 'components/global/Layout'
 import Image from 'next/image'
 import { signIn, getProviders } from 'next-auth/client'
 

@@ -1,5 +1,5 @@
-import Link from '@/components/global/Link'
-import { agentToURL } from '@/components/lib/agents'
+import Link from 'components/global/Link'
+import { agentToURL } from 'lib/agents'
 import { useRouter } from 'next/router'
 
 const ChangeTab = ({ to, agentName }) => {

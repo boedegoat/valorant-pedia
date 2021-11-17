@@ -1,7 +1,7 @@
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { HeartIcon } from '@heroicons/react/outline'
-import Link from '@/components/global/Link'
-import { toTitleCase } from '@/lib/utils'
+import Link from 'components/global/Link'
+import { toTitleCase } from 'lib/utils'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 
 const SelectLineup = ({ lineup, maps, user, back }) => {

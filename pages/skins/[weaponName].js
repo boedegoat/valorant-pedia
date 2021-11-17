@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router'
-import Layout from '@/components/global/Layout'
-import Wrapper from '@/components/global/Wrapper'
-import { getWeapons, getWeaponSkinsByName } from '@/lib/weapons'
-import { toTitleCase } from '@/lib/utils'
-import SearchBar from '@/components/global/SearchBar'
-import SkinsList from '@/components/skin-page/SkinsList'
-import useQuery from '@/hooks/useQuery'
-import SearchResultsLabel from '@/components/global/SearchResultsLabel'
+import Layout from 'components/global/Layout'
+import Wrapper from 'components/global/Wrapper'
+import { getWeapons, getWeaponSkinsByName } from 'lib/weapons'
+import { toTitleCase } from 'lib/utils'
+import SearchBar from 'components/global/SearchBar'
+import SkinsList from 'components/skin-page/SkinsList'
+import useQuery from 'hooks/useQuery'
+import SearchResultsLabel from 'components/global/SearchResultsLabel'
 
 export default function WeaponSkins({ weaponSkins: weaponSkinsData, weaponName }) {
   const router = useRouter()

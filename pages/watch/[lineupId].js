@@ -7,23 +7,23 @@ import {
 } from '@heroicons/react/outline'
 import { HeartIcon as HeartIconSolid } from '@heroicons/react/solid'
 import { useRouter } from 'next/router'
-import LineupsTypeAndSite from '@/components/agent-page/LineupsTypeAndSite'
+import LineupsTypeAndSite from 'components/agent-page/LineupsTypeAndSite'
 import {
   appendArray,
   createTimestamp,
   db,
   increment,
   popArray,
-} from '@/lib/firebase-client'
-import { delay, toTitleCase } from '@/lib/utils'
+} from 'lib/firebase-client'
+import { delay, toTitleCase } from 'lib/utils'
 import { useSession } from 'next-auth/client'
-import SignInAlert from '@/components/global/SignInAlert'
-import useToggle from '@/hooks/useToggle'
-import Link from '@/components/global/Link'
+import SignInAlert from 'components/global/SignInAlert'
+import useToggle from 'hooks/useToggle'
+import Link from 'components/global/Link'
 import Head from 'next/head'
-import Alert from '@/components/global/Alert'
-import useDocumentDataWithId from '@/hooks/useDocumentDataWithId'
-import useCollectionDataWithId from '@/hooks/useCollectionDataWithId'
+import Alert from 'components/global/Alert'
+import useDocumentDataWithId from 'hooks/useDocumentDataWithId'
+import useCollectionDataWithId from 'hooks/useCollectionDataWithId'
 import { useState } from 'react'
 
 const WatchLineup = ({ lineup: lineupServer }) => {

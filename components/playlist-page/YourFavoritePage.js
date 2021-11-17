@@ -1,7 +1,7 @@
-import useCollectionDataWithId from '@/hooks/useCollectionDataWithId'
-import { db } from '@/lib/firebase-client'
-import { usePlaylistContext } from '@/pages/playlist/[playlistId]'
-import SelectLineup from '@/components/agent-page/SelectLineup'
+import useCollectionDataWithId from 'hooks/useCollectionDataWithId'
+import { db } from 'lib/firebase-client'
+import { usePlaylistContext } from 'pages/playlist/[playlistId]'
+import SelectLineup from 'components/agent-page/SelectLineup'
 import PlaylistWrapper from './PlaylistWrapper'
 
 const YourFavoritePage = () => {

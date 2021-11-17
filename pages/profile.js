@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import Wrapper from '@/components/global/Wrapper'
-import Layout from '@/components/global/Layout'
+import Wrapper from 'components/global/Wrapper'
+import Layout from 'components/global/Layout'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import { getSession, signOut } from 'next-auth/client'

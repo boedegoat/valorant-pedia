@@ -1,6 +1,6 @@
 import { CodeIcon, MicrophoneIcon, TagIcon } from '@heroicons/react/outline'
-import Footer from '@/components/global/Footer'
-import Wrapper from '@/components/global/Wrapper'
+import Footer from 'components/global/Footer'
+import Wrapper from 'components/global/Wrapper'
 import { useAgentPageContext } from './AgentPageLayout'
 
 export default function MorePage() {
