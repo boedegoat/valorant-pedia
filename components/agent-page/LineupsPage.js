@@ -10,7 +10,12 @@ import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
 import { useAppContext } from 'context/appContext'
 import useCollectionDataWithId from 'hooks/useCollectionDataWithId'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import Modal from 'components/global/Modal'
+import SearchBar from 'components/global/SearchBar'
+import { search } from 'lib/utils'
+import { useSession } from 'next-auth/client'
+import SelectLineup from './SelectLineup'
 
 const LineupsPage = () => {
   const [
@@ -19,8 +24,10 @@ const LineupsPage = () => {
     },
     dispatch,
   ] = useAppContext()
+  const [session] = useSession()
   const { agent, maps } = useAgentPageContext()
   const [showFilterModal, toggleShowFilterModal] = useToggle()
+  const [showSearch, toggleShowSearch] = useToggle()
 
   const AgentLineups = db
     .collection('lineups')
@@ -35,6 +42,18 @@ const LineupsPage = () => {
   }, [])
 
   const [lineups, lineupsLoading] = useCollectionDataWithId(filter.query ?? AgentLineups)
+
+  // handle search lineups
+  const [searchLineupsInput, setSearchLineupsInput] = useState('')
+  const [searchLineupsResults, setSearchLineupsResults] = useState([])
+  useEffect(() => {
+    if (!searchLineupsInput) return
+    const results = search(searchLineupsInput, {
+      data: lineups,
+      field: 'title',
+    })
+    setSearchLineupsResults(results)
+  }, [searchLineupsInput])
 
   return (
     <Wrapper>
@@ -80,19 +99,53 @@ const LineupsPage = () => {
             </div>
             <ChevronRightIcon className='w-[32px] h-[32px] text-gray-800 ml-auto' />
           </button>
+          <LineupsFilterModal
+            show={showFilterModal}
+            onClose={toggleShowFilterModal}
+            maps={maps}
+            AgentLineups={AgentLineups}
+          />
+
           {/* search button */}
-          <button className='px-5'>
+          <button className='px-5' onClick={toggleShowSearch}>
             <SearchIcon className='w-[32px] h-[32px] text-gray-800' />
           </button>
+          {/* search modal */}
+          <Modal
+            title='Search'
+            open={showSearch}
+            onClose={toggleShowSearch}
+            includeCloseButton
+          >
+            <SearchBar
+              placeholder='Search lineups'
+              value={searchLineupsInput}
+              onChange={(e) => setSearchLineupsInput(e.target.value)}
+            />
+            {searchLineupsInput && (
+              <>
+                {searchLineupsResults.length ? (
+                  <div className='mt-8 grid grid-cols-2 gap-2'>
+                    {searchLineupsResults.map((lineup) => (
+                      <SelectLineup
+                        lineup={lineup}
+                        maps={maps}
+                        user={session?.user}
+                        key={lineup.id}
+                        back={`${lineup.agent}?tab=lineups`}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className='text-center'>
+                    🙈 <b>{searchLineupsInput}</b> not found
+                  </div>
+                )}
+              </>
+            )}
+          </Modal>
         </div>
       </nav>
-
-      <LineupsFilterModal
-        show={showFilterModal}
-        onClose={toggleShowFilterModal}
-        maps={maps}
-        AgentLineups={AgentLineups}
-      />
     </Wrapper>
   )
 }
