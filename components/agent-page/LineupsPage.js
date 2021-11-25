@@ -10,12 +10,14 @@ import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
 import { useAppContext } from 'context/appContext'
 import useCollectionDataWithId from 'hooks/useCollectionDataWithId'
+import { useEffect } from 'react'
 
 const LineupsPage = () => {
   const [
     {
       lineupsState: { filter },
     },
+    dispatch,
   ] = useAppContext()
   const { agent, maps } = useAgentPageContext()
   const [showFilterModal, toggleShowFilterModal] = useToggle()
@@ -24,15 +26,20 @@ const LineupsPage = () => {
     .collection('lineups')
     .where('agent', '==', agentToURL(agent.displayName))
 
+  // to update query each user open this page
+  useEffect(() => {
+    dispatch({
+      type: 'UPDATE_FILTER_LINEUPS_QUERY',
+      pay: { query: AgentLineups },
+    })
+  }, [])
+
   const [lineups, lineupsLoading] = useCollectionDataWithId(filter.query ?? AgentLineups)
 
   return (
     <Wrapper>
       <div className='mt-8 grid grid-cols-2 gap-2'>
-        <LineupsList
-          lineups={lineups}
-          lineupsLoading={lineupsLoading}
-        />
+        <LineupsList lineups={lineups} lineupsLoading={lineupsLoading} />
       </div>
       {/* <div className='mt-4 text-center font-bold' ref={loadMoreLineupsRef}>
         {endLineups ? '✨ out of lineups' : 'loading'}
