@@ -20,7 +20,6 @@ import { useSession } from 'next-auth/client'
 import SignInAlert from 'components/global/SignInAlert'
 import useToggle from 'hooks/useToggle'
 import Link from 'components/global/Link'
-import Head from 'next/head'
 import Alert from 'components/global/Alert'
 import useDocumentDataWithId from 'hooks/useDocumentDataWithId'
 import useCollectionDataWithId from 'hooks/useCollectionDataWithId'
@@ -118,7 +117,7 @@ const WatchLineup = ({ lineup: lineupServer }) => {
   }
 
   return (
-    <Layout hideNavbar hideMainMenu title={lineup.title}>
+    <Layout hideNavbar hideMainMenu title={toTitleCase(lineup.title)}>
       {/* top */}
       <div className='fixed z-10 top-2 left-2 w-max flex items-center bg-black bg-opacity-70 backdrop-blur-sm rounded-md'>
         <Link
