@@ -13,8 +13,6 @@ import { useSession } from 'next-auth/client'
 import SignInAlert from './SignInAlert'
 
 const MainMenu = () => {
-  const [signInAlert, toggleSignInAlert] = useToggle(false)
-
   return (
     <Fragment>
       <div className='pb-20'></div>
@@ -31,29 +29,22 @@ const MainMenu = () => {
             ActiveIcon={ViewGridIconSolid}
             href='/playlist'
             authRequired
-            onClick={toggleSignInAlert}
           >
             Playlist
           </MenuLink>
         </Wrapper>
       </nav>
-
-      <SignInAlert
-        description='Get your account now to access the playlist page'
-        callbackUrl='/playlist'
-        open={signInAlert}
-        onClose={toggleSignInAlert}
-      />
     </Fragment>
   )
 }
 
 export default MainMenu
 
-const MenuLink = ({ href, Icon, ActiveIcon, children, authRequired, onClick }) => {
+const MenuLink = ({ href, Icon, ActiveIcon, children, authRequired }) => {
   const router = useRouter()
   const [active, setActive] = useState(false)
   const [session] = useSession()
+  const [signInAlert, toggleSignInAlert] = useToggle(false)
 
   const className = `flex-grow flex flex-col items-center justify-center ${
     active ? 'text-gray-900' : 'text-gray-400'
@@ -66,9 +57,15 @@ const MenuLink = ({ href, Icon, ActiveIcon, children, authRequired, onClick }) =
         <p className='text-[11px] font-semibold text-current'>{children}</p>
       </Link>
     ) : (
-      <button className={className} onClick={onClick}>
+      <button className={className} onClick={toggleSignInAlert}>
         <ViewGridIcon className='h-7 w-7' />
         <p className='text-[11px] font-semibold text-current'>{children}</p>
+
+        <SignInAlert
+          description={`Get your account now to access ${children} page`}
+          open={signInAlert}
+          onClose={toggleSignInAlert}
+        />
       </button>
     )
 

@@ -1,12 +1,7 @@
 import { signIn } from 'next-auth/client'
 import Alert from './Alert'
 
-const SignInAlert = ({ description, callbackUrl, open, onClose }) => {
-  const options = {}
-  if (callbackUrl) {
-    options.callbackUrl = callbackUrl
-  }
-
+const SignInAlert = ({ description, open, onClose }) => {
   return (
     <Alert open={open} onClose={onClose}>
       <Alert.Title as='h3' className='text-xl font-bold leading-6 text-gray-900'>
@@ -17,7 +12,7 @@ const SignInAlert = ({ description, callbackUrl, open, onClose }) => {
         <button
           type='button'
           className='alert-main-button'
-          onClick={() => signIn('google', options)}
+          onClick={() => signIn('google')}
         >
           Sign In with Google
         </button>
