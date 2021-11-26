@@ -25,6 +25,7 @@ import Alert from 'components/global/Alert'
 import useDocumentDataWithId from 'hooks/useDocumentDataWithId'
 import useCollectionDataWithId from 'hooks/useCollectionDataWithId'
 import { useState } from 'react'
+import Layout from 'components/global/Layout'
 
 const WatchLineup = ({ lineup: lineupServer }) => {
   const router = useRouter()
@@ -117,10 +118,7 @@ const WatchLineup = ({ lineup: lineupServer }) => {
   }
 
   return (
-    <>
-      <Head>
-        <title>{lineup.title} - Valpedia</title>
-      </Head>
+    <Layout hideNavbar hideMainMenu title={lineup.title}>
       {/* top */}
       <div className='fixed z-10 top-2 left-2 w-max flex items-center bg-black bg-opacity-70 backdrop-blur-sm rounded-md'>
         <Link
@@ -246,7 +244,7 @@ const WatchLineup = ({ lineup: lineupServer }) => {
           description={signInAlertDescription}
         />
       </div>
-    </>
+    </Layout>
   )
 }
 

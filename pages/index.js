@@ -25,7 +25,7 @@ const Home = ({ agents, roles, agentsDoc: agentsDocServer }) => {
   }, [searchAgent])
 
   return (
-    <Layout title='Agents'>
+    <Layout homePage>
       <header>
         <Wrapper>
           <h1 className='page-main-header'>Agents</h1>
