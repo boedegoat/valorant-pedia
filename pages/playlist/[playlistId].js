@@ -24,9 +24,7 @@ const PlaylistId = ({ yourFavorites, maps, playlistId }) => {
   }
 
   return (
-    <PlaylistContext.Provider
-      value={{ user, sessionLoading, maps, playlist, playlistLoading }}
-    >
+    <PlaylistContext.Provider value={{ user, sessionLoading, maps, playlist, playlistLoading }}>
       {yourFavorites ? <YourFavoritePage /> : <UserPlaylistPage />}
     </PlaylistContext.Provider>
   )
@@ -36,7 +34,7 @@ export default PlaylistId
 
 export async function getStaticPaths() {
   const playlistsSnapshot = await db.collection('playlists').get()
-  const playlistsId = playlistsSnapshot.docs.map((playlist) => ({
+  const playlistsId = playlistsSnapshot.docs.map(playlist => ({
     params: { playlistId: playlist.id },
   }))
 

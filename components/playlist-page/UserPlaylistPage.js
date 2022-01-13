@@ -12,13 +12,9 @@ const UserPlaylistPage = () => {
   )
 
   return (
-    <PlaylistWrapper
-      playlistLoading={playlistLoading}
-      title={playlist?.title}
-      description={playlist?.description}
-    >
+    <PlaylistWrapper>
       <div className='mt-8 grid grid-cols-2 gap-2'>
-        {lineups?.map((lineup) => (
+        {lineups?.map(lineup => (
           <SelectLineup
             lineup={lineup}
             maps={maps}
