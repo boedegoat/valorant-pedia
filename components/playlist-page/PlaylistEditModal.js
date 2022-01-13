@@ -1,11 +1,14 @@
+import { TrashIcon } from '@heroicons/react/outline'
 import Modal from 'components/global/Modal'
 import useTreeshold from 'hooks/useTreeshold'
 import { db } from 'lib/firebase-client'
+import { useRouter } from 'next/router'
 import { usePlaylistContext } from 'pages/playlist/[playlistId]'
 import { useState } from 'react'
 
 export default function PlaylistEditModal({ openEdit, onClose }) {
   const { playlist } = usePlaylistContext()
+  const router = useRouter()
 
   const [newTitle, setNewTitle] = useState(null)
   const [newDescription, setNewDescription] = useState(null)
@@ -20,6 +23,13 @@ export default function PlaylistEditModal({ openEdit, onClose }) {
     if (!newDescription) return
     playlistDocRef.set({ description: newDescription }, { merge: true })
   })
+
+  const deleteThisPlaylist = async () => {
+    if (confirm('Are you sure want to delete this playlist ?')) {
+      await playlistDocRef.delete()
+      router.push('/playlist')
+    }
+  }
 
   return (
     <Modal title='Edit' open={openEdit} onClose={onClose} includeCloseButton>
@@ -47,6 +57,14 @@ export default function PlaylistEditModal({ openEdit, onClose }) {
         <p className='mt-20 text-center text-gray-400 text-sm'>
           Press X button to save your changes
         </p>
+      </div>
+      <div>
+        <button
+          className='flex items-center text-red-500 px-3 py-1 mx-auto'
+          onClick={deleteThisPlaylist}
+        >
+          <TrashIcon className='w-4 h-4 mr-1' /> Delete this playlist
+        </button>
       </div>
     </Modal>
   )
