@@ -4,16 +4,11 @@ import Wrapper from './Wrapper'
 
 function Modal({ open, onClose, title, includeCloseButton, children }) {
   return (
-    <Dialog
-      as='div'
-      open={open}
-      onClose={onClose}
-      className='fixed z-50 inset-0 overflow-y-auto'
-    >
+    <Dialog as='div' open={open} onClose={onClose} className='fixed z-50 inset-0 overflow-y-auto'>
       <Dialog.Overlay className='fixed inset-0 bg-black bg-opacity-50' />
 
       {/* body */}
-      <Wrapper className='absolute flex flex-col w-full left-0 bottom-0 bg-white rounded-t-2xl h-[600px]'>
+      <Wrapper className='absolute flex flex-col w-full inset-0 bg-white rounded-t-2xl'>
         <Dialog.Title className='font-bold text-2xl text-gray-900 pt-6 pb-4 flex items-center justify-between'>
           {title}{' '}
           {includeCloseButton && (
