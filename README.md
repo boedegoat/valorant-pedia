@@ -1,6 +1,8 @@
 # Valpedia
 ✨ Usefull and Easy to Use Unofficial Valorant Wikipedia
 
+🔗 [valpedia webapp](https://valpedia.vercel.app/)
+
 ## 🧭 you can explore
 - agent stories, ability, and more data
 - agent lineups (currently only on sova and viper)
@@ -16,4 +18,3 @@
 - Tailwind.css
 - NextAuth.js
 - Firebase
-
