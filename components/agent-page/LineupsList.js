@@ -17,15 +17,20 @@ const LineupsList = ({ lineups, lineupsLoading }) => {
     return <NotAvailableComponent />
   }
 
-  return lineups?.map((lineup) => (
-    <SelectLineup
-      lineup={lineup}
-      maps={maps}
-      user={session?.user}
-      key={lineup.id}
-      back={`${lineup.agent}?tab=lineups`}
-    />
-  ))
+  return (
+    lineups
+      // filter lineups that already have video and thumbnail
+      ?.filter(lineup => lineup.videoURL && lineup.thumbnailURL)
+      .map(lineup => (
+        <SelectLineup
+          lineup={lineup}
+          maps={maps}
+          user={session?.user}
+          key={lineup.id}
+          back={`${lineup.agent}?tab=lineups`}
+        />
+      ))
+  )
 }
 
 export default LineupsList
