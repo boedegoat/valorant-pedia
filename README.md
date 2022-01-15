@@ -6,7 +6,7 @@
 ## 🧭 you can explore
 - agent stories, ability, and more data
 - agent lineups (currently only on sova and viper)
-- weapon stats
+- weapon stats, and skins
 
 ## 🏍 what else you can do
 - favorite agents and lineups
