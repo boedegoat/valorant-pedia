@@ -1,6 +1,8 @@
 # Valpedia
 ✨ Usefull and Easy to Use Unofficial Valorant Wikipedia
 
+***NOT RESPONSIVE YET. CURRENTLY MADE FOR MOBILE SIZE ONLY***
+
 🔗 [valpedia webapp](https://valpedia.vercel.app/)
 
 ## 🧭 you can explore
