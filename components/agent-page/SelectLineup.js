@@ -13,7 +13,7 @@ const SelectLineup = ({ lineup, maps, user, back }) => {
       shallow={true}
       scroll={false}
       key={id}
-      className='group relative bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3 pr-10 overflow-hidden border-2'
+      className='group block relative bg-white drop-shadow-md hover:drop-shadow-lg rounded-md p-3 pr-10 overflow-hidden border-2'
       style={{
         // make 9/16 aspect ratio
         paddingBottom: 'calc((16/9) * 100%)',
@@ -27,7 +27,7 @@ const SelectLineup = ({ lineup, maps, user, back }) => {
         {/* map */}
         <div className='flex items-center space-x-2 '>
           <img
-            src={maps.find((m) => m.displayName.toLowerCase() === map).splash}
+            src={maps.find(m => m.displayName.toLowerCase() === map).splash}
             className='rounded-full w-5 h-5'
           />
           <h2 className='font-black text-base uppercase'>{map}</h2>

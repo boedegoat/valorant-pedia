@@ -9,13 +9,13 @@ import { useAgentPageContext } from './AgentPageLayout'
 import LineupsTypeAndSite from './LineupsTypeAndSite'
 import Image from 'next/image'
 import { useAppContext } from 'context/appContext'
-import useCollectionDataWithId from 'hooks/useCollectionDataWithId'
 import { useEffect, useState } from 'react'
 import Modal from 'components/global/Modal'
 import SearchBar from 'components/global/SearchBar'
-import { search } from 'lib/utils'
+import { parseCollectionWithId, search } from 'lib/utils'
 import { useSession } from 'next-auth/client'
 import SelectLineup from './SelectLineup'
+import { useCollection } from 'react-firebase-hooks/firestore'
 
 const LineupsPage = () => {
   const [
@@ -32,6 +32,7 @@ const LineupsPage = () => {
   const AgentLineups = db
     .collection('lineups')
     .where('agent', '==', agentToURL(agent.displayName))
+    .limit(4)
 
   // to update query each user open this page
   useEffect(() => {
@@ -41,7 +42,7 @@ const LineupsPage = () => {
     })
   }, [])
 
-  const [lineups, lineupsLoading] = useCollectionDataWithId(filter.query ?? AgentLineups)
+  const [lineups, lineupsLoading] = useCollection(filter.query ?? AgentLineups)
 
   // handle search lineups
   const [searchLineupsInput, setSearchLineupsInput] = useState('')
@@ -49,7 +50,7 @@ const LineupsPage = () => {
   useEffect(() => {
     if (!searchLineupsInput) return
     const results = search(searchLineupsInput, {
-      data: lineups,
+      data: parseCollectionWithId(lineups),
       field: 'title',
     })
     setSearchLineupsResults(results)
@@ -57,12 +58,7 @@ const LineupsPage = () => {
 
   return (
     <Wrapper>
-      <div className='mt-8 grid grid-cols-2 gap-2'>
-        <LineupsList lineups={lineups} lineupsLoading={lineupsLoading} />
-      </div>
-      {/* <div className='mt-4 text-center font-bold' ref={loadMoreLineupsRef}>
-        {endLineups ? '✨ out of lineups' : 'loading'}
-      </div> */}
+      <LineupsList lineups={lineups} lineupsLoading={lineupsLoading} />
 
       <nav className='fixed bottom-0 left-0 right-0 bg-white px-2 pb-2'>
         <div className='bg-white shadow-xl border rounded-lg p-1 flex'>
@@ -73,20 +69,13 @@ const LineupsPage = () => {
           >
             <div className='flex space-x-2 items-center'>
               {!filter.type && !filter.site && !filter.map && (
-                <h1 className='text-lg font-black uppercase text-gray-800'>
-                  No filter applied
-                </h1>
+                <h1 className='text-lg font-black uppercase text-gray-800'>No filter applied</h1>
               )}
               {filter.map && (
                 <>
                   <Image
-                    src={
-                      maps.find((m) => m.displayName.toLowerCase() === filter.map).splash
-                    }
-                    alt={
-                      maps.find((m) => m.displayName.toLowerCase() === filter.map)
-                        .displayName
-                    }
+                    src={maps.find(m => m.displayName.toLowerCase() === filter.map).splash}
+                    alt={maps.find(m => m.displayName.toLowerCase() === filter.map).displayName}
                     width={26}
                     height={26}
                     layout='fixed'
@@ -111,22 +100,17 @@ const LineupsPage = () => {
             <SearchIcon className='w-[32px] h-[32px] text-gray-800' />
           </button>
           {/* search modal */}
-          <Modal
-            title='Search'
-            open={showSearch}
-            onClose={toggleShowSearch}
-            includeCloseButton
-          >
+          <Modal title='Search' open={showSearch} onClose={toggleShowSearch} includeCloseButton>
             <SearchBar
               placeholder='Search lineups'
               value={searchLineupsInput}
-              onChange={(e) => setSearchLineupsInput(e.target.value)}
+              onChange={e => setSearchLineupsInput(e.target.value)}
             />
             {searchLineupsInput && (
               <>
                 {searchLineupsResults.length ? (
                   <div className='mt-8 grid grid-cols-2 gap-2'>
-                    {searchLineupsResults.map((lineup) => (
+                    {searchLineupsResults.map(lineup => (
                       <SelectLineup
                         lineup={lineup}
                         maps={maps}

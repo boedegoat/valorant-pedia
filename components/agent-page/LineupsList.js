@@ -3,25 +3,54 @@ import { useAgentPageContext } from './AgentPageLayout'
 import { useSession } from 'next-auth/client'
 import SelectLineup from './SelectLineup'
 import { useAppContext } from 'context/appContext'
+import LazyList from 'components/global/LazyList'
+import { getCollection, parseCollectionWithId } from 'lib/utils'
+import Spinner from 'components/global/Spinner'
+import { useEffect, useRef } from 'react'
 
 const LineupsList = ({ lineups, lineupsLoading }) => {
   const { maps } = useAgentPageContext()
   const [session] = useSession()
+  const [
+    {
+      lineupsState: { filter },
+    },
+  ] = useAppContext()
+  let lastLineup = useRef(null)
 
-  if (lineupsLoading) {
-    return new Array(10).fill().map((_, index) => <LoadingComponent key={index} />)
-  }
+  useEffect(() => {
+    if (!lineupsLoading) {
+      lastLineup.current = lineups.docs[lineups.docs.length - 1]
+    }
+  }, [lineupsLoading])
+
+  if (lineupsLoading) return <LoadingComponent />
+
+  const lineupsData = parseCollectionWithId(lineups)
 
   // if lineups not available
-  if (!lineups.length && !lineupsLoading) {
+  if (!lineupsData.length && !lineupsLoading) {
     return <NotAvailableComponent />
   }
 
   return (
-    lineups
-      // filter lineups that already have video and thumbnail
-      ?.filter(lineup => lineup.videoURL && lineup.thumbnailURL)
-      .map(lineup => (
+    <LazyList
+      className='grid grid-cols-2 gap-2 scrollbar-hide'
+      data={lineupsData.filter(lineup => lineup.videoURL && lineup.thumbnailURL)}
+      loader={<LoadingComponent />}
+      onLoadMore={async (setCurrentLineups, setHasMore) => {
+        const nextLineups = await getCollection(filter.query?.startAfter(lastLineup.current))
+        if (nextLineups.empty) {
+          setHasMore(false)
+          return
+        }
+
+        const nextLastLineup = nextLineups.docs[nextLineups.docs.length - 1]
+
+        lastLineup.current = nextLastLineup
+        setCurrentLineups(cl => [...cl, ...parseCollectionWithId(nextLineups)])
+      }}
+      item={lineup => (
         <SelectLineup
           lineup={lineup}
           maps={maps}
@@ -29,7 +58,8 @@ const LineupsList = ({ lineups, lineupsLoading }) => {
           key={lineup.id}
           back={`${lineup.agent}?tab=lineups`}
         />
-      ))
+      )}
+    />
   )
 }
 
@@ -37,22 +67,8 @@ export default LineupsList
 
 const LoadingComponent = () => {
   return (
-    <div
-      className='group animate-pulse relative bg-gray-200 drop-shadow-md hover:drop-shadow-lg rounded-md border-2'
-      style={{
-        // make 9/16 aspect ratio
-        paddingBottom: 'calc((16/9) * 100%)',
-      }}
-    >
-      <div className='absolute inset-0 p-3 flex flex-col'>
-        <div className='h-[12%] bg-gray-300 rounded-sm' />
-        <div className='mt-auto h-[50%] space-y-2'>
-          <div className='h-[23%] w-[30%] bg-gray-300 rounded-sm'></div>
-          <div className='h-[23%] w-[80%] bg-gray-300 rounded-sm'></div>
-          <div className='h-[18%] w-[70%] bg-gray-300 rounded-sm'></div>
-          <div className='h-[14%] w-[60%] bg-gray-300 rounded-sm'></div>
-        </div>
-      </div>
+    <div className='flex items-center justify-center space-x-2 mt-4 overflow-hidden'>
+      <Spinner /> <span className='font-medium text-gray-400'>Loading...</span>
     </div>
   )
 }

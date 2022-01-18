@@ -11,6 +11,7 @@
     "@heroicons/react": "^1.0.4",
     "@next-auth/firebase-adapter": "^0.0.2-canary.207",
     "@tailwindcss/forms": "^0.3.3",
+    "deep-equal": "^2.0.5",
     "firebase": "8.6.2",
     "next": "latest",
     "next-auth": "^3.29.0",
@@ -18,6 +19,7 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-firebase-hooks": "^3.0.4",
+    "react-infinite-scroll-component": "^6.1.0",
     "sharp": "^0.29.1",
     "tailwind-scrollbar-hide": "^1.0.3"
   },
